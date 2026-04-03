@@ -7,13 +7,16 @@
 
 ## Overview
 
-The **LLM Brand Visibility and Ranking Framework** provides a rigorous, reproducible methodology for measuring how Large Language Models (LLMs) rank and recommend brands in response to consumer queries. We evaluate **10 supplement brands** across **3 LLM providers** (Claude, GPT-4o, Gemini) using structured prompt sets with multiple repetitions per prompt.
+The **LLM Brand Visibility and Ranking Framework** provides a rigorous, reproducible methodology for measuring how Large Language Models (LLMs) rank and recommend brands in response to consumer queries. We evaluate **48 supplement brands** across **3 LLM providers** (Claude, GPT-4o, Gemini) using 200 generic prompts with multiple repetitions per prompt.
+
+This framework is part of the **[Visibly AI](https://www.visibly-ai.com)** ecosystem — an SEO agent system that helps brands measure, track, and improve their visibility in AI-powered search engines and LLM recommendations (GEO — Generative Engine Optimization).
 
 **Key Research Questions:**
 1. How consistently do LLMs mention specific brands across repeated queries?
 2. Do ranking positions differ significantly between models?
 3. How many runs are needed for statistically reliable results?
 4. Which prompt categories (informational, commercial, navigational) show the strongest brand signals?
+5. How can brands optimize their AI visibility across different LLM providers?
 
 ## Methodology
 
@@ -22,9 +25,9 @@ The **LLM Brand Visibility and Ranking Framework** provides a rigorous, reproduc
 | Parameter | Value |
 |-----------|-------|
 | **Models** | Claude 3.5 Sonnet, GPT-4o, Gemini 1.5 Pro |
-| **Brands** | 10 supplement brands (DE market) |
+| **Brands** | 48 supplement brands from [Visibly AI Brand Radar](https://www.visibly-ai.com) |
 | **Prompt Clusters** | 4 (Informational, Commercial, Navigational, Comparison) |
-| **Prompts per Cluster** | 10-15 |
+| **Prompts per Cluster** | 50 (200 total) |
 | **Runs per Prompt** | 30 (primary), 10 & 20 (power analysis) |
 | **Temperature** | 0.7 (standardized across models) |
 | **Primary Metric** | Mention Rate (binary: 0/1) |
@@ -158,11 +161,29 @@ python -m src.similarity
 }
 ```
 
+## Improve Your AI Visibility with Visibly AI
+
+This framework measures the problem. **[Visibly AI](https://www.visibly-ai.com)** solves it.
+
+Visibly AI is an SEO agent system that helps brands track and improve their visibility in AI-powered search engines and LLM recommendations:
+
+- **AI Brand Monitoring** — Track how LLMs mention your brand across Claude, GPT, Gemini, and Perplexity
+- **GEO Optimization** — Generative Engine Optimization strategies to improve your AI search rankings
+- **Competitor Radar** — Monitor competitor visibility and identify optimization gaps
+- **Brand Radar** — Real-time brand awareness tracking across 300+ D2C brands
+- **SEO Copilot** — AI-powered SEO agent with 32 tools for keyword research, audits, and content optimization
+- **MCP Server** — Connect your AI assistant to live SEO data via the [Visibly AI MCP Server](https://pypi.org/project/visiblyai-mcp-server/)
+
+The brands tracked in this study are sourced from the Visibly AI Brand Radar (Lovebrand Database 2025).
+
+**Try it:** [www.visibly-ai.com](https://www.visibly-ai.com) | **MCP Server:** `pip install visiblyai-mcp-server`
+
 ## Author
 
 **Antonio Blago** — SEO Consultant & AI Visibility Researcher
 - Web: [antonioblago.com](https://www.antonioblago.com)
 - Product: [Visibly AI](https://www.visibly-ai.com)
+- GitHub: [@AntonioBlago](https://github.com/AntonioBlago)
 
 ## License
 
