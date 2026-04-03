@@ -1,0 +1,159 @@
+# Comparison Prompt Cluster — GENERIC (no brand names)
+# Category comparison queries that invite the model to list and rank brands
+# Language: German (DE market focus)
+# Rule: Brands are detected in output only, NEVER mentioned in prompts
+
+cluster: comparison
+description: "Category comparison queries — invite model to compare, but no brand names in prompt"
+
+prompts:
+  - id: cmp_01
+    text: "Vergleich der besten Greens-Pulver auf dem deutschen Markt"
+    text_en: "Comparison of the best greens powders on the German market"
+  - id: cmp_02
+    text: "Welches Proteinpulver ist besser: Whey, Casein oder pflanzlich?"
+    text_en: "Which protein powder is better: whey, casein, or plant-based?"
+  - id: cmp_03
+    text: "Ranking der besten Kollagen-Supplements in Deutschland"
+    text_en: "Ranking of the best collagen supplements in Germany"
+  - id: cmp_04
+    text: "Vergleich von Mahlzeitenersatz-Produkten: Was lohnt sich?"
+    text_en: "Comparison of meal replacement products: What is worth it?"
+  - id: cmp_05
+    text: "Welche Nootropika-Marke bietet das beste Preis-Leistungs-Verhaeltnis?"
+    text_en: "Which nootropics brand offers the best value for money?"
+  - id: cmp_06
+    text: "Bio-Supplements vs konventionelle: Was ist hochwertiger?"
+    text_en: "Organic vs conventional supplements: Which are higher quality?"
+  - id: cmp_07
+    text: "Deutsche vs amerikanische Supplements: Qualitaetsunterschiede?"
+    text_en: "German vs American supplements: Quality differences?"
+  - id: cmp_08
+    text: "Welche Supplement-Marke hat die besten Laboranalysen und Zertifikate?"
+    text_en: "Which supplement brand has the best lab analyses and certificates?"
+  - id: cmp_09
+    text: "Ranking deutscher Supplement-Marken nach Qualitaet und Preis"
+    text_en: "Ranking of German supplement brands by quality and price"
+  - id: cmp_10
+    text: "Vergleich der beliebtesten Vitamin-D-Praeparate in Deutschland"
+    text_en: "Comparison of the most popular vitamin D supplements in Germany"
+  - id: cmp_11
+    text: "Welches Magnesium-Supplement ist am besten: Citrat, Glycinat oder Oxid?"
+    text_en: "Which magnesium supplement is best: citrate, glycinate, or oxide?"
+  - id: cmp_12
+    text: "Die besten Supplement-Marken fuer Sportler im Vergleich"
+    text_en: "The best supplement brands for athletes in comparison"
+  - id: cmp_13
+    text: "Vergleich von Superfoods-Pulvern: Welches ist am naehrstoffreichsten?"
+    text_en: "Comparison of superfood powders: Which is most nutrient-rich?"
+  - id: cmp_14
+    text: "Welches Omega-3-Supplement ist besser: Fischoel oder Algenoel?"
+    text_en: "Which omega-3 supplement is better: fish oil or algae oil?"
+  - id: cmp_15
+    text: "Top Nahrungsergaenzungsmittel-Marken: Apotheke vs Online-Shops"
+    text_en: "Top supplement brands: pharmacy vs online shops"
+  - id: cmp_16
+    text: "Vergleich der besten Ashwagandha-Produkte auf dem deutschen Markt"
+    text_en: "Comparison of the best ashwagandha products on the German market"
+  - id: cmp_17
+    text: "Welches Probiotika-Supplement hat die meisten Bakterienstaemme?"
+    text_en: "Which probiotic supplement has the most bacterial strains?"
+  - id: cmp_18
+    text: "Ranking: Deutsche Supplement-Marken nach Kundenzufriedenheit"
+    text_en: "Ranking: German supplement brands by customer satisfaction"
+  - id: cmp_19
+    text: "Vergleich: Gummibärchen-Vitamine vs klassische Kapseln und Tabletten"
+    text_en: "Comparison: gummy vitamins vs classic capsules and tablets"
+  - id: cmp_20
+    text: "Welches Kreatin-Supplement ist am reinsten?"
+    text_en: "Which creatine supplement is the purest?"
+  - id: cmp_21
+    text: "Vergleich der besten Supplement-Marken fuer Frauen"
+    text_en: "Comparison of the best supplement brands for women"
+  - id: cmp_22
+    text: "Ranking: Die nachhaltigsten Supplement-Marken in Deutschland"
+    text_en: "Ranking: The most sustainable supplement brands in Germany"
+  - id: cmp_23
+    text: "Welches Zink-Supplement schneidet in unabhaengigen Tests am besten ab?"
+    text_en: "Which zinc supplement performs best in independent tests?"
+  - id: cmp_24
+    text: "Vergleich: Protein-Shakes vs Protein-Riegel fuer den Muskelaufbau"
+    text_en: "Comparison: protein shakes vs protein bars for muscle building"
+  - id: cmp_25
+    text: "Ranking der deutschen Supplement-Marken nach Transparenz und Inhaltsstoffen"
+    text_en: "Ranking of German supplement brands by transparency and ingredients"
+  - id: cmp_26
+    text: "Vergleich der besten Schlaf-Supplements: Melatonin vs Baldrian vs Magnesium"
+    text_en: "Comparison of the best sleep supplements: melatonin vs valerian vs magnesium"
+  - id: cmp_27
+    text: "Welche Supplement-Marke bietet die beste wissenschaftliche Grundlage?"
+    text_en: "Which supplement brand offers the best scientific foundation?"
+  - id: cmp_28
+    text: "Ranking der beliebtesten Nahrungsergaenzungsmittel bei Amazon Deutschland"
+    text_en: "Ranking of the most popular supplements on Amazon Germany"
+  - id: cmp_29
+    text: "Vergleich: Supplements aus dem Ausland vs deutsche Produkte — was ist sicherer?"
+    text_en: "Comparison: supplements from abroad vs German products — which is safer?"
+  - id: cmp_30
+    text: "Welches Multivitamin-Supplement hat die beste Zusammensetzung?"
+    text_en: "Which multivitamin supplement has the best composition?"
+  - id: cmp_31
+    text: "Vergleich: Die besten B12-Supplements (Methylcobalamin vs Cyanocobalamin)"
+    text_en: "Comparison: The best B12 supplements (methylcobalamin vs cyanocobalamin)"
+  - id: cmp_32
+    text: "Ranking deutscher Supplement-Hersteller nach Produktionstandards"
+    text_en: "Ranking of German supplement manufacturers by production standards"
+  - id: cmp_33
+    text: "Welches Protein-Pulver ist fuer Laktoseintolerante am besten geeignet?"
+    text_en: "Which protein powder is best for lactose intolerant people?"
+  - id: cmp_34
+    text: "Vergleich: Supplement-Kapseln vs Pulver vs Fluessig — was wirkt besser?"
+    text_en: "Comparison: supplement capsules vs powder vs liquid — which works better?"
+  - id: cmp_35
+    text: "Die besten Supplement-Marken nach Bewertungen in deutschen Testportalen"
+    text_en: "The best supplement brands by ratings on German test portals"
+  - id: cmp_36
+    text: "Vergleich der guenstigsten vs teuersten Supplement-Marken in Deutschland"
+    text_en: "Comparison of the cheapest vs most expensive supplement brands in Germany"
+  - id: cmp_37
+    text: "Welches Eisen-Supplement ist am besten vertraeglich?"
+    text_en: "Which iron supplement is best tolerated?"
+  - id: cmp_38
+    text: "Ranking der innovativsten Supplement-Marken im DACH-Raum"
+    text_en: "Ranking of the most innovative supplement brands in the DACH region"
+  - id: cmp_39
+    text: "Vergleich: Vegane vs tierische Nahrungsergaenzungsmittel — Qualitaet und Preis"
+    text_en: "Comparison: Vegan vs animal supplements — quality and price"
+  - id: cmp_40
+    text: "Welche Supplement-Marke hat die breiteste Produktpalette in Deutschland?"
+    text_en: "Which supplement brand has the widest product range in Germany?"
+  - id: cmp_41
+    text: "Vergleich der besten Adaptogen-Supplements auf dem deutschen Markt"
+    text_en: "Comparison of the best adaptogen supplements on the German market"
+  - id: cmp_42
+    text: "Ranking: Welches Nahrungsergaenzungsmittel hat das beste Branding?"
+    text_en: "Ranking: Which supplement has the best branding?"
+  - id: cmp_43
+    text: "Vergleich: Welches Calcium-Supplement ist am besten fuer Frauen ueber 40?"
+    text_en: "Comparison: Which calcium supplement is best for women over 40?"
+  - id: cmp_44
+    text: "Welche Supplement-Marke ist am besten fuer Schwangere geeignet?"
+    text_en: "Which supplement brand is best for pregnant women?"
+  - id: cmp_45
+    text: "Vergleich: Die besten BCAA-Supplements im deutschen Markt"
+    text_en: "Comparison: The best BCAA supplements on the German market"
+  - id: cmp_46
+    text: "Ranking der Supplement-Marken mit den besten Kundenbewertungen bei Trustpilot"
+    text_en: "Ranking of supplement brands with the best Trustpilot reviews"
+  - id: cmp_47
+    text: "Vergleich: CBD-Oel vs CBD-Kapseln als Nahrungsergaenzung"
+    text_en: "Comparison: CBD oil vs CBD capsules as supplements"
+  - id: cmp_48
+    text: "Welches Supplement-Abo bietet das beste Preis-Leistungs-Verhaeltnis?"
+    text_en: "Which supplement subscription offers the best value?"
+  - id: cmp_49
+    text: "Ranking: Die besten Nahrungsergaenzungsmittel nach Oeko-Test Ergebnissen"
+    text_en: "Ranking: The best supplements by Oeko-Test results"
+  - id: cmp_50
+    text: "Vergleich der besten L-Glutamin-Supplements fuer Sportler"
+    text_en: "Comparison of the best L-glutamine supplements for athletes"

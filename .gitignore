@@ -1,0 +1,41 @@
+# Data (raw API responses contain API-specific content)
+data/
+*.jsonl
+*.parquet
+
+# Results (regenerable)
+results/
+!results/.gitkeep
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+*.egg
+.eggs/
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Config with API keys
+config.yaml
+
+# Logs
+*.log
