@@ -82,13 +82,20 @@ def _apply_theme(fig: go.Figure) -> go.Figure:
         plot_bgcolor=COLORS["card_bg"],
         font=dict(color=COLORS["text"], family="Montserrat, sans-serif", size=13),
         title_font=dict(size=18, color=COLORS["white"]),
-        legend=dict(bgcolor="rgba(0,0,0,0)", font=dict(color=COLORS["text"])),
+        legend=dict(bgcolor="rgba(0,0,0,0)", font=dict(color=COLORS["text"]), orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
         hoverlabel=dict(bgcolor=COLORS["navy"], font_size=13, font_color=COLORS["white"]),
-        margin=dict(l=60, r=40, t=80, b=60),
+        margin=dict(l=150, r=60, t=100, b=80),
     )
     fig.update_xaxes(gridcolor=COLORS["grid"], zerolinecolor=COLORS["grid"])
     fig.update_yaxes(gridcolor=COLORS["grid"], zerolinecolor=COLORS["grid"])
     return fig
+
+
+def _hex_to_rgba(hex_color: str, alpha: float = 0.6) -> str:
+    """Convert hex color to rgba string."""
+    h = hex_color.lstrip("#")
+    r, g, b = int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16)
+    return f"rgba({r},{g},{b},{alpha})"
 
 
 # ---------------------------------------------------------------------------
@@ -129,13 +136,14 @@ def chart_brand_ranking(df: pd.DataFrame) -> go.Figure:
         title="Brand Visibility Ranking (Mention Rate)",
         xaxis_title="Mention Rate (%)",
         xaxis=dict(range=[0, _pct(ranking["mention_rate"].max()) * 1.3], ticksuffix="%"),
-        height=max(500, len(ranking) * 28),
+        margin=dict(l=200, r=80, t=80, b=60),
+        height=max(500, len(ranking) * 30),
     )
     return _apply_theme(fig)
 
 
 def chart_model_comparison_bars(df: pd.DataFrame) -> go.Figure:
-    """Grouped bar chart: model comparison on key metrics."""
+    """Grouped bar chart: one trace per model so each appears in the legend."""
     model_stats = (
         df.groupby("model")
         .agg(mention_rate=("brand_found", "mean"), top3_rate=("top3", "mean"),
@@ -143,36 +151,30 @@ def chart_model_comparison_bars(df: pd.DataFrame) -> go.Figure:
         .reset_index()
     )
 
-    colors_mention = [MODEL_COLORS.get(m, COLORS["orange"]) for m in model_stats["model"]]
-    def _hex_to_rgba(hex_color, alpha=0.6):
-        h = hex_color.lstrip("#")
-        r, g, b = int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16)
-        return f"rgba({r},{g},{b},{alpha})"
-    colors_top3 = [_hex_to_rgba(c) for c in colors_mention]
-
     fig = go.Figure()
-    fig.add_trace(go.Bar(
-        x=model_stats["model"],
-        y=model_stats["mention_rate"].apply(_pct),
-        name="Mention Rate",
-        marker_color=colors_mention,
-        text=[f"{_pct(v):.1f}%" for v in model_stats["mention_rate"]],
-        textposition="outside",
-    ))
-    fig.add_trace(go.Bar(
-        x=model_stats["model"],
-        y=model_stats["top3_rate"].apply(_pct),
-        name="Top-3 Rate",
-        marker_color=colors_top3,
-        text=[f"{_pct(v):.1f}%" for v in model_stats["top3_rate"]],
-        textposition="outside",
-    ))
+    metrics = ["Mention Rate", "Top-3 Rate"]
+
+    for _, row in model_stats.iterrows():
+        model = row["model"]
+        color = MODEL_COLORS.get(model, COLORS["orange"])
+        mr = _pct(row["mention_rate"])
+        t3 = _pct(row["top3_rate"])
+
+        fig.add_trace(go.Bar(
+            x=metrics,
+            y=[mr, t3],
+            name=model.upper(),
+            marker_color=color,
+            text=[f"{mr:.1f}%", f"{t3:.1f}%"],
+            textposition="outside",
+            textfont=dict(size=12),
+        ))
 
     max_val = _pct(model_stats["mention_rate"].max())
     fig.update_layout(
         title="Model Comparison: Mention Rate & Top-3 Rate",
         yaxis_title="Rate (%)",
-        yaxis=dict(range=[0, max_val * 1.4], ticksuffix="%"),
+        yaxis=dict(range=[0, max_val * 1.5], ticksuffix="%"),
         barmode="group",
         height=450,
     )
@@ -180,33 +182,43 @@ def chart_model_comparison_bars(df: pd.DataFrame) -> go.Figure:
 
 
 def chart_model_brand_heatmap(df: pd.DataFrame) -> go.Figure:
-    """Heatmap: mention rate per brand per model."""
-    pivot = df.pivot_table(index="brand", columns="model", values="brand_found", aggfunc="mean")
-    # Only show brands that were mentioned at least once
-    pivot = pivot.loc[pivot.max(axis=1) > 0]
-    pivot = pivot.loc[pivot.mean(axis=1).sort_values(ascending=False).head(20).index]
+    """Grouped horizontal bar chart: mention rate per brand, one bar per model."""
+    brand_model = (
+        df.groupby(["brand", "model"])
+        .agg(mention_rate=("brand_found", "mean"))
+        .reset_index()
+    )
+    # Only brands with at least one mention
+    mentioned_brands = brand_model.groupby("brand")["mention_rate"].max()
+    mentioned_brands = mentioned_brands[mentioned_brands > 0].sort_values(ascending=True).tail(20).index.tolist()
 
-    if pivot.empty:
+    if not mentioned_brands:
         return go.Figure().update_layout(title="No brand mentions detected")
 
-    # Convert to percentages for display
-    pct_values = pivot.values * 100
+    brand_model = brand_model[brand_model["brand"].isin(mentioned_brands)]
 
-    fig = go.Figure(data=go.Heatmap(
-        z=pct_values,
-        x=[m.upper() for m in pivot.columns],
-        y=pivot.index.tolist(),
-        colorscale=[[0, COLORS["dark"]], [0.3, COLORS["navy"]], [0.6, COLORS["blue"]], [1, COLORS["orange"]]],
-        text=[[f"{v:.1f}%" for v in row] for row in pct_values],
-        texttemplate="%{text}",
-        textfont={"size": 12, "color": COLORS["white"]},
-        hovertemplate="<b>%{y}</b> on %{x}<br>Mention Rate: %{z:.1f}%<extra></extra>",
-        colorbar=dict(title="Rate %", ticksuffix="%"),
-    ))
+    fig = go.Figure()
+    for model in sorted(brand_model["model"].unique()):
+        model_data = brand_model[brand_model["model"] == model].set_index("brand").reindex(mentioned_brands)
+        fig.add_trace(go.Bar(
+            y=mentioned_brands,
+            x=model_data["mention_rate"].apply(_pct).values,
+            name=model.upper(),
+            orientation="h",
+            marker_color=MODEL_COLORS.get(model, COLORS["orange"]),
+            text=[f"{_pct(v):.0f}%" for v in model_data["mention_rate"].values],
+            textposition="outside",
+            textfont=dict(size=10),
+            hovertemplate="<b>%{y}</b> — " + model.upper() + "<br>Mention Rate: %{x:.1f}%<extra></extra>",
+        ))
+
+    max_val = _pct(brand_model["mention_rate"].max())
     fig.update_layout(
-        title=f"Brand Mention Rate by Model (Top {len(pivot)} Brands)",
-        height=max(400, len(pivot) * 35),
-        xaxis=dict(side="bottom"),
+        title=f"Brand Mention Rate by Model (Top {len(mentioned_brands)})",
+        xaxis_title="Mention Rate (%)",
+        xaxis=dict(range=[0, max_val * 1.3], ticksuffix="%"),
+        barmode="group",
+        height=max(500, len(mentioned_brands) * 40),
     )
     return _apply_theme(fig)
 
@@ -243,30 +255,42 @@ def chart_cluster_comparison(df: pd.DataFrame) -> go.Figure:
 
 
 def chart_cluster_brand_heatmap(df: pd.DataFrame) -> go.Figure:
-    """Heatmap: mention rate per brand per cluster."""
-    pivot = df.pivot_table(index="brand", columns="cluster", values="brand_found", aggfunc="mean")
-    pivot = pivot.loc[pivot.max(axis=1) > 0]
-    pivot = pivot.loc[pivot.mean(axis=1).sort_values(ascending=False).head(20).index]
+    """Grouped horizontal bar chart: mention rate per brand, one bar per cluster."""
+    brand_cluster = (
+        df.groupby(["brand", "cluster"])
+        .agg(mention_rate=("brand_found", "mean"))
+        .reset_index()
+    )
+    mentioned_brands = brand_cluster.groupby("brand")["mention_rate"].max()
+    mentioned_brands = mentioned_brands[mentioned_brands > 0].sort_values(ascending=True).tail(20).index.tolist()
 
-    if pivot.empty:
+    if not mentioned_brands:
         return go.Figure().update_layout(title="No brand mentions detected")
 
-    pct_values = pivot.values * 100
+    brand_cluster = brand_cluster[brand_cluster["brand"].isin(mentioned_brands)]
 
-    fig = go.Figure(data=go.Heatmap(
-        z=pct_values,
-        x=[c.title() for c in pivot.columns],
-        y=pivot.index.tolist(),
-        colorscale=[[0, COLORS["dark"]], [0.3, COLORS["navy"]], [0.6, COLORS["blue_light"]], [1, COLORS["teal"]]],
-        text=[[f"{v:.1f}%" for v in row] for row in pct_values],
-        texttemplate="%{text}",
-        textfont={"size": 12, "color": COLORS["white"]},
-        hovertemplate="<b>%{y}</b> in %{x}<br>Mention Rate: %{z:.1f}%<extra></extra>",
-        colorbar=dict(title="Rate %", ticksuffix="%"),
-    ))
+    fig = go.Figure()
+    for cluster in sorted(brand_cluster["cluster"].unique()):
+        cl_data = brand_cluster[brand_cluster["cluster"] == cluster].set_index("brand").reindex(mentioned_brands)
+        fig.add_trace(go.Bar(
+            y=mentioned_brands,
+            x=cl_data["mention_rate"].apply(_pct).values,
+            name=cluster.title(),
+            orientation="h",
+            marker_color=CLUSTER_COLORS.get(cluster, COLORS["orange"]),
+            text=[f"{_pct(v):.0f}%" for v in cl_data["mention_rate"].values],
+            textposition="outside",
+            textfont=dict(size=10),
+            hovertemplate="<b>%{y}</b> — " + cluster.title() + "<br>Mention Rate: %{x:.1f}%<extra></extra>",
+        ))
+
+    max_val = _pct(brand_cluster["mention_rate"].max())
     fig.update_layout(
-        title=f"Brand Visibility by Prompt Type (Top {len(pivot)} Brands)",
-        height=max(400, len(pivot) * 35),
+        title=f"Brand Visibility by Prompt Type (Top {len(mentioned_brands)})",
+        xaxis_title="Mention Rate (%)",
+        xaxis=dict(range=[0, max_val * 1.3], ticksuffix="%"),
+        barmode="group",
+        height=max(500, len(mentioned_brands) * 40),
     )
     return _apply_theme(fig)
 
@@ -331,28 +355,41 @@ def chart_brand_volatility(df: pd.DataFrame) -> go.Figure:
 
 
 def chart_visibility_distribution(df: pd.DataFrame) -> go.Figure:
-    """Box plot: visibility score distribution per model (only mentioned brands)."""
-    # Only include rows where brand was actually mentioned — otherwise all zeros
-    mentioned = df[df["brand_found"] == 1]
+    """Violin + strip plot: visibility score distribution per model (only mentioned brands)."""
+    mentioned = df[df["brand_found"] == 1].copy()
 
     if mentioned.empty:
         return go.Figure().update_layout(title="No visibility scores (no mentions detected)")
 
     fig = go.Figure()
-    for model in sorted(mentioned["model"].unique()):
+    models = sorted(mentioned["model"].unique())
+
+    for model in models:
         model_data = mentioned[mentioned["model"] == model]
-        fig.add_trace(go.Box(
+        color = MODEL_COLORS.get(model, COLORS["orange"])
+
+        # Violin for distribution shape
+        fig.add_trace(go.Violin(
             y=model_data["visibility_score"],
             name=model.upper(),
-            marker_color=MODEL_COLORS.get(model, COLORS["orange"]),
-            boxmean=True,
-            boxpoints="outliers",
+            marker_color=color,
+            line_color=color,
+            fillcolor=_hex_to_rgba(color, 0.3),
+            box_visible=True,
+            meanline_visible=True,
+            points="all",
+            pointpos=0,
+            jitter=0.3,
+            scalemode="count",
+            hovertemplate=model.upper() + "<br>Score: %{y}<extra></extra>",
         ))
+
     fig.update_layout(
         title="Visibility Score Distribution by Model (When Mentioned)",
         yaxis_title="Visibility Score (0-10)",
-        yaxis=dict(range=[0, 11]),
-        height=420,
+        yaxis=dict(range=[-0.5, 11], dtick=2),
+        showlegend=True,
+        height=480,
     )
     return _apply_theme(fig)
 
