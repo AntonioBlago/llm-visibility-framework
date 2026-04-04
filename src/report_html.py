@@ -144,7 +144,11 @@ def chart_model_comparison_bars(df: pd.DataFrame) -> go.Figure:
     )
 
     colors_mention = [MODEL_COLORS.get(m, COLORS["orange"]) for m in model_stats["model"]]
-    colors_top3 = [c + "99" for c in colors_mention]  # lighter for top3
+    def _hex_to_rgba(hex_color, alpha=0.6):
+        h = hex_color.lstrip("#")
+        r, g, b = int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16)
+        return f"rgba({r},{g},{b},{alpha})"
+    colors_top3 = [_hex_to_rgba(c) for c in colors_mention]
 
     fig = go.Figure()
     fig.add_trace(go.Bar(
