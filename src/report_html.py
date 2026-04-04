@@ -395,6 +395,108 @@ def chart_visibility_distribution(df: pd.DataFrame) -> go.Figure:
 
 
 # ---------------------------------------------------------------------------
+# HTML table builders
+# ---------------------------------------------------------------------------
+
+def _build_ranking_table(df: pd.DataFrame, title: str, model_filter: str | None = None) -> str:
+    """Build an HTML ranking table for brands."""
+    sub = df if model_filter is None else df[df["model"] == model_filter]
+    ranking = (
+        sub.groupby("brand")
+        .agg(mention_rate=("brand_found", "mean"), top3_rate=("top3", "mean"),
+             avg_rank=("rank_position", lambda x: x[x < 999].mean() if (x < 999).any() else None),
+             avg_vis=("visibility_score", "mean"),
+             times=("brand_found", "sum"))
+        .reset_index()
+        .sort_values("mention_rate", ascending=False)
+    )
+    ranking = ranking[ranking["mention_rate"] > 0].head(20)
+
+    if ranking.empty:
+        return f'<p class="text-muted">No brands detected.</p>'
+
+    rows = ""
+    for i, (_, r) in enumerate(ranking.iterrows(), 1):
+        avg_r = f"{r['avg_rank']:.1f}" if pd.notna(r['avg_rank']) else "—"
+        rows += f"""<tr>
+            <td>#{i}</td><td>{r['brand']}</td>
+            <td>{r['mention_rate']:.1%}</td><td>{r['top3_rate']:.1%}</td>
+            <td>{avg_r}</td><td>{r['avg_vis']:.1f}</td><td>{int(r['times'])}</td>
+        </tr>"""
+
+    color = MODEL_COLORS.get(model_filter, COLORS["orange"]) if model_filter else COLORS["orange"]
+
+    return f"""
+    <div class="section"><h2 style="border-left-color:{color}">{title}</h2></div>
+    <div class="table-wrapper">
+    <table class="data-table">
+        <thead><tr>
+            <th>#</th><th>Brand</th><th>Mention Rate</th><th>Top-3 Rate</th>
+            <th>Avg Rank</th><th>Avg Visibility</th><th>Mentions</th>
+        </tr></thead>
+        <tbody>{rows}</tbody>
+    </table></div>"""
+
+
+def _build_volatility_table(df: pd.DataFrame) -> str:
+    """Build an HTML table showing per-model mention rates + spread."""
+    models = sorted(df["model"].unique())
+    model_rates = df.pivot_table(index="brand", columns="model", values="brand_found", aggfunc="mean")
+
+    volatility = pd.DataFrame({
+        "brand": model_rates.index,
+        "mean": model_rates.mean(axis=1),
+        "min": model_rates.min(axis=1),
+        "max": model_rates.max(axis=1),
+        "spread": model_rates.max(axis=1) - model_rates.min(axis=1),
+    })
+    for m in models:
+        volatility[m] = model_rates[m].values
+
+    volatility = volatility[volatility["max"] > 0].sort_values("spread", ascending=False).head(25)
+
+    if volatility.empty:
+        return '<p class="text-muted">No data.</p>'
+
+    # Header
+    model_headers = "".join(f"<th>{m.upper()}</th>" for m in models)
+    header = f"<tr><th>#</th><th>Brand</th>{model_headers}<th>Min</th><th>Max</th><th>Spread</th></tr>"
+
+    # Rows
+    rows = ""
+    for i, (_, r) in enumerate(volatility.iterrows(), 1):
+        model_cells = ""
+        for m in models:
+            val = r[m]
+            # Color intensity based on value
+            if val >= 0.15:
+                bg = _hex_to_rgba(COLORS["orange"], 0.3)
+            elif val >= 0.05:
+                bg = _hex_to_rgba(COLORS["blue"], 0.2)
+            elif val > 0:
+                bg = _hex_to_rgba(COLORS["teal"], 0.15)
+            else:
+                bg = "transparent"
+            model_cells += f'<td style="background:{bg}">{val:.1%}</td>'
+
+        rows += f"""<tr>
+            <td>#{i}</td><td>{r['brand']}</td>
+            {model_cells}
+            <td>{r['min']:.1%}</td><td>{r['max']:.1%}</td>
+            <td style="font-weight:600;color:{COLORS['orange']}">{r['spread']:.1%}</td>
+        </tr>"""
+
+    return f"""
+    <div class="section"><h2>Brand Visibility per Model + Spread</h2>
+    <p>Mention rate per model. High spread = model-dependent visibility (GEO optimization target).</p></div>
+    <div class="table-wrapper">
+    <table class="data-table">
+        <thead>{header}</thead>
+        <tbody>{rows}</tbody>
+    </table></div>"""
+
+
+# ---------------------------------------------------------------------------
 # HTML page builder
 # ---------------------------------------------------------------------------
 
@@ -429,6 +531,14 @@ def generate_html_report(
     for chart_id, fig in charts:
         chart_html = fig.to_html(full_html=False, include_plotlyjs=False, div_id=chart_id)
         chart_divs += f'<div class="chart-container">{chart_html}</div>\n'
+
+    # Build HTML tables
+    table_overall = _build_ranking_table(df, "Top Brands — All Models Combined")
+    table_per_model = ""
+    for model in models:
+        color = MODEL_COLORS.get(model, COLORS["orange"])
+        table_per_model += _build_ranking_table(df, f"Top Brands — {model.upper()}", model_filter=model)
+    table_volatility = _build_volatility_table(df)
 
     # KPI cards
     model_stats = df.groupby("model").agg(
@@ -589,6 +699,40 @@ def generate_html_report(
             margin-top: 0.25rem;
         }}
 
+        /* Data Tables */
+        .table-wrapper {{
+            overflow-x: auto;
+            margin-bottom: 2rem;
+        }}
+        .data-table {{
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }}
+        .data-table thead th {{
+            background: var(--orange);
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            padding: 0.75rem 1rem;
+            text-align: left;
+            white-space: nowrap;
+        }}
+        .data-table tbody td {{
+            padding: 0.6rem 1rem;
+            border-bottom: 1px solid var(--grid);
+            white-space: nowrap;
+        }}
+        .data-table tbody tr:hover {{
+            background: rgba(249, 115, 22, 0.06);
+        }}
+        .data-table tbody tr:nth-child(odd) {{
+            background: rgba(30, 41, 59, 0.4);
+        }}
+
         /* Footer */
         .footer {{
             text-align: center;
@@ -650,10 +794,17 @@ def generate_html_report(
 
         <!-- Charts -->
         <div class="section">
-            <h2>Model Comparison</h2>
-            <p>How do Claude, GPT-4o, and Gemini differ in brand recommendation behavior?</p>
+            <h2>Charts</h2>
+            <p>Interactive visualizations of brand visibility across models and prompt types.</p>
         </div>
         {chart_divs}
+
+        <!-- Ranking Tables -->
+        {table_overall}
+        {table_per_model}
+
+        <!-- Volatility Table -->
+        {table_volatility}
 
         <!-- Footer -->
         <div class="footer">
