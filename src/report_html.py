@@ -262,32 +262,53 @@ def chart_model_brand_heatmap(df: pd.DataFrame) -> go.Figure:
 
 
 def chart_cluster_comparison(df: pd.DataFrame) -> go.Figure:
-    """Bar chart: mention rate by prompt cluster."""
-    cluster_stats = (
-        df.groupby("cluster")
-        .agg(mention_rate=("brand_found", "mean"), top3_rate=("top3", "mean"),
-             brands_found=("brand", lambda x: x[df.loc[x.index, "brand_found"] == 1].nunique()))
+    """Vertical grouped bar chart: mention rate per cluster, one bar per model."""
+    models = sorted(df["model"].unique())
+
+    cluster_model = (
+        df.groupby(["cluster", "model"])
+        .agg(
+            mention_rate=("brand_found", "mean"),
+            brands_found=("brand", lambda x: x[df.loc[x.index, "brand_found"] == 1].nunique()),
+        )
         .reset_index()
-        .sort_values("mention_rate", ascending=False)
     )
+    clusters = sorted(cluster_model["cluster"].unique())
 
     fig = go.Figure()
-    fig.add_trace(go.Bar(
-        x=cluster_stats["cluster"],
-        y=cluster_stats["mention_rate"].apply(_pct),
-        marker_color=[CLUSTER_COLORS.get(c, COLORS["orange"]) for c in cluster_stats["cluster"]],
-        text=[f"{_pct(v):.2f}% ({int(b)} brands)" for v, b in
-              zip(cluster_stats["mention_rate"], cluster_stats["brands_found"])],
-        textposition="outside",
-        hovertemplate="<b>%{x}</b><br>Mention Rate: %{y:.2f}%<extra></extra>",
-    ))
+    for model in models:
+        m_data = cluster_model[cluster_model["model"] == model].set_index("cluster").reindex(clusters)
+        color = MODEL_COLORS.get(model, COLORS["orange"])
 
-    max_val = _pct(cluster_stats["mention_rate"].max())
+        hover_texts = []
+        for cluster in clusters:
+            r = m_data.loc[cluster, "mention_rate"] if cluster in m_data.index else 0
+            b = int(m_data.loc[cluster, "brands_found"]) if cluster in m_data.index else 0
+            hover_texts.append(
+                f"<b>{cluster.title()}</b> — {model.upper()}<br>"
+                f"Mention Rate: {r:.1%}<br>"
+                f"Unique Brands: {b}"
+            )
+
+        fig.add_trace(go.Bar(
+            x=[c.title() for c in clusters],
+            y=m_data["mention_rate"].apply(_pct).values,
+            name=model.upper(),
+            marker_color=color,
+            text=[f"{_pct(v):.1f}%" for v in m_data["mention_rate"].values],
+            textposition="outside",
+            textfont=dict(size=11),
+            hovertext=hover_texts,
+            hoverinfo="text",
+        ))
+
+    max_val = _pct(cluster_model["mention_rate"].max())
     fig.update_layout(
-        title="Brand Visibility by Prompt Cluster",
+        title="Brand Visibility by Prompt Cluster & Model",
         yaxis_title="Mention Rate (%)",
-        yaxis=dict(range=[0, max_val * 1.5], ticksuffix="%"),
-        height=420,
+        yaxis=dict(range=[0, max_val * 1.4], ticksuffix="%"),
+        barmode="group",
+        height=480,
     )
     return _apply_theme(fig)
 
