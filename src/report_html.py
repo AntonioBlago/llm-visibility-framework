@@ -182,43 +182,86 @@ def chart_model_comparison_bars(df: pd.DataFrame) -> go.Figure:
 
 
 def chart_model_brand_heatmap(df: pd.DataFrame) -> go.Figure:
-    """Grouped horizontal bar chart: mention rate per brand, one bar per model."""
+    """Horizontal bars per model with rich tooltip (avg, median, min, max)."""
+    models = sorted(df["model"].unique())
+
+    # Per brand x model stats
     brand_model = (
         df.groupby(["brand", "model"])
-        .agg(mention_rate=("brand_found", "mean"))
+        .agg(
+            mention_rate=("brand_found", "mean"),
+            top3_rate=("top3", "mean"),
+            median_rank=("rank_position", lambda x: x[x < 999].median() if (x < 999).any() else None),
+        )
         .reset_index()
     )
-    # Only brands with at least one mention
-    mentioned_brands = brand_model.groupby("brand")["mention_rate"].max()
-    mentioned_brands = mentioned_brands[mentioned_brands > 0].sort_values(ascending=True).tail(20).index.tolist()
 
-    if not mentioned_brands:
+    # Overall brand stats for sorting and tooltip
+    brand_overall = (
+        df.groupby("brand")
+        .agg(
+            avg_rate=("brand_found", "mean"),
+            min_rate=("brand_found", lambda x: x.groupby(df.loc[x.index, "model"]).mean().min()),
+            max_rate=("brand_found", lambda x: x.groupby(df.loc[x.index, "model"]).mean().max()),
+        )
+        .reset_index()
+    )
+    # Recalculate min/max from pivot (cleaner)
+    pivot = df.pivot_table(index="brand", columns="model", values="brand_found", aggfunc="mean")
+    brand_overall["min_rate"] = pivot.min(axis=1).values
+    brand_overall["max_rate"] = pivot.max(axis=1).values
+    brand_overall["avg_rate"] = pivot.mean(axis=1).values
+
+    # Filter + sort
+    brand_overall = brand_overall[brand_overall["max_rate"] > 0]
+    brand_overall = brand_overall.sort_values("avg_rate", ascending=True).tail(20)
+    brand_list = brand_overall["brand"].tolist()
+
+    if not brand_list:
         return go.Figure().update_layout(title="No brand mentions detected")
 
-    brand_model = brand_model[brand_model["brand"].isin(mentioned_brands)]
-
     fig = go.Figure()
-    for model in sorted(brand_model["model"].unique()):
-        model_data = brand_model[brand_model["model"] == model].set_index("brand").reindex(mentioned_brands)
+    for model in models:
+        m_data = brand_model[brand_model["model"] == model].set_index("brand").reindex(brand_list)
+        color = MODEL_COLORS.get(model, COLORS["orange"])
+
+        # Build custom hover text
+        hover_texts = []
+        for brand in brand_list:
+            row = brand_overall[brand_overall["brand"] == brand].iloc[0]
+            m_rate = m_data.loc[brand, "mention_rate"] if brand in m_data.index and pd.notna(m_data.loc[brand, "mention_rate"]) else 0
+            m_rank = m_data.loc[brand, "median_rank"] if brand in m_data.index and pd.notna(m_data.loc[brand, "median_rank"]) else None
+            rank_str = f"Median Rank: {m_rank:.0f}" if m_rank else "Median Rank: —"
+            hover_texts.append(
+                f"<b>{brand}</b> — {model.upper()}<br>"
+                f"This Model: {m_rate:.1%}<br>"
+                f"{rank_str}<br>"
+                f"──────────<br>"
+                f"Avg (all models): {row['avg_rate']:.1%}<br>"
+                f"Min: {row['min_rate']:.1%} | Max: {row['max_rate']:.1%}"
+            )
+
         fig.add_trace(go.Bar(
-            y=mentioned_brands,
-            x=model_data["mention_rate"].apply(_pct).values,
+            y=brand_list,
+            x=m_data["mention_rate"].apply(_pct).fillna(0).values,
             name=model.upper(),
             orientation="h",
-            marker_color=MODEL_COLORS.get(model, COLORS["orange"]),
-            text=[f"{_pct(v):.0f}%" for v in model_data["mention_rate"].values],
-            textposition="outside",
+            marker_color=color,
+            hovertext=hover_texts,
+            hoverinfo="text",
             textfont=dict(size=10),
-            hovertemplate="<b>%{y}</b> — " + model.upper() + "<br>Mention Rate: %{x:.1f}%<extra></extra>",
         ))
 
-    max_val = _pct(brand_model["mention_rate"].max())
+    max_val = _pct(brand_overall["max_rate"].max())
     fig.update_layout(
-        title=f"Brand Mention Rate by Model (Top {len(mentioned_brands)})",
+        title=f"Brand Mention Rate by Model (Top {len(brand_list)})",
         xaxis_title="Mention Rate (%)",
         xaxis=dict(range=[0, max_val * 1.3], ticksuffix="%"),
         barmode="group",
-        height=max(500, len(mentioned_brands) * 40),
+        bargap=0.15,
+        bargroupgap=0.05,
+        margin=dict(l=200, r=80, t=100, b=80),
+        height=max(600, len(brand_list) * 55),
     )
     return _apply_theme(fig)
 
@@ -255,42 +298,58 @@ def chart_cluster_comparison(df: pd.DataFrame) -> go.Figure:
 
 
 def chart_cluster_brand_heatmap(df: pd.DataFrame) -> go.Figure:
-    """Grouped horizontal bar chart: mention rate per brand, one bar per cluster."""
+    """Horizontal bars per cluster with rich tooltip."""
+    clusters = sorted(df["cluster"].unique())
+
     brand_cluster = (
         df.groupby(["brand", "cluster"])
         .agg(mention_rate=("brand_found", "mean"))
         .reset_index()
     )
-    mentioned_brands = brand_cluster.groupby("brand")["mention_rate"].max()
-    mentioned_brands = mentioned_brands[mentioned_brands > 0].sort_values(ascending=True).tail(20).index.tolist()
 
-    if not mentioned_brands:
+    # Overall brand avg for sorting
+    pivot = df.pivot_table(index="brand", columns="cluster", values="brand_found", aggfunc="mean")
+    brand_avg = pivot.mean(axis=1)
+    brand_list = brand_avg[brand_avg > 0].sort_values(ascending=True).tail(20).index.tolist()
+
+    if not brand_list:
         return go.Figure().update_layout(title="No brand mentions detected")
 
-    brand_cluster = brand_cluster[brand_cluster["brand"].isin(mentioned_brands)]
-
     fig = go.Figure()
-    for cluster in sorted(brand_cluster["cluster"].unique()):
-        cl_data = brand_cluster[brand_cluster["cluster"] == cluster].set_index("brand").reindex(mentioned_brands)
+    for cluster in clusters:
+        cl_data = brand_cluster[brand_cluster["cluster"] == cluster].set_index("brand").reindex(brand_list)
+        color = CLUSTER_COLORS.get(cluster, COLORS["orange"])
+
+        hover_texts = []
+        for brand in brand_list:
+            cl_rate = cl_data.loc[brand, "mention_rate"] if brand in cl_data.index and pd.notna(cl_data.loc[brand, "mention_rate"]) else 0
+            avg = brand_avg.get(brand, 0)
+            hover_texts.append(
+                f"<b>{brand}</b> — {cluster.title()}<br>"
+                f"This Cluster: {cl_rate:.1%}<br>"
+                f"Avg (all clusters): {avg:.1%}"
+            )
+
         fig.add_trace(go.Bar(
-            y=mentioned_brands,
-            x=cl_data["mention_rate"].apply(_pct).values,
+            y=brand_list,
+            x=cl_data["mention_rate"].apply(_pct).fillna(0).values,
             name=cluster.title(),
             orientation="h",
-            marker_color=CLUSTER_COLORS.get(cluster, COLORS["orange"]),
-            text=[f"{_pct(v):.0f}%" for v in cl_data["mention_rate"].values],
-            textposition="outside",
-            textfont=dict(size=10),
-            hovertemplate="<b>%{y}</b> — " + cluster.title() + "<br>Mention Rate: %{x:.1f}%<extra></extra>",
+            marker_color=color,
+            hovertext=hover_texts,
+            hoverinfo="text",
         ))
 
     max_val = _pct(brand_cluster["mention_rate"].max())
     fig.update_layout(
-        title=f"Brand Visibility by Prompt Type (Top {len(mentioned_brands)})",
+        title=f"Brand Visibility by Prompt Type (Top {len(brand_list)})",
         xaxis_title="Mention Rate (%)",
         xaxis=dict(range=[0, max_val * 1.3], ticksuffix="%"),
         barmode="group",
-        height=max(500, len(mentioned_brands) * 40),
+        bargap=0.15,
+        bargroupgap=0.05,
+        margin=dict(l=200, r=80, t=100, b=80),
+        height=max(600, len(brand_list) * 55),
     )
     return _apply_theme(fig)
 
