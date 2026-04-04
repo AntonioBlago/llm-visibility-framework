@@ -4,7 +4,7 @@
 
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Blog Post](https://img.shields.io/badge/Blog-Read%20the%20Study-f97316)](https://www.antonioblago.com/blog/wie-llms-marken-ranken-eine-statistische-studie-zur-ki-sichtbarkeit-mit-claude-gpt-4o-und-gemini)
+[![Blog Post](https://img.shields.io/badge/Blog-Read%20the%20Study-f97316)](https://www.antonioblago.com/blog/how-llms-rank-brands-a-statistical-study-of-ai-visibility-across-claude-gpt-4o-and-gemini)
 
 ## Overview
 
@@ -183,8 +183,8 @@ The brands tracked in this study are sourced from the Visibly AI Brand Radar (Lo
 
 Read the full study write-up with key findings and GEO implications:
 
-- **DE:** [Wie LLMs Marken ranken: Eine statistische Studie zur KI-Sichtbarkeit](https://www.antonioblago.com/blog/wie-llms-marken-ranken-eine-statistische-studie-zur-ki-sichtbarkeit-mit-claude-gpt-4o-und-gemini)
-- **EN:** Coming soon (sync from DE version)
+- **EN:** [How LLMs Rank Brands: A Statistical Study of AI Visibility Across Claude, GPT-4o, and Gemini](https://www.antonioblago.com/blog/how-llms-rank-brands-a-statistical-study-of-ai-visibility-across-claude-gpt-4o-and-gemini)
+- **DE:** [Wie LLMs Marken ranken: Eine statistische Studie zur KI-Sichtbarkeit](https://antonioblago.de/sonstiges/wie-llms-marken-ranken-eine-statistische-studie-zur-ki-sichtbarkeit-mit-claude-gpt-4o-und-gemini/)
 
 ## Author
 
