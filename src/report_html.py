@@ -371,7 +371,7 @@ def chart_cluster_brand_heatmap(df: pd.DataFrame) -> go.Figure:
 
 
 def chart_brand_volatility(df: pd.DataFrame) -> go.Figure:
-    """Dot plot: each model shown as a distinct colored shape per brand."""
+    """Lollipop chart: 3 horizontal lines per brand (one per model) from 0 to rate."""
     models = sorted(df["model"].unique())
     model_rates = df.pivot_table(index="brand", columns="model", values="brand_found", aggfunc="mean").fillna(0)
 
@@ -383,35 +383,31 @@ def chart_brand_volatility(df: pd.DataFrame) -> go.Figure:
     if not brand_list:
         return go.Figure().update_layout(title="No volatility data")
 
-    # Use numeric y positions so we can offset dots vertically
-    y_positions = {brand: i for i, brand in enumerate(brand_list)}
-    model_offsets = {models[0]: -0.2, models[1]: 0.0, models[2]: 0.2} if len(models) == 3 else {m: 0 for m in models}
-    model_symbols = {"claude": "circle", "gpt": "diamond", "gemini": "square"}
+    n_models = len(models)
+    # Vertical spacing: each brand gets a slot, models offset within that slot
+    offsets = {models[i]: (i - (n_models - 1) / 2) * 0.28 for i in range(n_models)}
 
     fig = go.Figure()
 
-    # Range lines
-    for brand in brand_list:
-        vals = model_rates.loc[brand]
-        y = y_positions[brand]
-        fig.add_trace(go.Scatter(
-            x=[_pct(vals.min()), _pct(vals.max())],
-            y=[y, y],
-            mode="lines",
-            line=dict(color=COLORS["text_muted"], width=2),
-            showlegend=False,
-            hoverinfo="skip",
-        ))
-
-    # One trace per model with offset + distinct symbol
     for model in models:
         color = MODEL_COLORS.get(model, COLORS["orange"])
-        symbol = model_symbols.get(model, "circle")
-        offset = model_offsets.get(model, 0)
         rates = model_rates.reindex(brand_list)[model]
+        offset = offsets[model]
 
-        y_vals = [y_positions[b] + offset for b in brand_list]
+        y_vals = [i + offset for i in range(len(brand_list))]
+        x_vals = [_pct(r) for r in rates.values]
 
+        # Lines from 0 to rate
+        for j, (x, y) in enumerate(zip(x_vals, y_vals)):
+            fig.add_trace(go.Scatter(
+                x=[0, x], y=[y, y],
+                mode="lines",
+                line=dict(color=color, width=3),
+                showlegend=False,
+                hoverinfo="skip",
+            ))
+
+        # Dots at the end
         hover_texts = []
         for brand in brand_list:
             r = rates.get(brand, 0)
@@ -425,17 +421,12 @@ def chart_brand_volatility(df: pd.DataFrame) -> go.Figure:
             )
 
         fig.add_trace(go.Scatter(
-            x=rates.apply(_pct).values,
+            x=x_vals,
             y=y_vals,
             mode="markers+text",
-            marker=dict(
-                color=color,
-                size=14,
-                symbol=symbol,
-                line=dict(width=2, color=COLORS["white"]),
-            ),
-            text=[f"{_pct(v):.0f}%" for v in rates.values],
-            textposition="top center",
+            marker=dict(color=color, size=10, line=dict(width=1, color=COLORS["white"])),
+            text=[f"{v:.0f}%" for v in x_vals],
+            textposition="middle right",
             textfont=dict(size=9, color=color),
             name=model.upper(),
             hovertext=hover_texts,
@@ -446,13 +437,13 @@ def chart_brand_volatility(df: pd.DataFrame) -> go.Figure:
     fig.update_layout(
         title="Brand Volatility: Mention Rate per Model",
         xaxis_title="Mention Rate (%)",
-        xaxis=dict(range=[0, max_val * 1.2], ticksuffix="%"),
+        xaxis=dict(range=[0, max_val * 1.25], ticksuffix="%"),
         yaxis=dict(
             tickvals=list(range(len(brand_list))),
             ticktext=brand_list,
         ),
-        margin=dict(l=200, r=80, t=100, b=80),
-        height=max(600, len(brand_list) * 42),
+        margin=dict(l=200, r=100, t=100, b=80),
+        height=max(600, len(brand_list) * 50),
     )
     return _apply_theme(fig)
 
