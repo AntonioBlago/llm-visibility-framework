@@ -293,10 +293,12 @@ def main():
     parser.add_argument("--workers", type=int, default=6, help="Max concurrent API calls")
     parser.add_argument("--output", type=str, default=None, help="Output file path")
 
+    parser.add_argument("--no-report", action="store_true", help="Skip auto-generating reports after collection")
+
     args = parser.parse_args()
     output_path = Path(args.output) if args.output else None
 
-    collect_data(
+    raw_df = collect_data(
         num_runs=args.runs,
         models=args.models,
         clusters=args.clusters,
@@ -304,6 +306,49 @@ def main():
         delay_between_calls=args.delay,
         max_workers=args.workers,
     )
+
+    if not args.no_report and not raw_df.empty:
+        _run_full_pipeline(raw_df)
+
+
+def _run_full_pipeline(raw_df: pd.DataFrame) -> None:
+    """Auto-run parse -> analyze -> report after collection."""
+    from src.config import StudyConfig
+    cfg = StudyConfig.load()
+
+    logger.info("=" * 60)
+    logger.info("PIPELINE: Auto-generating reports...")
+    logger.info("=" * 60)
+
+    # Step 1: Parse responses -> brand metrics
+    logger.info("[1/4] Parsing responses for brand mentions...")
+    from src.parser import parse_all_responses
+    metrics_df = parse_all_responses(raw_df)
+    metrics_path = cfg.data_dir / "parsed_metrics.csv"
+    metrics_df.to_csv(metrics_path, index=False, encoding="utf-8")
+    logger.info(f"  Saved {len(metrics_df)} metrics to {metrics_path}")
+
+    # Step 2: Statistical analysis
+    logger.info("[2/4] Running statistical analysis...")
+    from src.analyzer import run_full_analysis
+    run_full_analysis(str(metrics_path), str(cfg.results_dir))
+
+    # Step 3: Markdown report
+    logger.info("[3/4] Generating summary report...")
+    from src.report import generate_report
+    generate_report(metrics_df, cfg.results_dir)
+
+    # Step 4: HTML report
+    logger.info("[4/4] Generating interactive HTML report...")
+    from src.report_html import generate_html_report
+    html_path = generate_html_report(metrics_df, cfg.results_dir / "report.html")
+
+    logger.info("=" * 60)
+    logger.info("PIPELINE COMPLETE")
+    logger.info(f"  Markdown:  {cfg.results_dir / 'REPORT.md'}")
+    logger.info(f"  HTML:      {html_path}")
+    logger.info(f"  CSV data:  {cfg.results_dir}/")
+    logger.info("=" * 60)
 
 
 if __name__ == "__main__":
