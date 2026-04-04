@@ -458,41 +458,47 @@ def chart_brand_volatility(df: pd.DataFrame) -> go.Figure:
 
 
 def chart_visibility_distribution(df: pd.DataFrame) -> go.Figure:
-    """Violin + strip plot: visibility score distribution per model (only mentioned brands)."""
+    """Grouped bar chart: avg visibility score per brand, split by model."""
     mentioned = df[df["brand_found"] == 1].copy()
 
     if mentioned.empty:
         return go.Figure().update_layout(title="No visibility scores (no mentions detected)")
 
-    fig = go.Figure()
     models = sorted(mentioned["model"].unique())
 
-    for model in models:
-        model_data = mentioned[mentioned["model"] == model]
-        color = MODEL_COLORS.get(model, COLORS["orange"])
+    # Avg visibility per brand x model
+    brand_vis = mentioned.groupby(["brand", "model"])["visibility_score"].mean().reset_index()
+    # Top 20 brands by overall avg
+    top_brands = (
+        mentioned.groupby("brand")["visibility_score"].mean()
+        .sort_values(ascending=False).head(20).index.tolist()
+    )
+    brand_vis = brand_vis[brand_vis["brand"].isin(top_brands)]
 
-        # Violin for distribution shape
-        fig.add_trace(go.Violin(
-            y=model_data["visibility_score"],
+    fig = go.Figure()
+    for model in models:
+        color = MODEL_COLORS.get(model, COLORS["orange"])
+        m_data = brand_vis[brand_vis["model"] == model].set_index("brand").reindex(top_brands)
+
+        fig.add_trace(go.Bar(
+            x=top_brands,
+            y=m_data["visibility_score"].fillna(0).values,
             name=model.upper(),
             marker_color=color,
-            line_color=color,
-            fillcolor=_hex_to_rgba(color, 0.3),
-            box_visible=True,
-            meanline_visible=True,
-            points="all",
-            pointpos=0,
-            jitter=0.3,
-            scalemode="count",
-            hovertemplate=model.upper() + "<br>Score: %{y}<extra></extra>",
+            text=[f"{v:.1f}" if v > 0 else "" for v in m_data["visibility_score"].fillna(0).values],
+            textposition="outside",
+            textfont=dict(size=9),
+            hovertemplate="<b>%{x}</b> — " + model.upper() + "<br>Avg Visibility: %{y:.1f}<extra></extra>",
         ))
 
     fig.update_layout(
-        title="Visibility Score Distribution by Model (When Mentioned)",
+        title="Avg Visibility Score per Brand & Model (When Mentioned)",
         yaxis_title="Visibility Score (0-10)",
-        yaxis=dict(range=[-0.5, 11], dtick=2),
-        showlegend=True,
-        height=480,
+        yaxis=dict(range=[0, 11], dtick=2),
+        xaxis_tickangle=-45,
+        barmode="group",
+        margin=dict(l=60, r=40, t=100, b=150),
+        height=520,
     )
     return _apply_theme(fig)
 
