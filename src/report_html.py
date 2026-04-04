@@ -305,14 +305,18 @@ def chart_cluster_comparison(df: pd.DataFrame) -> go.Figure:
                 f"Unique Brands: {b}"
             )
 
+        x_labels = [c.title() for c in clusters]
+        y_vals = list(m_data["mention_rate"].apply(_pct).values)
+
         fig.add_trace(go.Bar(
-            x=[c.title() for c in clusters],
-            y=m_data["mention_rate"].apply(_pct).values,
+            x=x_labels,
+            y=y_vals,
+            orientation="v",
             name=model.upper(),
             marker_color=color,
-            text=[f"{_pct(v):.1f}%" for v in m_data["mention_rate"].values],
+            text=[f"{v:.1f}%" for v in y_vals],
             textposition="outside",
-            textfont=dict(size=11),
+            textfont=dict(size=12),
             hovertext=hover_texts,
             hoverinfo="text",
         ))
@@ -321,8 +325,10 @@ def chart_cluster_comparison(df: pd.DataFrame) -> go.Figure:
     fig.update_layout(
         title="Brand Visibility by Prompt Cluster & Model",
         yaxis_title="Mention Rate (%)",
-        yaxis=dict(range=[0, max_val * 1.4], ticksuffix="%"),
+        yaxis=dict(range=[0, max_val * 1.5], ticksuffix="%"),
+        xaxis=dict(type="category"),
         barmode="group",
+        margin=dict(l=70, r=40, t=100, b=80),
         height=480,
     )
     return _apply_theme(fig)
@@ -349,13 +355,15 @@ def chart_cluster_brand_heatmap(df: pd.DataFrame) -> go.Figure:
     for cluster in clusters:
         cl_data = brand_cluster[brand_cluster["cluster"] == cluster].set_index("brand").reindex(brand_list)
         color = CLUSTER_COLORS.get(cluster, COLORS["orange"])
+        y_vals = [round(_pct(v), 1) if pd.notna(v) else 0 for v in cl_data["mention_rate"].values]
 
         fig.add_trace(go.Bar(
-            x=brand_list,
-            y=cl_data["mention_rate"].apply(_pct).fillna(0).values,
+            x=list(brand_list),
+            y=y_vals,
+            orientation="v",
             name=cluster.title(),
             marker_color=color,
-            text=[f"{_pct(v):.0f}%" if v > 0.005 else "" for v in cl_data["mention_rate"].fillna(0).values],
+            text=[f"{v:.0f}%" if v > 0.5 else "" for v in y_vals],
             textposition="outside",
             textfont=dict(size=9),
             hovertemplate="<b>%{x}</b> — " + cluster.title() + "<br>Mention Rate: %{y:.1f}%<extra></extra>",
@@ -365,10 +373,10 @@ def chart_cluster_brand_heatmap(df: pd.DataFrame) -> go.Figure:
     fig.update_layout(
         title=f"Brand Visibility by Prompt Type (Top {len(brand_list)})",
         yaxis_title="Mention Rate (%)",
-        yaxis=dict(range=[0, max_val * 1.3], ticksuffix="%"),
-        xaxis_tickangle=-40,
+        yaxis=dict(range=[0, max_val * 1.4], ticksuffix="%"),
+        xaxis=dict(type="category", tickangle=-40),
         barmode="group",
-        margin=dict(l=60, r=40, t=100, b=140),
+        margin=dict(l=70, r=40, t=100, b=140),
         height=520,
     )
     return _apply_theme(fig)
@@ -474,13 +482,15 @@ def chart_visibility_distribution(df: pd.DataFrame) -> go.Figure:
     for model in models:
         color = MODEL_COLORS.get(model, COLORS["orange"])
         m_data = brand_vis[brand_vis["model"] == model].set_index("brand").reindex(top_brands)
+        y_vals = [round(float(v), 1) if pd.notna(v) else 0.0 for v in m_data["visibility_score"].values]
 
         fig.add_trace(go.Bar(
-            x=top_brands,
-            y=m_data["visibility_score"].fillna(0).values,
+            x=list(top_brands),
+            y=y_vals,
+            orientation="v",
             name=model.upper(),
             marker_color=color,
-            text=[f"{v:.1f}" if v > 0 else "" for v in m_data["visibility_score"].fillna(0).values],
+            text=[f"{v:.1f}" if v > 0 else "" for v in y_vals],
             textposition="outside",
             textfont=dict(size=9),
             hovertemplate="<b>%{x}</b> — " + model.upper() + "<br>Avg Visibility: %{y:.1f}<extra></extra>",
@@ -489,10 +499,10 @@ def chart_visibility_distribution(df: pd.DataFrame) -> go.Figure:
     fig.update_layout(
         title="Avg Visibility Score per Brand & Model (When Mentioned)",
         yaxis_title="Visibility Score (0-10)",
-        yaxis=dict(range=[0, 11], dtick=2),
-        xaxis_tickangle=-45,
+        yaxis=dict(range=[0, 12], dtick=2),
+        xaxis=dict(type="category", tickangle=-45),
         barmode="group",
-        margin=dict(l=60, r=40, t=100, b=150),
+        margin=dict(l=70, r=40, t=100, b=150),
         height=520,
     )
     return _apply_theme(fig)
