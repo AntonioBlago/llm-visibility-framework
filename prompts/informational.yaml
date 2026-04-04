@@ -1,108 +1,108 @@
 # Informational Prompt Cluster — GENERIC (no brand names)
-# All prompts explicitly ask for BRANDS/MARKEN to trigger brand mentions
-# Language: German (DE market focus)
+# Buyer Persona: 25 Jahre, gym-affin, ernaehrungsbewusst, Ich-Perspektive
+# All prompts ask for BRANDS/MARKEN
 
 cluster: informational
-description: "General knowledge queries about supplement brands — no purchase intent"
+description: "Knowledge queries from a fitness-conscious 25-year-old perspective"
 
 prompts:
   - id: info_01
-    text: "Welche Nahrungsergaenzungsmittel-Marken sind in Deutschland besonders beliebt?"
+    text: "Ich bin 25 und achte auf meine Ernaehrung. Welche Supplement-Marken sind in Deutschland besonders beliebt?"
   - id: info_02
-    text: "Welche Marken fuer Vitamine und Mineralstoffe sind in Deutschland empfehlenswert?"
+    text: "Ich trainiere regelmaessig im Gym. Welche Marken fuer Vitamine und Mineralstoffe sind empfehlenswert?"
   - id: info_03
-    text: "Welche Marken stellen Greens Pulver in Deutschland her?"
+    text: "Ich sehe ueberall Greens Pulver auf Social Media. Welche Marken stellen das in Deutschland her?"
   - id: info_04
-    text: "Welche Supplement-Marken helfen Sportlern bei der Regeneration?"
+    text: "Nach dem Training brauche ich gute Regeneration. Welche Supplement-Marken helfen dabei?"
   - id: info_05
-    text: "Welche Marken bieten Kollagen-Supplements in Deutschland an?"
+    text: "Ich ueberlege Kollagen zu nehmen. Welche Marken bieten Kollagen-Supplements in Deutschland an?"
   - id: info_06
-    text: "Welche deutschen Nahrungsergaenzungsmittel-Marken sind bekannt?"
+    text: "Ich suche hochwertige Supplements. Welche deutschen Nahrungsergaenzungsmittel-Marken sind bekannt?"
   - id: info_07
-    text: "Welche Marken bieten Mahlzeitenersatz-Shakes in Deutschland an?"
+    text: "Ich habe morgens wenig Zeit zum Kochen. Welche Marken bieten Mahlzeitenersatz-Shakes an?"
   - id: info_08
-    text: "Welche Supplement-Marken empfehlen Ernaehrungswissenschaftler in Deutschland?"
+    text: "Ich will mich gut ergaenzen. Welche Supplement-Marken empfehlen Ernaehrungswissenschaftler?"
   - id: info_09
-    text: "Welche Nootropika-Marken gibt es auf dem deutschen Markt?"
+    text: "Ich moechte meine Konzentration beim Arbeiten verbessern. Welche Nootropika-Marken gibt es in Deutschland?"
   - id: info_10
-    text: "Welche Marken bieten Bio-Supplements in Deutschland an?"
+    text: "Ich kaufe am liebsten Bio-Produkte. Welche Marken bieten Bio-Supplements in Deutschland an?"
   - id: info_11
-    text: "Welche Supplement-Marken sind fuer Frauen besonders empfehlenswert?"
+    text: "Meine Freundin sucht gute Supplements. Welche Marken sind fuer Frauen besonders empfehlenswert?"
   - id: info_12
-    text: "Welche Marken fuer Proteinpulver gibt es in Deutschland?"
+    text: "Ich brauche ein gutes Proteinpulver fuer nach dem Training. Welche Marken gibt es in Deutschland?"
   - id: info_13
-    text: "Welche Marken bieten Omega-3-Supplements in Deutschland an?"
+    text: "Ich will meine Omega-3-Zufuhr verbessern. Welche Marken bieten Omega-3-Supplements an?"
   - id: info_14
-    text: "Welche Nahrungsergaenzungsmittel-Marken gelten als qualitativ hochwertig?"
+    text: "Ich will kein Geld fuer schlechte Qualitaet ausgeben. Welche Supplement-Marken gelten als hochwertig?"
   - id: info_15
-    text: "Welche Supplement-Marken sind fuer Veganer besonders geeignet?"
+    text: "Ich ernaehre mich vegan und trainiere viel. Welche Supplement-Marken sind fuer Veganer geeignet?"
   - id: info_16
-    text: "Welche Marken fuer Nahrungsergaenzungsmittel liegen aktuell im Trend?"
+    text: "Ich will wissen was gerade angesagt ist. Welche Supplement-Marken liegen aktuell im Trend?"
   - id: info_17
-    text: "Welche Vitamin-D-Marken sind in Deutschland bekannt?"
+    text: "Im Winter will ich Vitamin D supplementieren. Welche Vitamin-D-Marken sind in Deutschland bekannt?"
   - id: info_18
-    text: "Welche Marken bieten Adaptogene als Nahrungsergaenzung an?"
+    text: "Ich interessiere mich fuer Adaptogene wie Ashwagandha. Welche Marken bieten das an?"
   - id: info_19
-    text: "Welche Supplement-Marken sind bei Einsteigern besonders beliebt?"
+    text: "Ich fange gerade erst mit Supplements an. Welche Marken sind fuer Einsteiger beliebt?"
   - id: info_20
-    text: "Welche Marken fuer Muskelaufbau-Supplements gibt es in Deutschland?"
+    text: "Ich will Muskeln aufbauen. Welche Marken fuer Muskelaufbau-Supplements gibt es in Deutschland?"
   - id: info_21
-    text: "Welche Marken bieten Whey Protein und pflanzliches Protein an?"
+    text: "Ich bin unsicher ob Whey oder pflanzliches Protein. Welche Marken bieten beides an?"
   - id: info_22
-    text: "Welche Supplement-Marken verbessern Konzentration und Fokus?"
+    text: "Ich habe Pruefungsstress und brauche mehr Fokus. Welche Supplement-Marken verbessern die Konzentration?"
   - id: info_23
-    text: "Welche Nahrungsergaenzungsmittel-Marken kann man sicher online kaufen?"
+    text: "Ich bestelle gerne online. Welche Supplement-Marken kann man sicher im Internet kaufen?"
   - id: info_24
-    text: "Welche Probiotika-Marken gibt es auf dem deutschen Markt?"
+    text: "Meine Verdauung ist nicht optimal. Welche Probiotika-Marken gibt es auf dem deutschen Markt?"
   - id: info_25
-    text: "Welche Marken bieten hochdosiertes Vitamin D in Deutschland an?"
+    text: "Mein Arzt hat Vitamin-D-Mangel festgestellt. Welche Marken bieten hochdosiertes Vitamin D an?"
   - id: info_26
-    text: "Welche Supplement-Marken sind gut fuer Haut und Haare?"
+    text: "Ich will was fuer meine Haut und Haare tun. Welche Supplement-Marken sind dafuer gut?"
   - id: info_27
-    text: "Welche Marken bieten Kreatin-Supplements in Deutschland an?"
+    text: "Ich nehme Kreatin fuer mein Krafttraining. Welche Marken bieten Kreatin-Supplements an?"
   - id: info_28
-    text: "Welche Marken verkaufen Gummibaerchen-Vitamine in Deutschland?"
+    text: "Ich finde Tabletten eklig. Welche Marken verkaufen Gummibaerchen-Vitamine in Deutschland?"
   - id: info_29
-    text: "Welche Supplement-Marken empfehlen Sportmediziner fuer Ausdauersportler?"
+    text: "Ich laufe Marathon. Welche Supplement-Marken empfehlen Sportmediziner fuer Ausdauersportler?"
   - id: info_30
-    text: "Welche Nahrungsergaenzungsmittel-Marken werden in Deutschland reguliert und zertifiziert?"
+    text: "Mir ist Qualitaet wichtig. Welche Supplement-Marken sind in Deutschland zertifiziert?"
   - id: info_31
-    text: "Welche Supplement-Marken helfen beim Abnehmen?"
+    text: "Ich will ein paar Kilo abnehmen. Welche Supplement-Marken helfen beim Abnehmen?"
   - id: info_32
-    text: "Welche Marken bieten Ashwagandha-Supplements in Deutschland an?"
+    text: "Ich habe gehoert Ashwagandha hilft bei Stress. Welche Marken bieten das in Deutschland an?"
   - id: info_33
-    text: "Welche Supplement-Marken werden in der Schwangerschaft empfohlen?"
+    text: "Meine Schwester ist schwanger. Welche Supplement-Marken werden in der Schwangerschaft empfohlen?"
   - id: info_34
-    text: "Welche Marken dominieren den deutschen Supplement-Markt?"
+    text: "Ich will die groessten Marken kennen. Welche Supplement-Marken dominieren den deutschen Markt?"
   - id: info_35
-    text: "Welche Supplement-Marken haben den staerksten wissenschaftlichen Nachweis?"
+    text: "Ich vertraue nur auf Evidenz. Welche Supplement-Marken haben wissenschaftliche Nachweise?"
   - id: info_36
-    text: "Welche Marken bieten BCAA-Supplements in Deutschland an?"
+    text: "Ich nehme BCAAs nach dem Training. Welche Marken bieten BCAA-Supplements in Deutschland an?"
   - id: info_37
-    text: "Welche Supplement-Marken helfen bei Gelenkproblemen?"
+    text: "Meine Gelenke schmerzen nach dem Laufen. Welche Supplement-Marken helfen bei Gelenkproblemen?"
   - id: info_38
-    text: "Welche deutschen Supplement-Marken unterscheiden sich von internationalen Anbietern?"
+    text: "Ich frage mich ob deutsche Marken besser sind. Welche deutschen Supplement-Marken unterscheiden sich von internationalen?"
   - id: info_39
-    text: "Welche Supplement-Marken sind bei jungen Erwachsenen besonders beliebt?"
+    text: "In meinem Alter achten viele auf Supplements. Welche Marken sind bei jungen Erwachsenen beliebt?"
   - id: info_40
-    text: "Welche Marken bieten Magnesium-Supplements in Deutschland an?"
+    text: "Ich habe oft Muskelkraempfe. Welche Marken bieten Magnesium-Supplements in Deutschland an?"
   - id: info_41
-    text: "Welche Marken bieten CBD-haltige Nahrungsergaenzungsmittel an?"
+    text: "Ich habe von CBD-Supplements gehoert. Welche Marken bieten CBD als Nahrungsergaenzung an?"
   - id: info_42
-    text: "Welche Supplement-Marken verbessern den Schlaf?"
+    text: "Ich schlafe schlecht wegen Stress. Welche Supplement-Marken verbessern den Schlaf?"
   - id: info_43
-    text: "Welche Nahrungsergaenzungsmittel-Marken gibt es in der Apotheke und online?"
+    text: "Soll ich in der Apotheke oder online kaufen? Welche Supplement-Marken gibt es an beiden Orten?"
   - id: info_44
-    text: "Welche Supplement-Marken legen besonderen Wert auf Bioverfuegbarkeit?"
+    text: "Ich will dass mein Koerper die Supplements gut aufnimmt. Welche Marken achten auf Bioverfuegbarkeit?"
   - id: info_45
-    text: "Welche Marken bieten Superfoods als Pulver in Deutschland an?"
+    text: "Ich mixe mir morgens einen Smoothie. Welche Marken bieten Superfoods als Pulver an?"
   - id: info_46
-    text: "Welche Marken fuer Eisen-Supplements gibt es in Deutschland?"
+    text: "Mein Blutbild zeigt Eisenmangel. Welche Marken fuer Eisen-Supplements gibt es in Deutschland?"
   - id: info_47
-    text: "Welche Supplement-Marken sind fuer Senioren empfehlenswert?"
+    text: "Ich will meinen Eltern Supplements schenken. Welche Marken sind fuer Senioren empfehlenswert?"
   - id: info_48
-    text: "Welche Marken bieten Detox-Supplements in Deutschland an?"
+    text: "Ich will meinen Koerper entgiften. Welche Marken bieten Detox-Supplements an?"
   - id: info_49
-    text: "Welche ayurvedischen Supplement-Marken gibt es in Deutschland?"
+    text: "Ich interessiere mich fuer Ayurveda. Welche ayurvedischen Supplement-Marken gibt es in Deutschland?"
   - id: info_50
-    text: "Welche Supplement-Marken sind auf Social Media besonders praesent?"
+    text: "Ich folge vielen Fitness-Accounts. Welche Supplement-Marken sind auf Social Media praesent?"

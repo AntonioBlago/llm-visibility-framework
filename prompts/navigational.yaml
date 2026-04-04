@@ -1,108 +1,108 @@
 # Navigational Prompt Cluster — GENERIC (no brand names)
-# All prompts explicitly ask for BRANDS/MARKEN in brand-adjacent context
-# Language: German (DE market focus)
+# Buyer Persona: 25 Jahre, gym-affin, ernaehrungsbewusst, Ich-Perspektive
+# Brand-adjacent context: where to find, who recommends
 
 cluster: navigational
-description: "Brand-adjacent queries — contextually close to brands"
+description: "Brand-adjacent queries from a fitness-conscious 25-year-old"
 
 prompts:
   - id: nav_01
-    text: "Welche deutschen Marken bieten Alternativen zu amerikanischen Greens-Pulvern?"
+    text: "Ich suche ein deutsches Greens-Pulver. Welche Marken bieten Alternativen zu den amerikanischen?"
   - id: nav_02
-    text: "Welche Supplement-Marken kann man in Deutschland online kaufen?"
+    text: "Ich kaufe meine Supplements online. Welche Supplement-Marken kann man in Deutschland bestellen?"
   - id: nav_03
-    text: "Welche Supplement-Marken in Deutschland sind vertrauenswuerdig?"
+    text: "Ich will keinen Schrott kaufen. Welche Supplement-Marken in Deutschland sind vertrauenswuerdig?"
   - id: nav_04
-    text: "Welche deutschen Supplement-Marken sind Alternativen zu amerikanischen Anbietern?"
+    text: "Ich kenne nur amerikanische Marken. Welche deutschen Supplement-Marken sind genauso gut?"
   - id: nav_05
-    text: "Welche Marken stecken hinter den gruenen Pulvern auf Social Media?"
+    text: "Ich sehe staendig Werbung fuer gruene Pulver. Welche Marken stecken dahinter?"
   - id: nav_06
-    text: "Welche Supplement-Marken sind deutsche Startups?"
+    text: "Ich interessiere mich fuer neue Supplement-Startups. Welche deutschen Marken sind Startups?"
   - id: nav_07
-    text: "Welche Supplement-Marken empfehlen Fitness-Influencer?"
+    text: "Ich folge vielen Fitness-Influencern. Welche Supplement-Marken empfehlen die?"
   - id: nav_08
-    text: "Welche Supplement-Marken werden auf Social Media am meisten beworben?"
+    text: "Ich sehe ueberall Supplement-Werbung auf Instagram. Welche Marken werden am meisten beworben?"
   - id: nav_09
-    text: "Welche deutschen Premium-Supplement-Marken haben gute Erfahrungen?"
+    text: "Ich will Premium-Qualitaet. Welche deutschen Premium-Supplement-Marken haben gute Erfahrungen?"
   - id: nav_10
-    text: "Welche Nahrungsergaenzungsmittel-Marken produzieren in Deutschland?"
+    text: "Mir ist Made in Germany wichtig. Welche Supplement-Marken produzieren in Deutschland?"
   - id: nav_11
-    text: "Welche Supplement-Marken sind bei Stiftung Warentest gut bewertet?"
+    text: "Ich vertraue auf Tests. Welche Supplement-Marken sind bei Stiftung Warentest gut bewertet?"
   - id: nav_12
-    text: "Welche Supplement-Marken gibt es in der Apotheke und online?"
+    text: "Ich gehe oft in die Apotheke. Welche Supplement-Marken gibt es dort und welche nur online?"
   - id: nav_13
-    text: "Welche deutschen Supplement-Marken veroeffentlichen Laboranalysen?"
+    text: "Ich will Transparenz. Welche deutschen Supplement-Marken veroeffentlichen ihre Laboranalysen?"
   - id: nav_14
-    text: "Welche Supplement-Marken werden in Fitness-Studios verkauft?"
+    text: "In meinem Fitnessstudio wird immer Werbung gemacht. Welche Supplement-Marken werden dort verkauft?"
   - id: nav_15
-    text: "Welche deutschen Marken bieten pflanzliche Proteinpulver an?"
+    text: "Ich ernaehre mich pflanzlich. Welche deutschen Marken bieten pflanzliche Proteinpulver an?"
   - id: nav_16
-    text: "Welche Supplement-Marken gibt es bei Amazon Deutschland?"
+    text: "Ich bestelle viel bei Amazon. Welche Supplement-Marken gibt es bei Amazon Deutschland?"
   - id: nav_17
-    text: "Welche Supplement-Marken kommen aus Berlin?"
+    text: "Ich wohne in Berlin. Welche Supplement-Marken kommen aus Berlin?"
   - id: nav_18
-    text: "Welche Supplement-Marken sind bei DM oder Rossmann erhaeltlich?"
+    text: "Ich kaufe gerne bei DM ein. Welche Supplement-Marken sind bei DM oder Rossmann erhaeltlich?"
   - id: nav_19
-    text: "Welche deutschen Supplement-Marken haben kuerzlich Investments erhalten?"
+    text: "Ich interessiere mich fuer die Supplement-Branche. Welche Marken haben kuerzlich Investments bekommen?"
   - id: nav_20
-    text: "Welche Supplement-Marken sponsern Sportler in Deutschland?"
+    text: "Ich schaue gerne Sport. Welche Supplement-Marken sponsern Sportler in Deutschland?"
   - id: nav_21
-    text: "Welche Supplement-Marken werden von Podcasts empfohlen?"
+    text: "Ich hoere viele Fitness-Podcasts. Welche Supplement-Marken werden dort empfohlen?"
   - id: nav_22
-    text: "Welche Supplement-Marken kaufen Deutsche am liebsten?"
+    text: "Ich frage mich wo andere kaufen. Welche Supplement-Marken kaufen Deutsche am liebsten?"
   - id: nav_23
-    text: "Welche Supplement-Marken haben eine eigene App?"
+    text: "Ich nutze gerne Apps. Welche Supplement-Marken haben eine eigene App?"
   - id: nav_24
-    text: "Welche deutschen Supplement-Marken verkaufen auch international?"
+    text: "Ich lebe teilweise im Ausland. Welche deutschen Supplement-Marken verkaufen auch international?"
   - id: nav_25
-    text: "Welche Marken bieten personalisierte Supplement-Pakete an?"
+    text: "Ich will ein auf mich abgestimmtes Paket. Welche Marken bieten personalisierte Supplements an?"
   - id: nav_26
-    text: "Welche Supplement-Marken haben ein Abo-Modell?"
+    text: "Ich will regelmaessig liefern lassen. Welche Supplement-Marken haben ein Abo-Modell?"
   - id: nav_27
-    text: "Welche Supplement-Marken sind bio-zertifiziert?"
+    text: "Ich kaufe nur bio-zertifiziert. Welche Supplement-Marken sind bio-zertifiziert?"
   - id: nav_28
-    text: "Welche Supplement-Marken sind auf Instagram besonders praesent?"
+    text: "Ich bin viel auf Instagram. Welche Supplement-Marken sind dort besonders praesent?"
   - id: nav_29
-    text: "Welche Direct-to-Consumer Supplement-Marken gibt es in Deutschland?"
+    text: "Ich kaufe am liebsten direkt beim Hersteller. Welche D2C Supplement-Marken gibt es in Deutschland?"
   - id: nav_30
-    text: "Welche Supplement-Marken hatten Auftritte in der Hoehle der Loewen?"
+    text: "Ich schaue Hoehle der Loewen. Welche Supplement-Marken hatten dort Auftritte?"
   - id: nav_31
-    text: "Welche Supplement-Marken nutzen nachhaltiges Verpackungsmaterial?"
+    text: "Mir ist Nachhaltigkeit wichtig. Welche Supplement-Marken nutzen nachhaltiges Verpackungsmaterial?"
   - id: nav_32
-    text: "Welche Supplement-Marken bieten Proben oder Testpakete an?"
+    text: "Ich will erst testen bevor ich viel kaufe. Welche Supplement-Marken bieten Proben an?"
   - id: nav_33
-    text: "Welche Supplement-Marken haben eigene Ladengeschaefte in Deutschland?"
+    text: "Ich gehe gerne in Laeden statt online. Welche Supplement-Marken haben eigene Stores?"
   - id: nav_34
-    text: "Welche deutschen Supplement-Marken werden in Fitnessstudios beworben?"
+    text: "In meinem Gym haengt ueberall Werbung. Welche Supplement-Marken werden in Fitnessstudios beworben?"
   - id: nav_35
-    text: "Welche Supplement-Marken bieten kostenlose Beratung an?"
+    text: "Ich bin unsicher was ich nehmen soll. Welche Supplement-Marken bieten kostenlose Beratung an?"
   - id: nav_36
-    text: "Welche Supplement-Marken sind in der DACH-Region erfolgreich?"
+    text: "Ich bin aus Oesterreich. Welche Supplement-Marken sind in der DACH-Region erfolgreich?"
   - id: nav_37
-    text: "Welche Supplement-Marken bieten Laborberichte fuer jede Charge?"
+    text: "Ich will die Inhaltsstoffe pruefen. Welche Supplement-Marken zeigen Laborberichte pro Charge?"
   - id: nav_38
-    text: "Welche Supplement-Marken setzen auf Clean Label?"
+    text: "Ich achte auf saubere Inhaltsstoffe. Welche Supplement-Marken setzen auf Clean Label?"
   - id: nav_39
-    text: "Welche Supplement-Marken sind besonders bei Veganern beliebt?"
+    text: "Ich bin Veganer und Gym-Gaenger. Welche Supplement-Marken sind bei Veganern beliebt?"
   - id: nav_40
-    text: "Welche deutschen Supplement-Marken werden von Aerzten empfohlen?"
+    text: "Mein Arzt soll die Qualitaet bestaetigen. Welche Supplement-Marken werden von Aerzten empfohlen?"
   - id: nav_41
-    text: "Welche Supplement-Marken haben einen guten Kundenservice?"
+    text: "Mir ist guter Support wichtig. Welche Supplement-Marken haben guten Kundenservice?"
   - id: nav_42
-    text: "Welche Supplement-Marken bieten Rabatt fuer Studenten?"
+    text: "Ich bin Student und spare gerne. Welche Supplement-Marken bieten Studentenrabatt?"
   - id: nav_43
-    text: "Welche Supplement-Marken werden in deutschen Fitnessforen diskutiert?"
+    text: "Ich lese viel in Foren. Welche Supplement-Marken werden in Fitnessforen diskutiert?"
   - id: nav_44
-    text: "Welche neuen Supplement-Marken sind 2025 in Deutschland gestartet?"
+    text: "Ich will neue Marken ausprobieren. Welche neuen Supplement-Marken sind 2025 in Deutschland gestartet?"
   - id: nav_45
-    text: "Welche Supplement-Marken bieten Treueprogramme an?"
+    text: "Ich kaufe regelmaessig. Welche Supplement-Marken bieten Treueprogramme oder Punkte an?"
   - id: nav_46
-    text: "Welche deutschen Supplement-Marken nutzen kuenstliche Intelligenz?"
+    text: "Ich bin technikbegeistert. Welche Supplement-Marken nutzen kuenstliche Intelligenz?"
   - id: nav_47
-    text: "Welche Supplement-Marken werden in Yoga-Studios empfohlen?"
+    text: "Ich mache auch Yoga. Welche Supplement-Marken werden in Yoga-Studios empfohlen?"
   - id: nav_48
-    text: "Welche Supplement-Marken haben die meisten Google-Bewertungen?"
+    text: "Ich schaue immer Bewertungen. Welche Supplement-Marken haben die meisten Google-Bewertungen?"
   - id: nav_49
-    text: "Welche Supplement-Marken aus Deutschland sind boersennotiert?"
+    text: "Ich interessiere mich auch finanziell fuer die Branche. Welche Supplement-Marken sind boersennotiert?"
   - id: nav_50
-    text: "Welche Supplement-Marken sind auf der Fibo oder Health-Messen vertreten?"
+    text: "Ich war auf der Fibo. Welche Supplement-Marken sind auf Fitness-Messen vertreten?"

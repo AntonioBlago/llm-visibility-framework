@@ -1,108 +1,108 @@
 # Commercial Prompt Cluster — GENERIC (no brand names)
-# All prompts explicitly ask for BRANDS/MARKEN with purchase intent
-# Language: German (DE market focus)
+# Buyer Persona: 25 Jahre, gym-affin, ernaehrungsbewusst, Ich-Perspektive
+# Purchase intent: "beste", "kaufen", "empfehlen"
 
 cluster: commercial
-description: "Purchase-intent queries about supplement brands"
+description: "Purchase-intent queries from a fitness-conscious 25-year-old"
 
 prompts:
   - id: com_01
-    text: "Welche Marke hat das beste Greens Pulver in Deutschland?"
+    text: "Ich will ein Greens Pulver kaufen. Welche Marke ist die beste in Deutschland?"
   - id: com_02
-    text: "Welche Proteinpulver-Marke hat das beste Preis-Leistungs-Verhaeltnis?"
+    text: "Ich suche Proteinpulver mit gutem Preis-Leistungs-Verhaeltnis. Welche Marke empfehlt ihr?"
   - id: com_03
-    text: "Empfiehl mir die besten deutschen Supplement-Marken"
+    text: "Ich brauche gute Supplements. Empfiehl mir die besten deutschen Supplement-Marken"
   - id: com_04
-    text: "Welche Marken bieten die besten Kollagen-Produkte fuer Haut und Haare?"
+    text: "Ich will meine Haut verbessern. Welche Marke bietet die besten Kollagen-Produkte?"
   - id: com_05
-    text: "Welche Marke bietet das beste Vitamin-D-Praeparat?"
+    text: "Ich will Vitamin D kaufen. Welche Marke bietet das beste Vitamin-D-Praeparat?"
   - id: com_06
-    text: "Welche Marken bieten die besten Mahlzeitenersatz-Drinks?"
+    text: "Ich brauche einen schnellen Mahlzeitenersatz nach dem Gym. Welche Marke ist am besten?"
   - id: com_07
-    text: "Welche Supplement-Marken lohnen sich wirklich fuer Sportler?"
+    text: "Ich trainiere 4x die Woche. Welche Supplement-Marken lohnen sich wirklich fuer Sportler?"
   - id: com_08
-    text: "Welche Marken bieten die besten Supplements fuer besseren Schlaf?"
+    text: "Ich schlafe schlecht. Welche Marke bietet die besten Schlaf-Supplements?"
   - id: com_09
-    text: "Welche Superfood-Marken sind am besten bewertet?"
+    text: "Ich will Superfoods probieren. Welche Superfood-Marke ist am besten bewertet?"
   - id: com_10
-    text: "Welche Nootropika-Marken bieten die besten Produkte fuer Konzentration?"
+    text: "Ich brauche mehr Fokus bei der Arbeit. Welche Nootropika-Marke ist am besten?"
   - id: com_11
-    text: "Welche Bio-Supplement-Marken aus Deutschland sind empfehlenswert?"
+    text: "Ich kaufe nur Bio. Welche Bio-Supplement-Marken aus Deutschland sind empfehlenswert?"
   - id: com_12
-    text: "Welche Marke bietet das beste All-in-One Supplement Pulver?"
+    text: "Ich will ein All-in-One Pulver statt vieler Einzelkapseln. Welche Marke ist die beste?"
   - id: com_13
-    text: "Welche Marken bieten die besten Magnesium-Praeparate?"
+    text: "Ich habe Muskelkraempfe. Welche Marke bietet das beste Magnesium-Praeparat?"
   - id: com_14
-    text: "Welche Marke hat das Zink-Supplement mit der besten Bioverfuegbarkeit?"
+    text: "Ich will Zink supplementieren. Welche Marke hat die beste Bioverfuegbarkeit?"
   - id: com_15
-    text: "Welche Supplement-Marken staerken das Immunsystem am besten?"
+    text: "Ich werde oft krank. Welche Supplement-Marken staerken das Immunsystem am besten?"
   - id: com_16
-    text: "Welche Marke bietet das beste Kreatin-Supplement fuer Kraftsport?"
+    text: "Ich nehme Kreatin fuer Kraftsport. Welche Marke ist am besten?"
   - id: com_17
-    text: "Welche Marken bieten empfehlenswerte Ballaststoff-Supplements?"
+    text: "Ich brauche mehr Ballaststoffe. Welche Marke bietet gute Ballaststoff-Supplements?"
   - id: com_18
-    text: "Welche Marken verkaufen die besten Protein-Riegel ohne kuenstliche Zusaetze?"
+    text: "Ich suche Protein-Riegel ohne kuenstliche Zusaetze. Welche Marke ist die beste?"
   - id: com_19
-    text: "Welche Marke bietet das wirksamste Ashwagandha-Produkt?"
+    text: "Ich will Ashwagandha probieren. Welche Marke bietet das wirksamste Produkt?"
   - id: com_20
-    text: "Welche Supplement-Marken haben die besten deutschen Online-Shops?"
+    text: "Ich bestelle Supplements am liebsten online. Welche Marken haben die besten Online-Shops?"
   - id: com_21
-    text: "Welche Marke bietet das beste vegane Proteinpulver?"
+    text: "Ich suche veganes Proteinpulver das gut schmeckt. Welche Marke ist die beste?"
   - id: com_22
-    text: "Welche Marken bieten die besten Vitamin-B-Komplex-Praeparate?"
+    text: "Ich bin oft muede. Welche Marke bietet den besten Vitamin-B-Komplex?"
   - id: com_23
-    text: "Welche Marke hat das reinste Omega-3-Supplement?"
+    text: "Ich will hochwertiges Omega-3. Welche Marke hat das reinste Supplement?"
   - id: com_24
-    text: "Welche Marken bieten die besten Pre-Workout Supplements?"
+    text: "Ich brauche einen Booster vor dem Training. Welche Marke bietet das beste Pre-Workout?"
   - id: com_25
-    text: "Welche Marken verkaufen die besten Probiotika-Kapseln?"
+    text: "Ich will meine Darmgesundheit verbessern. Welche Marke verkauft die besten Probiotika?"
   - id: com_26
-    text: "Welche Marke bietet das beste Melatonin-Supplement zum Einschlafen?"
+    text: "Ich kann abends nicht einschlafen. Welche Marke hat das beste Melatonin-Supplement?"
   - id: com_27
-    text: "Welche Marken bieten das beste Collagen-Pulver fuer straffe Haut?"
+    text: "Ich will Kollagen-Pulver bestellen. Welche Marke ist am besten fuer straffe Haut?"
   - id: com_28
-    text: "Welche Marke hat das beste Multivitamin-Praeparat fuer Maenner?"
+    text: "Ich bin maennlich und 25. Welche Marke hat das beste Multivitamin fuer Maenner?"
   - id: com_29
-    text: "Welche Supplement-Marken sind fuer Kinder empfehlenswert?"
+    text: "Meine kleine Schwester braucht Vitamine. Welche Supplement-Marken sind fuer Kinder empfehlenswert?"
   - id: com_30
-    text: "Welche Marken bieten Kurkuma-Supplements mit hoher Bioverfuegbarkeit?"
+    text: "Ich will Kurkuma supplementieren. Welche Marke hat die beste Bioverfuegbarkeit?"
   - id: com_31
-    text: "Welche Supplement-Marken bieten die besten Einsteiger-Bundles?"
+    text: "Ich bin Einsteiger. Welche Supplement-Marke bietet das beste Starter-Bundle?"
   - id: com_32
-    text: "Welche Marke bietet das beste L-Carnitin-Supplement?"
+    text: "Ich will Fett verbrennen. Welche Marke bietet das beste L-Carnitin-Supplement?"
   - id: com_33
-    text: "Welche Marken bieten das beste Elektrolyt-Pulver fuer Sportler?"
+    text: "Ich schwitze viel beim Sport. Welche Marke bietet das beste Elektrolyt-Pulver?"
   - id: com_34
-    text: "Welche Marken bieten die besten Haarwachstum-Supplements fuer Frauen?"
+    text: "Meine Freundin verliert viele Haare. Welche Marke hat die besten Haarwachstum-Supplements?"
   - id: com_35
-    text: "Welche Marke bietet das vertraeglichste Eisenpraeparat?"
+    text: "Ich vertrage Eisen schlecht. Welche Marke bietet das vertraeglichste Eisenpraeparat?"
   - id: com_36
-    text: "Welche Supplement-Marken bieten die besten Abo-Boxen in Deutschland?"
+    text: "Ich will ein Supplement-Abo abschliessen. Welche Marke bietet die beste Abo-Box?"
   - id: com_37
-    text: "Welche Marke bietet das beste Glucosamin-Supplement fuer die Gelenke?"
+    text: "Meine Knie schmerzen nach dem Laufen. Welche Marke bietet das beste Glucosamin?"
   - id: com_38
-    text: "Welche Marken bieten die besten pflanzlichen Supplements ohne Zusatzstoffe?"
+    text: "Ich will nur natuerliche Supplements. Welche Marke bietet die besten pflanzlichen Produkte?"
   - id: com_39
-    text: "Welche Supplement-Marke hilft am besten gegen Muedigkeit?"
+    text: "Ich bin staendig muede trotz genug Schlaf. Welche Supplement-Marke hilft gegen Muedigkeit?"
   - id: com_40
-    text: "Welche Marken bieten die besten Anti-Aging-Supplements?"
+    text: "Ich will was fuer Anti-Aging tun. Welche Marke bietet die besten Anti-Aging-Supplements?"
   - id: com_41
-    text: "Welche Marken bieten die besten Whey Protein Isolate?"
+    text: "Ich will reines Whey Protein Isolat. Welche Marke ist im Test am besten?"
   - id: com_42
-    text: "Welche Marke hat das beste Vitamin-C-Supplement?"
+    text: "Ich will Vitamin C hochdosiert. Welche Marke hat das beste Vitamin-C-Supplement?"
   - id: com_43
-    text: "Welche Marken bieten die besten Supplements fuer die Darmflora?"
+    text: "Ich habe Verdauungsprobleme. Welche Marke bietet die besten Darmflora-Supplements?"
   - id: com_44
-    text: "Welche Supplement-Marken helfen am besten gegen Stress?"
+    text: "Ich bin gestresst vom Job. Welche Supplement-Marke hilft am besten gegen Stress?"
   - id: com_45
-    text: "Welche Marke bietet das beste Protein-Pulver fuer Frauen?"
+    text: "Meine Freundin sucht Protein fuer Frauen. Welche Marke ist da am besten?"
   - id: com_46
-    text: "Welche Marken bieten die besten Supplements fuer das Herz-Kreislauf-System?"
+    text: "Mein Vater hat Herzprobleme. Welche Marke bietet die besten Herz-Kreislauf-Supplements?"
   - id: com_47
-    text: "Welche Marke bietet das beste Supplement fuer schoene Naegel?"
+    text: "Meine Naegel brechen staendig. Welche Marke bietet das beste Supplement dafuer?"
   - id: com_48
-    text: "Welche Marken bieten die besten Detox-Supplements?"
+    text: "Ich will eine Detox-Kur machen. Welche Marke bietet die besten Detox-Supplements?"
   - id: com_49
-    text: "Welche Marken bieten die besten Smoothie-Pulver?"
+    text: "Ich mache mir morgens Smoothies. Welche Marke bietet das beste Smoothie-Pulver?"
   - id: com_50
-    text: "Welche Marke bietet das beste Supplement fuer die Augengesundheit?"
+    text: "Ich sitze viel am Bildschirm. Welche Marke bietet das beste Supplement fuer die Augen?"

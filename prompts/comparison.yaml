@@ -1,108 +1,108 @@
 # Comparison Prompt Cluster — GENERIC (no brand names)
-# All prompts explicitly ask for BRANDS/MARKEN in comparison context
-# Language: German (DE market focus)
+# Buyer Persona: 25 Jahre, gym-affin, ernaehrungsbewusst, Ich-Perspektive
+# Comparison/ranking queries that trigger brand lists
 
 cluster: comparison
-description: "Category comparison queries — invite model to rank brands"
+description: "Comparison queries from a fitness-conscious 25-year-old"
 
 prompts:
   - id: cmp_01
-    text: "Welche Marken bieten die besten Greens-Pulver auf dem deutschen Markt?"
+    text: "Ich will das beste Greens-Pulver finden. Welche Marken sind auf dem deutschen Markt am besten im Vergleich?"
   - id: cmp_02
-    text: "Welche Proteinpulver-Marken sind besser: deutsche oder amerikanische?"
+    text: "Ich bin unsicher zwischen Whey und pflanzlich. Welche Proteinpulver-Marken sind besser?"
   - id: cmp_03
-    text: "Nenne die besten Kollagen-Supplement-Marken in Deutschland als Ranking"
+    text: "Ich will das beste Kollagen. Nenne mir die besten Kollagen-Supplement-Marken als Ranking"
   - id: cmp_04
-    text: "Welche Marken bieten die besten Mahlzeitenersatz-Produkte im Vergleich?"
+    text: "Ich brauche einen Mahlzeitenersatz. Welche Marken bieten die besten Produkte im Vergleich?"
   - id: cmp_05
-    text: "Welche Nootropika-Marken bieten das beste Preis-Leistungs-Verhaeltnis?"
+    text: "Ich suche Nootropika fuer den Alltag. Welche Marken bieten das beste Preis-Leistungs-Verhaeltnis?"
   - id: cmp_06
-    text: "Welche Bio-Supplement-Marken sind hochwertiger als konventionelle?"
+    text: "Ich kaufe nur Bio. Welche Bio-Supplement-Marken sind hochwertiger als konventionelle?"
   - id: cmp_07
-    text: "Welche deutschen Supplement-Marken haben bessere Qualitaet als amerikanische?"
+    text: "Ich kenne nur US-Marken. Welche deutschen Supplement-Marken haben bessere Qualitaet?"
   - id: cmp_08
-    text: "Welche Supplement-Marken haben die besten Laboranalysen und Zertifikate?"
+    text: "Mir sind Zertifikate wichtig. Welche Supplement-Marken haben die besten Laboranalysen?"
   - id: cmp_09
-    text: "Erstelle ein Ranking deutscher Supplement-Marken nach Qualitaet und Preis"
+    text: "Ich will eine Uebersicht. Erstelle mir ein Ranking deutscher Supplement-Marken nach Qualitaet und Preis"
   - id: cmp_10
-    text: "Welche Vitamin-D-Marken sind in Deutschland am beliebtesten im Vergleich?"
+    text: "Ich brauche Vitamin D im Winter. Welche Vitamin-D-Marken sind im Vergleich am besten?"
   - id: cmp_11
-    text: "Welche Magnesium-Marken sind am besten: welche Formen bieten sie an?"
+    text: "Ich will Magnesium kaufen. Welche Magnesium-Marken bieten die besten Formen an?"
   - id: cmp_12
-    text: "Welche Supplement-Marken fuer Sportler schneiden im Vergleich am besten ab?"
+    text: "Ich trainiere hart. Welche Supplement-Marken fuer Sportler schneiden im Vergleich am besten ab?"
   - id: cmp_13
-    text: "Welche Superfoods-Marken bieten die naehrstoffreichsten Pulver?"
+    text: "Ich mixe mir Smoothies. Welche Superfoods-Marken bieten die naehrstoffreichsten Pulver?"
   - id: cmp_14
-    text: "Welche Omega-3-Marken sind besser: Fischoel oder Algenoel-Anbieter?"
+    text: "Ich will Omega-3 nehmen. Welche Marken sind besser: Fischoel oder Algenoel-Anbieter?"
   - id: cmp_15
-    text: "Welche Supplement-Marken aus der Apotheke sind besser als Online-Marken?"
+    text: "Apotheke oder Online? Welche Supplement-Marken aus der Apotheke sind besser als Online-Marken?"
   - id: cmp_16
-    text: "Welche Ashwagandha-Marken schneiden auf dem deutschen Markt am besten ab?"
+    text: "Ich will Ashwagandha testen. Welche Ashwagandha-Marken schneiden am besten ab?"
   - id: cmp_17
-    text: "Welche Probiotika-Marken haben die meisten Bakterienstaemme im Vergleich?"
+    text: "Ich will Probiotika nehmen. Welche Marken haben die meisten Bakterienstaemme im Vergleich?"
   - id: cmp_18
-    text: "Erstelle ein Ranking deutscher Supplement-Marken nach Kundenzufriedenheit"
+    text: "Mir sind Bewertungen wichtig. Erstelle ein Ranking der Supplement-Marken nach Kundenzufriedenheit"
   - id: cmp_19
-    text: "Welche Marken fuer Gummibaerchen-Vitamine sind besser als klassische Kapseln-Marken?"
+    text: "Ich mag keine Tabletten. Welche Gummibaerchen-Vitamin-Marken sind besser als Kapseln-Marken?"
   - id: cmp_20
-    text: "Welche Kreatin-Marken bieten das reinste Produkt?"
+    text: "Ich will reines Kreatin. Welche Kreatin-Marken bieten das reinste Produkt?"
   - id: cmp_21
-    text: "Welche Supplement-Marken fuer Frauen schneiden im Vergleich am besten ab?"
+    text: "Meine Freundin sucht Supplements. Welche Marken fuer Frauen sind im Vergleich am besten?"
   - id: cmp_22
-    text: "Erstelle ein Ranking der nachhaltigsten Supplement-Marken in Deutschland"
+    text: "Mir ist Nachhaltigkeit wichtig. Erstelle ein Ranking der nachhaltigsten Supplement-Marken"
   - id: cmp_23
-    text: "Welche Zink-Supplement-Marken schneiden in unabhaengigen Tests am besten ab?"
+    text: "Ich will gutes Zink. Welche Zink-Supplement-Marken schneiden in Tests am besten ab?"
   - id: cmp_24
-    text: "Welche Protein-Shake-Marken sind besser als Protein-Riegel-Marken?"
+    text: "Shake oder Riegel nach dem Training? Welche Protein-Marken sind jeweils am besten?"
   - id: cmp_25
-    text: "Erstelle ein Ranking deutscher Supplement-Marken nach Transparenz"
+    text: "Ich will wissen wer transparent ist. Erstelle ein Ranking der Supplement-Marken nach Transparenz"
   - id: cmp_26
-    text: "Welche Schlaf-Supplement-Marken sind am besten im Vergleich?"
+    text: "Ich schlafe schlecht. Welche Schlaf-Supplement-Marken sind am besten im Vergleich?"
   - id: cmp_27
-    text: "Welche Supplement-Marken bieten die beste wissenschaftliche Grundlage?"
+    text: "Ich vertraue auf Wissenschaft. Welche Supplement-Marken haben die beste wissenschaftliche Grundlage?"
   - id: cmp_28
-    text: "Welche Supplement-Marken sind bei Amazon Deutschland am beliebtesten?"
+    text: "Ich kaufe bei Amazon. Welche Supplement-Marken sind bei Amazon Deutschland am beliebtesten?"
   - id: cmp_29
-    text: "Welche deutschen Supplement-Marken sind sicherer als auslaendische?"
+    text: "Sind deutsche Produkte sicherer? Welche deutschen Supplement-Marken sind sicherer als auslaendische?"
   - id: cmp_30
-    text: "Welche Multivitamin-Marken haben die beste Zusammensetzung?"
+    text: "Ich will ein gutes Multivitamin. Welche Marken haben die beste Zusammensetzung?"
   - id: cmp_31
-    text: "Welche B12-Supplement-Marken sind am besten im Vergleich?"
+    text: "Ich will B12 supplementieren. Welche B12-Supplement-Marken sind am besten?"
   - id: cmp_32
-    text: "Erstelle ein Ranking deutscher Supplement-Marken nach Produktionsstandards"
+    text: "Mir sind Produktionsstandards wichtig. Erstelle ein Ranking der Supplement-Marken danach"
   - id: cmp_33
-    text: "Welche Protein-Marken sind fuer Laktoseintolerante am besten geeignet?"
+    text: "Ich bin laktoseintolerant. Welche Protein-Marken sind dafuer am besten geeignet?"
   - id: cmp_34
-    text: "Welche Supplement-Marken bieten Kapseln, Pulver und Fluessig-Formen an?"
+    text: "Kapseln oder Pulver? Welche Supplement-Marken bieten die meisten Darreichungsformen an?"
   - id: cmp_35
-    text: "Welche Supplement-Marken haben die besten Bewertungen in deutschen Testportalen?"
+    text: "Ich lese Testberichte. Welche Supplement-Marken haben die besten Bewertungen in Testportalen?"
   - id: cmp_36
-    text: "Welche Supplement-Marken sind am guenstigsten und welche am teuersten?"
+    text: "Ich vergleiche Preise. Welche Supplement-Marken sind am guenstigsten und welche am teuersten?"
   - id: cmp_37
-    text: "Welche Eisen-Supplement-Marken sind am besten vertraeglich?"
+    text: "Ich vertrage Eisen schlecht. Welche Eisen-Supplement-Marken sind am besten vertraeglich?"
   - id: cmp_38
-    text: "Erstelle ein Ranking der innovativsten Supplement-Marken im DACH-Raum"
+    text: "Ich mag innovative Produkte. Erstelle ein Ranking der innovativsten Supplement-Marken"
   - id: cmp_39
-    text: "Welche veganen Supplement-Marken sind besser als tierische Anbieter?"
+    text: "Ich bin Veganer. Welche veganen Supplement-Marken sind besser als tierische Anbieter?"
   - id: cmp_40
-    text: "Welche Supplement-Marken haben die breiteste Produktpalette in Deutschland?"
+    text: "Ich will moeglichst alles bei einer Marke kaufen. Welche hat die breiteste Produktpalette?"
   - id: cmp_41
-    text: "Welche Adaptogen-Supplement-Marken sind auf dem deutschen Markt am besten?"
+    text: "Ich interessiere mich fuer Adaptogene. Welche Marken sind auf dem deutschen Markt am besten?"
   - id: cmp_42
-    text: "Welche Supplement-Marken haben das beste Branding im Vergleich?"
+    text: "Mir gefaellt gutes Design. Welche Supplement-Marken haben das beste Branding?"
   - id: cmp_43
-    text: "Welche Calcium-Supplement-Marken sind am besten fuer Frauen ueber 40?"
+    text: "Meine Mutter ist ueber 40. Welche Calcium-Supplement-Marken sind fuer sie am besten?"
   - id: cmp_44
-    text: "Welche Supplement-Marken sind am besten fuer Schwangere geeignet?"
+    text: "Meine Freundin ist schwanger. Welche Supplement-Marken sind am besten fuer Schwangere?"
   - id: cmp_45
-    text: "Welche BCAA-Supplement-Marken schneiden im deutschen Markt am besten ab?"
+    text: "Ich nehme BCAAs. Welche BCAA-Supplement-Marken schneiden auf dem deutschen Markt am besten ab?"
   - id: cmp_46
-    text: "Welche Supplement-Marken haben die besten Trustpilot-Bewertungen?"
+    text: "Ich schaue Trustpilot-Bewertungen. Welche Supplement-Marken haben die besten Bewertungen?"
   - id: cmp_47
-    text: "Welche CBD-Supplement-Marken sind in Deutschland am beliebtesten?"
+    text: "Ich will CBD probieren. Welche CBD-Supplement-Marken sind in Deutschland am beliebtesten?"
   - id: cmp_48
-    text: "Welche Supplement-Marken bieten das beste Abo-Modell im Vergleich?"
+    text: "Ich ueberlege ein Abo. Welche Supplement-Marken bieten das beste Abo-Modell im Vergleich?"
   - id: cmp_49
-    text: "Welche Supplement-Marken schneiden bei Oeko-Test am besten ab?"
+    text: "Ich vertraue auf Oeko-Test. Welche Supplement-Marken schneiden bei Oeko-Test am besten ab?"
   - id: cmp_50
-    text: "Welche L-Glutamin-Marken sind fuer Sportler am besten im Vergleich?"
+    text: "Ich nehme L-Glutamin nach dem Training. Welche Marken sind fuer Sportler am besten?"
