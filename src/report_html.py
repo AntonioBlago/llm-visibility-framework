@@ -857,19 +857,21 @@ def generate_html_report(
             <div class="kpi-grid">{kpi_cards}</div>
         </div>
 
-        <!-- Charts -->
+        <!-- 1. Overall Ranking Table (first!) -->
+        {table_overall}
+
+        <!-- 2. Volatility / Spread Table -->
+        {table_volatility}
+
+        <!-- 3. Per-Model Ranking Tables -->
+        {table_per_model}
+
+        <!-- 4. Charts -->
         <div class="section">
             <h2>Charts</h2>
             <p>Interactive visualizations of brand visibility across models and prompt types.</p>
         </div>
         {chart_divs}
-
-        <!-- Ranking Tables -->
-        {table_overall}
-        {table_per_model}
-
-        <!-- Volatility Table -->
-        {table_volatility}
 
         <!-- Footer -->
         <div class="footer">
