@@ -1,10 +1,17 @@
-"""Data collector: sends prompts to Claude, GPT-4o, and Gemini, stores raw responses."""
+"""Data collector: sends prompts to Claude, GPT-4o, and Gemini concurrently.
+
+Uses ThreadPoolExecutor to call all 3 models in parallel for each prompt+run,
+cutting total collection time by ~3x. Each model runs in its own thread.
+File writes are thread-safe via a lock.
+"""
 
 from __future__ import annotations
 
 import argparse
 import json
+import threading
 import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -71,6 +78,10 @@ PROVIDERS = {
 }
 
 
+# ---------------------------------------------------------------------------
+# Single model call with retry
+# ---------------------------------------------------------------------------
+
 def call_model(
     prompt: str,
     model_name: str,
@@ -78,7 +89,7 @@ def call_model(
     max_retries: int = 3,
     retry_delay: float = 5.0,
 ) -> dict[str, Any]:
-    """Send a single prompt to a model and return structured result. Retries on transient errors."""
+    """Send a single prompt to a model with retries on transient errors."""
     provider_fn = PROVIDERS.get(model_cfg.provider)
     if not provider_fn:
         raise ValueError(f"Unknown provider: {model_cfg.provider}")
@@ -120,20 +131,63 @@ def call_model(
 
 
 # ---------------------------------------------------------------------------
-# Main collection loop
+# Thread-safe file writer
 # ---------------------------------------------------------------------------
+
+class SafeJsonlWriter:
+    """Thread-safe JSONL appender."""
+
+    def __init__(self, path: Path):
+        self.path = path
+        self.lock = threading.Lock()
+
+    def write(self, record: dict) -> None:
+        with self.lock:
+            with open(self.path, "a", encoding="utf-8") as f:
+                f.write(json.dumps(record, ensure_ascii=False) + "\n")
+
+
+# ---------------------------------------------------------------------------
+# Parallel collection: all 3 models called concurrently per prompt+run
+# ---------------------------------------------------------------------------
+
+def _collect_one_prompt_run(
+    prompt_data: dict,
+    run_idx: int,
+    model_name: str,
+    model_cfg: ModelConfig,
+) -> dict[str, Any]:
+    """Worker function: call one model for one prompt+run. Runs in a thread."""
+    result = call_model(prompt_data["text"], model_name, model_cfg)
+    return {
+        "prompt_id": prompt_data["id"],
+        "prompt_text": prompt_data["text"],
+        "cluster": prompt_data.get("cluster", "unknown"),
+        "model": result["model"],
+        "model_id": result["model_id"],
+        "provider": result["provider"],
+        "temperature": result["temperature"],
+        "run_id": run_idx,
+        "response": result["response"],
+        "latency_s": result["latency_s"],
+        "error": result["error"],
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+    }
+
 
 def collect_data(
     num_runs: int = 30,
     models: list[str] | None = None,
     clusters: list[str] | None = None,
     output_path: Path | None = None,
-    delay_between_calls: float = 1.0,
+    delay_between_calls: float = 0.3,
+    max_workers: int = 6,
 ) -> pd.DataFrame:
     """
-    Run the full data collection pipeline.
+    Run parallel data collection.
 
-    For each prompt x model x run, sends the prompt and stores the raw response.
+    For each prompt x run, calls all models concurrently using ThreadPoolExecutor.
+    With 3 models and max_workers=6, up to 6 API calls run simultaneously.
     """
     cfg = StudyConfig.load()
     prompts = load_all_prompts(clusters)
@@ -141,63 +195,87 @@ def collect_data(
     output_path = output_path or cfg.data_dir / "raw_responses.jsonl"
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
-    total = len(prompts) * len(model_names) * num_runs
+    # Filter models with valid API keys
+    active_models = {}
+    for name in model_names:
+        mcfg = cfg.models[name]
+        if mcfg.api_key:
+            active_models[name] = mcfg
+        else:
+            logger.warning(f"No API key for {name}, skipping")
+
+    total = len(prompts) * len(active_models) * num_runs
     logger.info(
-        f"Starting collection: {len(prompts)} prompts x {len(model_names)} models "
-        f"x {num_runs} runs = {total} API calls"
+        f"Starting parallel collection: {len(prompts)} prompts x {len(active_models)} models "
+        f"x {num_runs} runs = {total} API calls (max_workers={max_workers})"
     )
 
+    writer = SafeJsonlWriter(output_path)
     records: list[dict[str, Any]] = []
+    records_lock = threading.Lock()
 
-    with tqdm(total=total, desc="Collecting") as pbar:
-        for prompt_data in prompts:
-            prompt_id = prompt_data["id"]
-            prompt_text = prompt_data["text"]
-            cluster = prompt_data.get("cluster", "unknown")
-
-            for model_name in model_names:
-                model_cfg = cfg.models[model_name]
-
-                if not model_cfg.api_key:
-                    logger.warning(f"No API key for {model_name}, skipping")
-                    pbar.update(num_runs)
-                    continue
-
+    with tqdm(total=total, desc="Collecting", unit="call") as pbar:
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
+            # Process prompts in order, but parallelize across models + runs
+            for prompt_data in prompts:
+                # Submit all models x runs for this prompt concurrently
+                futures = {}
                 for run_idx in range(1, num_runs + 1):
-                    result = call_model(prompt_text, model_name, model_cfg)
+                    for model_name, model_cfg in active_models.items():
+                        future = executor.submit(
+                            _collect_one_prompt_run,
+                            prompt_data, run_idx, model_name, model_cfg,
+                        )
+                        futures[future] = (prompt_data["id"], model_name, run_idx)
 
-                    record = {
-                        "prompt_id": prompt_id,
-                        "prompt_text": prompt_text,
-                        "cluster": cluster,
-                        "model": result["model"],
-                        "model_id": result["model_id"],
-                        "provider": result["provider"],
-                        "temperature": result["temperature"],
-                        "run_id": run_idx,
-                        "response": result["response"],
-                        "latency_s": result["latency_s"],
-                        "error": result["error"],
-                        "timestamp": datetime.now(timezone.utc).isoformat(),
-                    }
-                    records.append(record)
+                # Collect results as they complete
+                for future in as_completed(futures):
+                    prompt_id, model_name, run_idx = futures[future]
+                    try:
+                        record = future.result()
+                    except Exception as e:
+                        logger.error(f"Unexpected error for {prompt_id}/{model_name}/run{run_idx}: {e}")
+                        record = {
+                            "prompt_id": prompt_id,
+                            "prompt_text": prompt_data["text"],
+                            "cluster": prompt_data.get("cluster", "unknown"),
+                            "model": model_name,
+                            "model_id": "",
+                            "provider": "",
+                            "temperature": 0.7,
+                            "run_id": run_idx,
+                            "response": "",
+                            "latency_s": 0,
+                            "error": str(e),
+                            "timestamp": datetime.now(timezone.utc).isoformat(),
+                        }
 
-                    # Append to JSONL file incrementally
-                    with open(output_path, "a", encoding="utf-8") as f:
-                        f.write(json.dumps(record, ensure_ascii=False) + "\n")
-
+                    # Thread-safe write + append
+                    writer.write(record)
+                    with records_lock:
+                        records.append(record)
                     pbar.update(1)
 
-                    if delay_between_calls > 0:
-                        time.sleep(delay_between_calls)
+                # Small delay between prompts to avoid burst rate limits
+                if delay_between_calls > 0:
+                    time.sleep(delay_between_calls)
 
     df = pd.DataFrame(records)
     logger.info(f"Collection complete: {len(df)} records saved to {output_path}")
 
-    # Also save as CSV for convenience
+    # Save CSV
     csv_path = output_path.with_suffix(".csv")
     df.to_csv(csv_path, index=False, encoding="utf-8")
     logger.info(f"CSV saved to {csv_path}")
+
+    # Summary
+    error_count = df["error"].notna().sum()
+    if error_count > 0:
+        logger.warning(f"Errors: {error_count}/{len(df)} calls failed")
+        for model in df["model"].unique():
+            model_errors = df[(df["model"] == model) & (df["error"].notna())]
+            if len(model_errors) > 0:
+                logger.warning(f"  {model}: {len(model_errors)} errors")
 
     return df
 
@@ -207,11 +285,12 @@ def collect_data(
 # ---------------------------------------------------------------------------
 
 def main():
-    parser = argparse.ArgumentParser(description="LLM Visibility Study — Data Collector")
+    parser = argparse.ArgumentParser(description="LLM Visibility Study — Parallel Data Collector")
     parser.add_argument("--runs", type=int, default=30, help="Number of runs per prompt per model")
     parser.add_argument("--models", nargs="+", default=None, help="Models to query (default: all)")
     parser.add_argument("--clusters", nargs="+", default=None, help="Prompt clusters (default: all)")
-    parser.add_argument("--delay", type=float, default=1.0, help="Delay between API calls in seconds")
+    parser.add_argument("--delay", type=float, default=0.3, help="Delay between prompt batches in seconds")
+    parser.add_argument("--workers", type=int, default=6, help="Max concurrent API calls")
     parser.add_argument("--output", type=str, default=None, help="Output file path")
 
     args = parser.parse_args()
@@ -223,6 +302,7 @@ def main():
         clusters=args.clusters,
         output_path=output_path,
         delay_between_calls=args.delay,
+        max_workers=args.workers,
     )
 
 
