@@ -71,37 +71,52 @@ PROVIDERS = {
 }
 
 
-def call_model(prompt: str, model_name: str, model_cfg: ModelConfig) -> dict[str, Any]:
-    """Send a single prompt to a model and return structured result."""
+def call_model(
+    prompt: str,
+    model_name: str,
+    model_cfg: ModelConfig,
+    max_retries: int = 3,
+    retry_delay: float = 5.0,
+) -> dict[str, Any]:
+    """Send a single prompt to a model and return structured result. Retries on transient errors."""
     provider_fn = PROVIDERS.get(model_cfg.provider)
     if not provider_fn:
         raise ValueError(f"Unknown provider: {model_cfg.provider}")
 
-    start = time.time()
-    try:
-        response_text = provider_fn(prompt, model_cfg)
-        elapsed = time.time() - start
-        return {
-            "model": model_name,
-            "model_id": model_cfg.model_id,
-            "provider": model_cfg.provider,
-            "temperature": model_cfg.temperature,
-            "response": response_text,
-            "latency_s": round(elapsed, 3),
-            "error": None,
-        }
-    except Exception as e:
-        elapsed = time.time() - start
-        logger.error(f"Error calling {model_name}: {e}")
-        return {
-            "model": model_name,
-            "model_id": model_cfg.model_id,
-            "provider": model_cfg.provider,
-            "temperature": model_cfg.temperature,
-            "response": "",
-            "latency_s": round(elapsed, 3),
-            "error": str(e),
-        }
+    last_error = None
+    for attempt in range(1, max_retries + 1):
+        start = time.time()
+        try:
+            response_text = provider_fn(prompt, model_cfg)
+            elapsed = time.time() - start
+            return {
+                "model": model_name,
+                "model_id": model_cfg.model_id,
+                "provider": model_cfg.provider,
+                "temperature": model_cfg.temperature,
+                "response": response_text,
+                "latency_s": round(elapsed, 3),
+                "error": None,
+            }
+        except Exception as e:
+            last_error = e
+            elapsed = time.time() - start
+            if attempt < max_retries:
+                wait = retry_delay * attempt
+                logger.warning(f"Retry {attempt}/{max_retries} for {model_name}: {e} (waiting {wait:.0f}s)")
+                time.sleep(wait)
+            else:
+                logger.error(f"Failed after {max_retries} retries for {model_name}: {e}")
+
+    return {
+        "model": model_name,
+        "model_id": model_cfg.model_id,
+        "provider": model_cfg.provider,
+        "temperature": model_cfg.temperature,
+        "response": "",
+        "latency_s": round(time.time() - start, 3),
+        "error": str(last_error),
+    }
 
 
 # ---------------------------------------------------------------------------
