@@ -4,6 +4,7 @@
 
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Blog Post](https://img.shields.io/badge/Blog-Read%20the%20Study-f97316)](https://www.antonioblago.com/blog/wie-llms-marken-ranken-eine-statistische-studie-zur-ki-sichtbarkeit-mit-claude-gpt-4o-und-gemini)
 
 ## Overview
 
@@ -177,6 +178,13 @@ Visibly AI is an SEO agent system that helps brands track and improve their visi
 The brands tracked in this study are sourced from the Visibly AI Brand Radar (Lovebrand Database 2025).
 
 **Try it:** [www.visibly-ai.com](https://www.visibly-ai.com) | **MCP Server:** `pip install visiblyai-mcp-server`
+
+## Blog Article
+
+Read the full study write-up with key findings and GEO implications:
+
+- **DE:** [Wie LLMs Marken ranken: Eine statistische Studie zur KI-Sichtbarkeit](https://www.antonioblago.com/blog/wie-llms-marken-ranken-eine-statistische-studie-zur-ki-sichtbarkeit-mit-claude-gpt-4o-und-gemini)
+- **EN:** Coming soon (sync from DE version)
 
 ## Author
 
