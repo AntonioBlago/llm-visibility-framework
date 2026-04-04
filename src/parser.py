@@ -386,11 +386,12 @@ def parse_all_responses(raw_df: pd.DataFrame, fuzzy_enabled: bool = True) -> pd.
     logger.info(f"Fuzzy matching: {'enabled' if fuzzy_enabled else 'disabled'}")
 
     for _, row in raw_df.iterrows():
-        if row.get("error"):
+        error_val = row.get("error")
+        if pd.notna(error_val) and error_val:
             continue
 
         response_text = str(row.get("response", ""))
-        if not response_text:
+        if not response_text or response_text == "nan":
             continue
 
         for brand in brands:

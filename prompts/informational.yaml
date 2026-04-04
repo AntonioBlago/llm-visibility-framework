@@ -1,159 +1,108 @@
 # Informational Prompt Cluster — GENERIC (no brand names)
-# General knowledge queries about supplements, ingredients, health benefits
+# All prompts explicitly ask for BRANDS/MARKEN to trigger brand mentions
 # Language: German (DE market focus)
-# Rule: Brands are detected in output only, NEVER mentioned in prompts
 
 cluster: informational
-description: "General knowledge queries — no purchase intent, no brand mentions"
+description: "General knowledge queries about supplement brands — no purchase intent"
 
 prompts:
   - id: info_01
-    text: "Welche Nahrungsergaenzungsmittel sind in Deutschland besonders beliebt?"
-    text_en: "Which dietary supplements are particularly popular in Germany?"
+    text: "Welche Nahrungsergaenzungsmittel-Marken sind in Deutschland besonders beliebt?"
   - id: info_02
-    text: "Was sind die wichtigsten Vitamine und Mineralstoffe, die man supplementieren sollte?"
-    text_en: "What are the most important vitamins and minerals to supplement?"
+    text: "Welche Marken fuer Vitamine und Mineralstoffe sind in Deutschland empfehlenswert?"
   - id: info_03
-    text: "Wie sinnvoll sind Greens Pulver als Nahrungsergaenzung?"
-    text_en: "How useful are greens powders as dietary supplements?"
+    text: "Welche Marken stellen Greens Pulver in Deutschland her?"
   - id: info_04
-    text: "Welche Supplements helfen bei der Regeneration nach dem Sport?"
-    text_en: "Which supplements help with recovery after exercise?"
+    text: "Welche Supplement-Marken helfen Sportlern bei der Regeneration?"
   - id: info_05
-    text: "Was bringt Kollagen als Nahrungsergaenzungsmittel wirklich?"
-    text_en: "What does collagen as a supplement really do?"
+    text: "Welche Marken bieten Kollagen-Supplements in Deutschland an?"
   - id: info_06
-    text: "Welche Marken fuer Nahrungsergaenzungsmittel sind in Deutschland bekannt?"
-    text_en: "Which supplement brands are well-known in Germany?"
+    text: "Welche deutschen Nahrungsergaenzungsmittel-Marken sind bekannt?"
   - id: info_07
-    text: "Sind Mahlzeitenersatz-Shakes eine gesunde Alternative zum Kochen?"
-    text_en: "Are meal replacement shakes a healthy alternative to cooking?"
+    text: "Welche Marken bieten Mahlzeitenersatz-Shakes in Deutschland an?"
   - id: info_08
-    text: "Welche Supplements empfehlen Ernaehrungswissenschaftler in Deutschland?"
-    text_en: "Which supplements do nutritionists recommend in Germany?"
+    text: "Welche Supplement-Marken empfehlen Ernaehrungswissenschaftler in Deutschland?"
   - id: info_09
-    text: "Was sind Nootropika und welche Produkte gibt es auf dem deutschen Markt?"
-    text_en: "What are nootropics and which products are available on the German market?"
+    text: "Welche Nootropika-Marken gibt es auf dem deutschen Markt?"
   - id: info_10
-    text: "Wie unterscheiden sich Bio-Supplements von konventionellen Produkten?"
-    text_en: "How do organic supplements differ from conventional products?"
+    text: "Welche Marken bieten Bio-Supplements in Deutschland an?"
   - id: info_11
-    text: "Welche Nahrungsergaenzungsmittel sind fuer Frauen besonders empfehlenswert?"
-    text_en: "Which supplements are particularly recommended for women?"
+    text: "Welche Supplement-Marken sind fuer Frauen besonders empfehlenswert?"
   - id: info_12
-    text: "Was sollte man bei der Auswahl von Proteinpulver beachten?"
-    text_en: "What should you consider when choosing protein powder?"
+    text: "Welche Marken fuer Proteinpulver gibt es in Deutschland?"
   - id: info_13
-    text: "Welche Rolle spielen Omega-3-Fettsaeuren als Nahrungsergaenzung?"
-    text_en: "What role do omega-3 fatty acids play as supplements?"
+    text: "Welche Marken bieten Omega-3-Supplements in Deutschland an?"
   - id: info_14
-    text: "Wie erkennt man qualitativ hochwertige Nahrungsergaenzungsmittel?"
-    text_en: "How do you identify high-quality dietary supplements?"
+    text: "Welche Nahrungsergaenzungsmittel-Marken gelten als qualitativ hochwertig?"
   - id: info_15
-    text: "Welche Supplements sind fuer Veganer besonders wichtig?"
-    text_en: "Which supplements are particularly important for vegans?"
+    text: "Welche Supplement-Marken sind fuer Veganer besonders geeignet?"
   - id: info_16
-    text: "Was sind die aktuellen Trends bei Nahrungsergaenzungsmitteln in Deutschland?"
-    text_en: "What are the current trends in dietary supplements in Germany?"
+    text: "Welche Marken fuer Nahrungsergaenzungsmittel liegen aktuell im Trend?"
   - id: info_17
-    text: "Welche Vitamine sollte man im Winter supplementieren?"
-    text_en: "Which vitamins should you supplement in winter?"
+    text: "Welche Vitamin-D-Marken sind in Deutschland bekannt?"
   - id: info_18
-    text: "Wie wirken Adaptogene und welche gibt es als Nahrungsergaenzung?"
-    text_en: "How do adaptogens work and which ones are available as supplements?"
+    text: "Welche Marken bieten Adaptogene als Nahrungsergaenzung an?"
   - id: info_19
-    text: "Was sind die haeufigsten Fehler bei der Einnahme von Supplements?"
-    text_en: "What are the most common mistakes when taking supplements?"
+    text: "Welche Supplement-Marken sind bei Einsteigern besonders beliebt?"
   - id: info_20
-    text: "Welche Nahrungsergaenzungsmittel helfen beim Muskelaufbau?"
-    text_en: "Which dietary supplements help with muscle building?"
+    text: "Welche Marken fuer Muskelaufbau-Supplements gibt es in Deutschland?"
   - id: info_21
-    text: "Was ist der Unterschied zwischen Whey Protein und pflanzlichem Protein?"
-    text_en: "What is the difference between whey protein and plant-based protein?"
+    text: "Welche Marken bieten Whey Protein und pflanzliches Protein an?"
   - id: info_22
-    text: "Welche Nahrungsergaenzungsmittel koennen die Konzentration verbessern?"
-    text_en: "Which supplements can improve concentration?"
+    text: "Welche Supplement-Marken verbessern Konzentration und Fokus?"
   - id: info_23
-    text: "Wie sicher sind Nahrungsergaenzungsmittel aus dem Internet?"
-    text_en: "How safe are supplements bought online?"
+    text: "Welche Nahrungsergaenzungsmittel-Marken kann man sicher online kaufen?"
   - id: info_24
-    text: "Welche Probiotika-Supplements gibt es auf dem deutschen Markt?"
-    text_en: "Which probiotic supplements are available on the German market?"
+    text: "Welche Probiotika-Marken gibt es auf dem deutschen Markt?"
   - id: info_25
-    text: "Was sollte man ueber Vitamin-D-Supplementierung wissen?"
-    text_en: "What should you know about vitamin D supplementation?"
+    text: "Welche Marken bieten hochdosiertes Vitamin D in Deutschland an?"
   - id: info_26
-    text: "Welche Nahrungsergaenzungsmittel sind gut fuer Haut und Haare?"
-    text_en: "Which supplements are good for skin and hair?"
+    text: "Welche Supplement-Marken sind gut fuer Haut und Haare?"
   - id: info_27
-    text: "Wie wirkt Kreatin als Nahrungsergaenzung und fuer wen ist es geeignet?"
-    text_en: "How does creatine work as a supplement and who is it suitable for?"
+    text: "Welche Marken bieten Kreatin-Supplements in Deutschland an?"
   - id: info_28
-    text: "Was sind die Vor- und Nachteile von Gummibärchen-Vitaminen?"
-    text_en: "What are the pros and cons of gummy vitamins?"
+    text: "Welche Marken verkaufen Gummibaerchen-Vitamine in Deutschland?"
   - id: info_29
-    text: "Welche Supplements empfehlen Sportmediziner fuer Ausdauersportler?"
-    text_en: "Which supplements do sports doctors recommend for endurance athletes?"
+    text: "Welche Supplement-Marken empfehlen Sportmediziner fuer Ausdauersportler?"
   - id: info_30
-    text: "Wie werden Nahrungsergaenzungsmittel in Deutschland reguliert?"
-    text_en: "How are dietary supplements regulated in Germany?"
+    text: "Welche Nahrungsergaenzungsmittel-Marken werden in Deutschland reguliert und zertifiziert?"
   - id: info_31
-    text: "Welche Nahrungsergaenzungsmittel helfen beim Abnehmen?"
-    text_en: "Which supplements help with weight loss?"
+    text: "Welche Supplement-Marken helfen beim Abnehmen?"
   - id: info_32
-    text: "Was ist Ashwagandha und welche Wirkung hat es als Supplement?"
-    text_en: "What is ashwagandha and what effect does it have as a supplement?"
+    text: "Welche Marken bieten Ashwagandha-Supplements in Deutschland an?"
   - id: info_33
-    text: "Welche Supplements werden in der Schwangerschaft empfohlen?"
-    text_en: "Which supplements are recommended during pregnancy?"
+    text: "Welche Supplement-Marken werden in der Schwangerschaft empfohlen?"
   - id: info_34
-    text: "Wie funktioniert der deutsche Supplement-Markt und wie gross ist er?"
-    text_en: "How does the German supplement market work and how big is it?"
+    text: "Welche Marken dominieren den deutschen Supplement-Markt?"
   - id: info_35
-    text: "Welche Nahrungsergaenzungsmittel haben den staerksten wissenschaftlichen Nachweis?"
-    text_en: "Which supplements have the strongest scientific evidence?"
+    text: "Welche Supplement-Marken haben den staerksten wissenschaftlichen Nachweis?"
   - id: info_36
-    text: "Was sind BCAA und wofuer werden sie eingenommen?"
-    text_en: "What are BCAAs and what are they taken for?"
+    text: "Welche Marken bieten BCAA-Supplements in Deutschland an?"
   - id: info_37
-    text: "Welche Nahrungsergaenzungsmittel helfen bei Gelenkproblemen?"
-    text_en: "Which supplements help with joint problems?"
+    text: "Welche Supplement-Marken helfen bei Gelenkproblemen?"
   - id: info_38
-    text: "Wie unterscheiden sich Supplement-Hersteller in Deutschland von internationalen Anbietern?"
-    text_en: "How do German supplement manufacturers differ from international ones?"
+    text: "Welche deutschen Supplement-Marken unterscheiden sich von internationalen Anbietern?"
   - id: info_39
-    text: "Was sind die beliebtesten Supplement-Kategorien bei jungen Erwachsenen?"
-    text_en: "What are the most popular supplement categories among young adults?"
+    text: "Welche Supplement-Marken sind bei jungen Erwachsenen besonders beliebt?"
   - id: info_40
-    text: "Welche Rolle spielt Magnesium als Nahrungsergaenzung?"
-    text_en: "What role does magnesium play as a supplement?"
+    text: "Welche Marken bieten Magnesium-Supplements in Deutschland an?"
   - id: info_41
-    text: "Wie wirken CBD-haltige Nahrungsergaenzungsmittel?"
-    text_en: "How do CBD-containing supplements work?"
+    text: "Welche Marken bieten CBD-haltige Nahrungsergaenzungsmittel an?"
   - id: info_42
-    text: "Welche Nahrungsergaenzungsmittel verbessern den Schlaf?"
-    text_en: "Which supplements improve sleep?"
+    text: "Welche Supplement-Marken verbessern den Schlaf?"
   - id: info_43
-    text: "Was ist der Unterschied zwischen Nahrungsergaenzungsmitteln aus der Apotheke und dem Internet?"
-    text_en: "What is the difference between supplements from pharmacies and online?"
+    text: "Welche Nahrungsergaenzungsmittel-Marken gibt es in der Apotheke und online?"
   - id: info_44
-    text: "Wie wichtig ist die Bioverfuegbarkeit bei Supplements?"
-    text_en: "How important is bioavailability in supplements?"
+    text: "Welche Supplement-Marken legen besonderen Wert auf Bioverfuegbarkeit?"
   - id: info_45
-    text: "Welche Superfoods gibt es als Pulver in Deutschland zu kaufen?"
-    text_en: "Which superfoods are available as powder in Germany?"
+    text: "Welche Marken bieten Superfoods als Pulver in Deutschland an?"
   - id: info_46
-    text: "Was sollte man ueber Eisen-Supplementierung wissen?"
-    text_en: "What should you know about iron supplementation?"
+    text: "Welche Marken fuer Eisen-Supplements gibt es in Deutschland?"
   - id: info_47
-    text: "Welche Nahrungsergaenzungsmittel sind fuer Senioren empfehlenswert?"
-    text_en: "Which supplements are recommended for seniors?"
+    text: "Welche Supplement-Marken sind fuer Senioren empfehlenswert?"
   - id: info_48
-    text: "Wie funktionieren Detox-Supplements und bringen sie etwas?"
-    text_en: "How do detox supplements work and are they useful?"
+    text: "Welche Marken bieten Detox-Supplements in Deutschland an?"
   - id: info_49
-    text: "Welche ayurvedischen Supplements gibt es in Deutschland?"
-    text_en: "Which ayurvedic supplements are available in Germany?"
+    text: "Welche ayurvedischen Supplement-Marken gibt es in Deutschland?"
   - id: info_50
-    text: "Was sind die groessten Supplement-Trends auf Social Media?"
-    text_en: "What are the biggest supplement trends on social media?"
+    text: "Welche Supplement-Marken sind auf Social Media besonders praesent?"

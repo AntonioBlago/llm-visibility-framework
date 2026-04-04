@@ -1,159 +1,108 @@
 # Navigational Prompt Cluster — GENERIC (no brand names)
-# Brand-adjacent queries that may trigger brand mentions
+# All prompts explicitly ask for BRANDS/MARKEN in brand-adjacent context
 # Language: German (DE market focus)
-# Rule: Brands are detected in output only, NEVER mentioned in prompts
 
 cluster: navigational
-description: "Brand-adjacent queries — contextually close to brands, but no brand names"
+description: "Brand-adjacent queries — contextually close to brands"
 
 prompts:
   - id: nav_01
-    text: "Gibt es gute deutsche Alternativen zu amerikanischen Greens-Pulvern?"
-    text_en: "Are there good German alternatives to American greens powders?"
+    text: "Welche deutschen Marken bieten Alternativen zu amerikanischen Greens-Pulvern?"
   - id: nav_02
-    text: "Wo kann man hochwertige Supplements in Deutschland online kaufen?"
-    text_en: "Where can you buy high-quality supplements online in Germany?"
+    text: "Welche Supplement-Marken kann man in Deutschland online kaufen?"
   - id: nav_03
-    text: "Welche Supplement-Shops in Deutschland sind vertrauenswuerdig?"
-    text_en: "Which supplement shops in Germany are trustworthy?"
+    text: "Welche Supplement-Marken in Deutschland sind vertrauenswuerdig?"
   - id: nav_04
-    text: "Gibt es deutsche Alternativen zu amerikanischen Supplement-Marken?"
-    text_en: "Are there German alternatives to American supplement brands?"
+    text: "Welche deutschen Supplement-Marken sind Alternativen zu amerikanischen Anbietern?"
   - id: nav_05
-    text: "Welche Marke steckt hinter den gruenen Pulvern auf Social Media?"
-    text_en: "Which brand is behind the green powders on social media?"
+    text: "Welche Marken stecken hinter den gruenen Pulvern auf Social Media?"
   - id: nav_06
-    text: "Deutsche Startups im Bereich Nahrungsergaenzung"
-    text_en: "German startups in the dietary supplement space"
+    text: "Welche Supplement-Marken sind deutsche Startups?"
   - id: nav_07
     text: "Welche Supplement-Marken empfehlen Fitness-Influencer?"
-    text_en: "Which supplement brands do fitness influencers recommend?"
   - id: nav_08
-    text: "Welche Supplements werden auf Social Media am meisten beworben?"
-    text_en: "Which supplements are most advertised on social media?"
+    text: "Welche Supplement-Marken werden auf Social Media am meisten beworben?"
   - id: nav_09
-    text: "Erfahrungen mit deutschen Premium-Supplement-Marken"
-    text_en: "Experiences with German premium supplement brands"
+    text: "Welche deutschen Premium-Supplement-Marken haben gute Erfahrungen?"
   - id: nav_10
-    text: "Welche Nahrungsergaenzungsmittel-Hersteller produzieren in Deutschland?"
-    text_en: "Which supplement manufacturers produce in Germany?"
+    text: "Welche Nahrungsergaenzungsmittel-Marken produzieren in Deutschland?"
   - id: nav_11
     text: "Welche Supplement-Marken sind bei Stiftung Warentest gut bewertet?"
-    text_en: "Which supplement brands are well-rated by Stiftung Warentest?"
   - id: nav_12
-    text: "Beliebte Nahrungsergaenzungsmittel aus der Apotheke oder online?"
-    text_en: "Popular supplements from pharmacies or online?"
+    text: "Welche Supplement-Marken gibt es in der Apotheke und online?"
   - id: nav_13
-    text: "Welche deutschen Supplement-Hersteller haben Laboranalysen veroeffentlicht?"
-    text_en: "Which German supplement manufacturers have published lab analyses?"
+    text: "Welche deutschen Supplement-Marken veroeffentlichen Laboranalysen?"
   - id: nav_14
-    text: "Welche Nahrungsergaenzungsmittel werden in Fitness-Studios verkauft?"
-    text_en: "Which supplements are sold in fitness studios?"
+    text: "Welche Supplement-Marken werden in Fitness-Studios verkauft?"
   - id: nav_15
-    text: "Deutsche Marken fuer pflanzliche Proteinpulver"
-    text_en: "German brands for plant-based protein powder"
+    text: "Welche deutschen Marken bieten pflanzliche Proteinpulver an?"
   - id: nav_16
     text: "Welche Supplement-Marken gibt es bei Amazon Deutschland?"
-    text_en: "Which supplement brands are available on Amazon Germany?"
   - id: nav_17
-    text: "Welche Supplement-Unternehmen kommen aus Berlin?"
-    text_en: "Which supplement companies are from Berlin?"
+    text: "Welche Supplement-Marken kommen aus Berlin?"
   - id: nav_18
-    text: "Welche Nahrungsergaenzungsmittel-Marken sind bei DM oder Rossmann erhaeltlich?"
-    text_en: "Which supplement brands are available at DM or Rossmann?"
+    text: "Welche Supplement-Marken sind bei DM oder Rossmann erhaeltlich?"
   - id: nav_19
-    text: "Welche deutschen Supplement-Startups haben kuerzlich Investments erhalten?"
-    text_en: "Which German supplement startups recently received investments?"
+    text: "Welche deutschen Supplement-Marken haben kuerzlich Investments erhalten?"
   - id: nav_20
     text: "Welche Supplement-Marken sponsern Sportler in Deutschland?"
-    text_en: "Which supplement brands sponsor athletes in Germany?"
   - id: nav_21
-    text: "Welche Nahrungsergaenzungsmittel werden von Podcasts empfohlen?"
-    text_en: "Which supplements are recommended by podcasts?"
+    text: "Welche Supplement-Marken werden von Podcasts empfohlen?"
   - id: nav_22
-    text: "Wo kaufen Deutsche am liebsten ihre Supplements ein?"
-    text_en: "Where do Germans prefer to buy their supplements?"
+    text: "Welche Supplement-Marken kaufen Deutsche am liebsten?"
   - id: nav_23
     text: "Welche Supplement-Marken haben eine eigene App?"
-    text_en: "Which supplement brands have their own app?"
   - id: nav_24
-    text: "Welche deutschen Supplement-Firmen verkaufen auch international?"
-    text_en: "Which German supplement companies also sell internationally?"
+    text: "Welche deutschen Supplement-Marken verkaufen auch international?"
   - id: nav_25
     text: "Welche Marken bieten personalisierte Supplement-Pakete an?"
-    text_en: "Which brands offer personalized supplement packages?"
   - id: nav_26
     text: "Welche Supplement-Marken haben ein Abo-Modell?"
-    text_en: "Which supplement brands have a subscription model?"
   - id: nav_27
-    text: "Welche Nahrungsergaenzungsmittel-Hersteller sind bio-zertifiziert?"
-    text_en: "Which supplement manufacturers are organically certified?"
+    text: "Welche Supplement-Marken sind bio-zertifiziert?"
   - id: nav_28
     text: "Welche Supplement-Marken sind auf Instagram besonders praesent?"
-    text_en: "Which supplement brands are particularly present on Instagram?"
   - id: nav_29
     text: "Welche Direct-to-Consumer Supplement-Marken gibt es in Deutschland?"
-    text_en: "Which direct-to-consumer supplement brands are there in Germany?"
   - id: nav_30
-    text: "Welche Nahrungsergaenzungsmittel-Firmen haben Hoehle der Loewen Auftritte gehabt?"
-    text_en: "Which supplement companies have appeared on Shark Tank Germany?"
+    text: "Welche Supplement-Marken hatten Auftritte in der Hoehle der Loewen?"
   - id: nav_31
     text: "Welche Supplement-Marken nutzen nachhaltiges Verpackungsmaterial?"
-    text_en: "Which supplement brands use sustainable packaging?"
   - id: nav_32
-    text: "Wo gibt es Supplement-Proben oder Testpakete in Deutschland?"
-    text_en: "Where can you get supplement samples or trial packages in Germany?"
+    text: "Welche Supplement-Marken bieten Proben oder Testpakete an?"
   - id: nav_33
     text: "Welche Supplement-Marken haben eigene Ladengeschaefte in Deutschland?"
-    text_en: "Which supplement brands have physical stores in Germany?"
   - id: nav_34
-    text: "Welche deutschen Nahrungsergaenzungsmittel-Marken werden in Fitnessstudios beworben?"
-    text_en: "Which German supplement brands are promoted in gyms?"
+    text: "Welche deutschen Supplement-Marken werden in Fitnessstudios beworben?"
   - id: nav_35
     text: "Welche Supplement-Marken bieten kostenlose Beratung an?"
-    text_en: "Which supplement brands offer free consultations?"
   - id: nav_36
-    text: "Welche Nahrungsergaenzungsmittel-Startups sind in der DACH-Region erfolgreich?"
-    text_en: "Which supplement startups are successful in the DACH region?"
+    text: "Welche Supplement-Marken sind in der DACH-Region erfolgreich?"
   - id: nav_37
-    text: "Welche Supplement-Hersteller bieten Laborberichte fuer jede Charge?"
-    text_en: "Which supplement manufacturers offer lab reports for each batch?"
+    text: "Welche Supplement-Marken bieten Laborberichte fuer jede Charge?"
   - id: nav_38
-    text: "Welche Marken fuer Nahrungsergaenzungsmittel setzen auf Clean Label?"
-    text_en: "Which supplement brands use clean labeling?"
+    text: "Welche Supplement-Marken setzen auf Clean Label?"
   - id: nav_39
     text: "Welche Supplement-Marken sind besonders bei Veganern beliebt?"
-    text_en: "Which supplement brands are particularly popular with vegans?"
   - id: nav_40
     text: "Welche deutschen Supplement-Marken werden von Aerzten empfohlen?"
-    text_en: "Which German supplement brands are recommended by doctors?"
   - id: nav_41
-    text: "Welche Nahrungsergaenzungsmittel-Hersteller haben einen guten Kundenservice?"
-    text_en: "Which supplement manufacturers have good customer service?"
+    text: "Welche Supplement-Marken haben einen guten Kundenservice?"
   - id: nav_42
-    text: "Welche Supplement-Firmen bieten Rabatt fuer Studenten?"
-    text_en: "Which supplement companies offer student discounts?"
+    text: "Welche Supplement-Marken bieten Rabatt fuer Studenten?"
   - id: nav_43
-    text: "Welche Supplement-Marken sind in deutschen Fitnessforen am meisten diskutiert?"
-    text_en: "Which supplement brands are most discussed in German fitness forums?"
+    text: "Welche Supplement-Marken werden in deutschen Fitnessforen diskutiert?"
   - id: nav_44
     text: "Welche neuen Supplement-Marken sind 2025 in Deutschland gestartet?"
-    text_en: "Which new supplement brands launched in Germany in 2025?"
   - id: nav_45
-    text: "Welche Supplement-Marken bieten Treueprogramme oder Punkte an?"
-    text_en: "Which supplement brands offer loyalty programs or points?"
+    text: "Welche Supplement-Marken bieten Treueprogramme an?"
   - id: nav_46
-    text: "Welche deutschen Supplement-Hersteller nutzen kuenstliche Intelligenz?"
-    text_en: "Which German supplement manufacturers use artificial intelligence?"
+    text: "Welche deutschen Supplement-Marken nutzen kuenstliche Intelligenz?"
   - id: nav_47
-    text: "Welche Nahrungsergaenzungsmittel werden in Yoga-Studios empfohlen?"
-    text_en: "Which supplements are recommended in yoga studios?"
+    text: "Welche Supplement-Marken werden in Yoga-Studios empfohlen?"
   - id: nav_48
     text: "Welche Supplement-Marken haben die meisten Google-Bewertungen?"
-    text_en: "Which supplement brands have the most Google reviews?"
   - id: nav_49
-    text: "Welche Supplement-Firmen aus Deutschland sind boersennotiert?"
-    text_en: "Which supplement companies from Germany are publicly listed?"
+    text: "Welche Supplement-Marken aus Deutschland sind boersennotiert?"
   - id: nav_50
-    text: "Welche Marken sind auf der Fibo oder Health-Messen in Deutschland vertreten?"
-    text_en: "Which brands are represented at FIBO or health fairs in Germany?"
+    text: "Welche Supplement-Marken sind auf der Fibo oder Health-Messen vertreten?"

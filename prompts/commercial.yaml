@@ -1,159 +1,108 @@
 # Commercial Prompt Cluster — GENERIC (no brand names)
-# Purchase-intent queries: "best", "buy", "top", "recommendation"
+# All prompts explicitly ask for BRANDS/MARKEN with purchase intent
 # Language: German (DE market focus)
-# Rule: Brands are detected in output only, NEVER mentioned in prompts
 
 cluster: commercial
-description: "Purchase-intent queries — user ready to buy, no brand mentions"
+description: "Purchase-intent queries about supplement brands"
 
 prompts:
   - id: com_01
-    text: "Was ist das beste Greens Pulver in Deutschland?"
-    text_en: "What is the best greens powder in Germany?"
+    text: "Welche Marke hat das beste Greens Pulver in Deutschland?"
   - id: com_02
-    text: "Welches Proteinpulver hat das beste Preis-Leistungs-Verhaeltnis?"
-    text_en: "Which protein powder has the best value for money?"
+    text: "Welche Proteinpulver-Marke hat das beste Preis-Leistungs-Verhaeltnis?"
   - id: com_03
     text: "Empfiehl mir die besten deutschen Supplement-Marken"
-    text_en: "Recommend the best German supplement brands to me"
   - id: com_04
-    text: "Top 5 Kollagen-Produkte fuer Haut und Haare"
-    text_en: "Top 5 collagen products for skin and hair"
+    text: "Welche Marken bieten die besten Kollagen-Produkte fuer Haut und Haare?"
   - id: com_05
-    text: "Welches Vitamin D Praeparat sollte ich kaufen?"
-    text_en: "Which vitamin D supplement should I buy?"
+    text: "Welche Marke bietet das beste Vitamin-D-Praeparat?"
   - id: com_06
-    text: "Beste Mahlzeitenersatz-Drinks im Vergleich"
-    text_en: "Best meal replacement drinks in comparison"
+    text: "Welche Marken bieten die besten Mahlzeitenersatz-Drinks?"
   - id: com_07
-    text: "Welche Supplements lohnen sich wirklich fuer Sportler?"
-    text_en: "Which supplements are really worth it for athletes?"
+    text: "Welche Supplement-Marken lohnen sich wirklich fuer Sportler?"
   - id: com_08
-    text: "Die besten Nahrungsergaenzungsmittel fuer besseren Schlaf"
-    text_en: "The best supplements for better sleep"
+    text: "Welche Marken bieten die besten Supplements fuer besseren Schlaf?"
   - id: com_09
-    text: "Welche Superfood-Pulver sind am besten bewertet?"
-    text_en: "Which superfood powders are best rated?"
+    text: "Welche Superfood-Marken sind am besten bewertet?"
   - id: com_10
-    text: "Top Nootropika-Produkte fuer Konzentration und Fokus"
-    text_en: "Top nootropic products for concentration and focus"
+    text: "Welche Nootropika-Marken bieten die besten Produkte fuer Konzentration?"
   - id: com_11
-    text: "Beste Bio-Supplements aus Deutschland bestellen"
-    text_en: "Order the best organic supplements from Germany"
+    text: "Welche Bio-Supplement-Marken aus Deutschland sind empfehlenswert?"
   - id: com_12
-    text: "Welches All-in-One Supplement Pulver ist empfehlenswert?"
-    text_en: "Which all-in-one supplement powder is recommended?"
+    text: "Welche Marke bietet das beste All-in-One Supplement Pulver?"
   - id: com_13
-    text: "Die besten Magnesium-Praeparate im Test"
-    text_en: "The best magnesium supplements in testing"
+    text: "Welche Marken bieten die besten Magnesium-Praeparate?"
   - id: com_14
-    text: "Welches Zink-Supplement hat die beste Bioverfuegbarkeit?"
-    text_en: "Which zinc supplement has the best bioavailability?"
+    text: "Welche Marke hat das Zink-Supplement mit der besten Bioverfuegbarkeit?"
   - id: com_15
-    text: "Top 10 Nahrungsergaenzungsmittel fuer das Immunsystem"
-    text_en: "Top 10 supplements for the immune system"
+    text: "Welche Supplement-Marken staerken das Immunsystem am besten?"
   - id: com_16
-    text: "Bestes Kreatin-Supplement fuer Kraftsport"
-    text_en: "Best creatine supplement for strength training"
+    text: "Welche Marke bietet das beste Kreatin-Supplement fuer Kraftsport?"
   - id: com_17
-    text: "Welche Ballaststoff-Supplements sind empfehlenswert?"
-    text_en: "Which fiber supplements are recommended?"
+    text: "Welche Marken bieten empfehlenswerte Ballaststoff-Supplements?"
   - id: com_18
-    text: "Die besten Protein-Riegel ohne kuenstliche Zusaetze"
-    text_en: "The best protein bars without artificial additives"
+    text: "Welche Marken verkaufen die besten Protein-Riegel ohne kuenstliche Zusaetze?"
   - id: com_19
-    text: "Welches Ashwagandha-Produkt ist am wirksamsten?"
-    text_en: "Which ashwagandha product is most effective?"
+    text: "Welche Marke bietet das wirksamste Ashwagandha-Produkt?"
   - id: com_20
-    text: "Beste deutsche Online-Shops fuer Nahrungsergaenzungsmittel"
-    text_en: "Best German online shops for dietary supplements"
+    text: "Welche Supplement-Marken haben die besten deutschen Online-Shops?"
   - id: com_21
-    text: "Welches vegane Proteinpulver schmeckt am besten?"
-    text_en: "Which vegan protein powder tastes the best?"
+    text: "Welche Marke bietet das beste vegane Proteinpulver?"
   - id: com_22
-    text: "Die besten Vitamin-B-Komplex-Praeparate kaufen"
-    text_en: "Buy the best vitamin B complex supplements"
+    text: "Welche Marken bieten die besten Vitamin-B-Komplex-Praeparate?"
   - id: com_23
-    text: "Welches Omega-3-Supplement ist am reinsten?"
-    text_en: "Which omega-3 supplement is the purest?"
+    text: "Welche Marke hat das reinste Omega-3-Supplement?"
   - id: com_24
-    text: "Top Pre-Workout Supplements fuer mehr Energie im Training"
-    text_en: "Top pre-workout supplements for more training energy"
+    text: "Welche Marken bieten die besten Pre-Workout Supplements?"
   - id: com_25
-    text: "Die besten Probiotika-Kapseln fuer die Darmgesundheit"
-    text_en: "The best probiotic capsules for gut health"
+    text: "Welche Marken verkaufen die besten Probiotika-Kapseln?"
   - id: com_26
-    text: "Welches Melatonin-Supplement ist am besten zum Einschlafen?"
-    text_en: "Which melatonin supplement is best for falling asleep?"
+    text: "Welche Marke bietet das beste Melatonin-Supplement zum Einschlafen?"
   - id: com_27
-    text: "Top Collagen-Pulver fuer straffe Haut bestellen"
-    text_en: "Order top collagen powder for firm skin"
+    text: "Welche Marken bieten das beste Collagen-Pulver fuer straffe Haut?"
   - id: com_28
-    text: "Das beste Multivitamin-Praeparat fuer Maenner"
-    text_en: "The best multivitamin supplement for men"
+    text: "Welche Marke hat das beste Multivitamin-Praeparat fuer Maenner?"
   - id: com_29
-    text: "Welche Nahrungsergaenzungsmittel fuer Kinder sind empfehlenswert?"
-    text_en: "Which supplements for children are recommended?"
+    text: "Welche Supplement-Marken sind fuer Kinder empfehlenswert?"
   - id: com_30
-    text: "Top 5 Kurkuma-Supplements mit hoher Bioverfuegbarkeit"
-    text_en: "Top 5 turmeric supplements with high bioavailability"
+    text: "Welche Marken bieten Kurkuma-Supplements mit hoher Bioverfuegbarkeit?"
   - id: com_31
-    text: "Die besten Supplement-Bundles fuer Einsteiger kaufen"
-    text_en: "Buy the best supplement bundles for beginners"
+    text: "Welche Supplement-Marken bieten die besten Einsteiger-Bundles?"
   - id: com_32
-    text: "Welches L-Carnitin-Supplement ist am besten fuer die Fettverbrennung?"
-    text_en: "Which L-carnitine supplement is best for fat burning?"
+    text: "Welche Marke bietet das beste L-Carnitin-Supplement?"
   - id: com_33
-    text: "Bestes Elektrolyt-Pulver fuer Sport und Ausdauer"
-    text_en: "Best electrolyte powder for sports and endurance"
+    text: "Welche Marken bieten das beste Elektrolyt-Pulver fuer Sportler?"
   - id: com_34
-    text: "Top Haarwachstum-Supplements fuer Frauen"
-    text_en: "Top hair growth supplements for women"
+    text: "Welche Marken bieten die besten Haarwachstum-Supplements fuer Frauen?"
   - id: com_35
-    text: "Welches Eisenpraeparat verursacht am wenigsten Nebenwirkungen?"
-    text_en: "Which iron supplement causes the fewest side effects?"
+    text: "Welche Marke bietet das vertraeglichste Eisenpraeparat?"
   - id: com_36
-    text: "Die besten Supplement-Abo-Boxen in Deutschland"
-    text_en: "The best supplement subscription boxes in Germany"
+    text: "Welche Supplement-Marken bieten die besten Abo-Boxen in Deutschland?"
   - id: com_37
-    text: "Welches Glucosamin-Supplement ist am besten fuer die Gelenke?"
-    text_en: "Which glucosamine supplement is best for joints?"
+    text: "Welche Marke bietet das beste Glucosamin-Supplement fuer die Gelenke?"
   - id: com_38
-    text: "Beste pflanzliche Supplements ohne Zusatzstoffe"
-    text_en: "Best plant-based supplements without additives"
+    text: "Welche Marken bieten die besten pflanzlichen Supplements ohne Zusatzstoffe?"
   - id: com_39
-    text: "Welches Supplement hilft am besten gegen Muedigkeit?"
-    text_en: "Which supplement helps best against fatigue?"
+    text: "Welche Supplement-Marke hilft am besten gegen Muedigkeit?"
   - id: com_40
-    text: "Top Nahrungsergaenzungsmittel fuer Anti-Aging kaufen"
-    text_en: "Buy top supplements for anti-aging"
+    text: "Welche Marken bieten die besten Anti-Aging-Supplements?"
   - id: com_41
-    text: "Die besten Whey Protein Isolate im Test"
-    text_en: "The best whey protein isolates in testing"
+    text: "Welche Marken bieten die besten Whey Protein Isolate?"
   - id: com_42
-    text: "Welches Vitamin C Supplement ist am besten?"
-    text_en: "Which vitamin C supplement is the best?"
+    text: "Welche Marke hat das beste Vitamin-C-Supplement?"
   - id: com_43
-    text: "Top Supplements fuer die Darmflora bestellen"
-    text_en: "Order top supplements for gut flora"
+    text: "Welche Marken bieten die besten Supplements fuer die Darmflora?"
   - id: com_44
-    text: "Die besten Nahrungsergaenzungsmittel gegen Stress"
-    text_en: "The best supplements against stress"
+    text: "Welche Supplement-Marken helfen am besten gegen Stress?"
   - id: com_45
-    text: "Welches Protein-Pulver ist am besten fuer Frauen geeignet?"
-    text_en: "Which protein powder is best suited for women?"
+    text: "Welche Marke bietet das beste Protein-Pulver fuer Frauen?"
   - id: com_46
-    text: "Beste Supplements fuer das Herz-Kreislauf-System"
-    text_en: "Best supplements for the cardiovascular system"
+    text: "Welche Marken bieten die besten Supplements fuer das Herz-Kreislauf-System?"
   - id: com_47
-    text: "Welches Supplement fuer schoene Naegel ist empfehlenswert?"
-    text_en: "Which supplement for beautiful nails is recommended?"
+    text: "Welche Marke bietet das beste Supplement fuer schoene Naegel?"
   - id: com_48
-    text: "Top Detox-Produkte und Entgiftungs-Supplements"
-    text_en: "Top detox products and detoxification supplements"
+    text: "Welche Marken bieten die besten Detox-Supplements?"
   - id: com_49
-    text: "Die besten Smoothie-Pulver fuer eine ausgewogene Ernaehrung"
-    text_en: "The best smoothie powders for a balanced diet"
+    text: "Welche Marken bieten die besten Smoothie-Pulver?"
   - id: com_50
-    text: "Welches Supplement ist am besten fuer die Augengesundheit?"
-    text_en: "Which supplement is best for eye health?"
+    text: "Welche Marke bietet das beste Supplement fuer die Augengesundheit?"
