@@ -108,36 +108,45 @@ def _pct(val: float) -> float:
 
 
 def chart_brand_ranking(df: pd.DataFrame) -> go.Figure:
-    """Horizontal bar chart: top brands by mention rate."""
+    """Vertical bar chart: Top 15 brands by mention rate, bars going up."""
     ranking = (
         df.groupby("brand")
         .agg(mention_rate=("brand_found", "mean"), top3_rate=("top3", "mean"),
              avg_vis=("visibility_score", "mean"))
         .reset_index()
     )
-    # Filter to brands with at least one mention
-    ranking = ranking[ranking["mention_rate"] > 0].sort_values("mention_rate", ascending=True).tail(25)
+    ranking = ranking[ranking["mention_rate"] > 0].sort_values("mention_rate", ascending=False).head(15)
 
     if ranking.empty:
         return go.Figure().update_layout(title="No brands detected")
 
+    # Color gradient: top brands get orange, lower get muted
+    max_rate = ranking["mention_rate"].max()
+    colors = [
+        COLORS["orange"] if r >= max_rate * 0.5 else COLORS["blue"] if r >= max_rate * 0.2 else COLORS["grid"]
+        for r in ranking["mention_rate"]
+    ]
+
     fig = go.Figure()
     fig.add_trace(go.Bar(
-        y=ranking["brand"],
-        x=ranking["mention_rate"].apply(_pct),
-        orientation="h",
-        marker_color=COLORS["orange"],
+        x=ranking["brand"],
+        y=ranking["mention_rate"].apply(_pct),
+        marker_color=colors,
         text=[f"{_pct(v):.1f}%" for v in ranking["mention_rate"]],
         textposition="outside",
         textfont=dict(color=COLORS["text"], size=11),
-        hovertemplate="<b>%{y}</b><br>Mention Rate: %{x:.1f}%<extra></extra>",
+        hovertemplate="<b>%{x}</b><br>Mention Rate: %{y:.1f}%<br>Top-3: %{customdata:.1f}%<extra></extra>",
+        customdata=ranking["top3_rate"].apply(_pct),
     ))
+
+    max_val = _pct(ranking["mention_rate"].max())
     fig.update_layout(
-        title="Brand Visibility Ranking (Mention Rate)",
-        xaxis_title="Mention Rate (%)",
-        xaxis=dict(range=[0, _pct(ranking["mention_rate"].max()) * 1.3], ticksuffix="%"),
-        margin=dict(l=200, r=80, t=80, b=60),
-        height=max(500, len(ranking) * 30),
+        title="Top 15 Brands by Mention Rate",
+        yaxis_title="Mention Rate (%)",
+        yaxis=dict(range=[0, max_val * 1.25], ticksuffix="%"),
+        xaxis_tickangle=-40,
+        margin=dict(l=60, r=40, t=100, b=140),
+        height=500,
     )
     return _apply_theme(fig)
 
@@ -314,7 +323,7 @@ def chart_cluster_comparison(df: pd.DataFrame) -> go.Figure:
 
 
 def chart_cluster_brand_heatmap(df: pd.DataFrame) -> go.Figure:
-    """Horizontal bars per cluster with rich tooltip."""
+    """Vertical grouped bars: top 15 brands, one bar per cluster."""
     clusters = sorted(df["cluster"].unique())
 
     brand_cluster = (
@@ -323,10 +332,9 @@ def chart_cluster_brand_heatmap(df: pd.DataFrame) -> go.Figure:
         .reset_index()
     )
 
-    # Overall brand avg for sorting
     pivot = df.pivot_table(index="brand", columns="cluster", values="brand_found", aggfunc="mean")
     brand_avg = pivot.mean(axis=1)
-    brand_list = brand_avg[brand_avg > 0].sort_values(ascending=True).tail(20).index.tolist()
+    brand_list = brand_avg[brand_avg > 0].sort_values(ascending=False).head(15).index.tolist()
 
     if not brand_list:
         return go.Figure().update_layout(title="No brand mentions detected")
@@ -336,36 +344,26 @@ def chart_cluster_brand_heatmap(df: pd.DataFrame) -> go.Figure:
         cl_data = brand_cluster[brand_cluster["cluster"] == cluster].set_index("brand").reindex(brand_list)
         color = CLUSTER_COLORS.get(cluster, COLORS["orange"])
 
-        hover_texts = []
-        for brand in brand_list:
-            cl_rate = cl_data.loc[brand, "mention_rate"] if brand in cl_data.index and pd.notna(cl_data.loc[brand, "mention_rate"]) else 0
-            avg = brand_avg.get(brand, 0)
-            hover_texts.append(
-                f"<b>{brand}</b> — {cluster.title()}<br>"
-                f"This Cluster: {cl_rate:.1%}<br>"
-                f"Avg (all clusters): {avg:.1%}"
-            )
-
         fig.add_trace(go.Bar(
-            y=brand_list,
-            x=cl_data["mention_rate"].apply(_pct).fillna(0).values,
+            x=brand_list,
+            y=cl_data["mention_rate"].apply(_pct).fillna(0).values,
             name=cluster.title(),
-            orientation="h",
             marker_color=color,
-            hovertext=hover_texts,
-            hoverinfo="text",
+            text=[f"{_pct(v):.0f}%" if v > 0.005 else "" for v in cl_data["mention_rate"].fillna(0).values],
+            textposition="outside",
+            textfont=dict(size=9),
+            hovertemplate="<b>%{x}</b> — " + cluster.title() + "<br>Mention Rate: %{y:.1f}%<extra></extra>",
         ))
 
-    max_val = _pct(brand_cluster["mention_rate"].max())
+    max_val = _pct(brand_cluster[brand_cluster["brand"].isin(brand_list)]["mention_rate"].max())
     fig.update_layout(
         title=f"Brand Visibility by Prompt Type (Top {len(brand_list)})",
-        xaxis_title="Mention Rate (%)",
-        xaxis=dict(range=[0, max_val * 1.3], ticksuffix="%"),
+        yaxis_title="Mention Rate (%)",
+        yaxis=dict(range=[0, max_val * 1.3], ticksuffix="%"),
+        xaxis_tickangle=-40,
         barmode="group",
-        bargap=0.15,
-        bargroupgap=0.05,
-        margin=dict(l=200, r=80, t=100, b=80),
-        height=max(600, len(brand_list) * 55),
+        margin=dict(l=60, r=40, t=100, b=140),
+        height=520,
     )
     return _apply_theme(fig)
 
