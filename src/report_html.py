@@ -76,7 +76,7 @@ PLOTLY_TEMPLATE = {
 
 
 def _apply_theme(fig: go.Figure) -> go.Figure:
-    """Apply Visibly AI dark theme to a Plotly figure."""
+    """Apply Visibly AI dark theme to a Plotly figure. Does NOT override margin."""
     fig.update_layout(
         paper_bgcolor=COLORS["dark"],
         plot_bgcolor=COLORS["card_bg"],
@@ -84,7 +84,6 @@ def _apply_theme(fig: go.Figure) -> go.Figure:
         title_font=dict(size=18, color=COLORS["white"]),
         legend=dict(bgcolor="rgba(0,0,0,0)", font=dict(color=COLORS["text"]), orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
         hoverlabel=dict(bgcolor=COLORS["navy"], font_size=13, font_color=COLORS["white"]),
-        margin=dict(l=150, r=60, t=100, b=80),
     )
     fig.update_xaxes(gridcolor=COLORS["grid"], zerolinecolor=COLORS["grid"])
     fig.update_yaxes(gridcolor=COLORS["grid"], zerolinecolor=COLORS["grid"])
@@ -127,25 +126,32 @@ def chart_brand_ranking(df: pd.DataFrame) -> go.Figure:
         for r in ranking["mention_rate"]
     ]
 
+    brands = ranking["brand"].tolist()
+    rates = [_pct(v) for v in ranking["mention_rate"]]
+    top3s = [_pct(v) for v in ranking["top3_rate"]]
+
     fig = go.Figure()
     fig.add_trace(go.Bar(
-        x=ranking["brand"],
-        y=ranking["mention_rate"].apply(_pct),
+        x=brands,
+        y=rates,
+        orientation="v",
         marker_color=colors,
-        text=[f"{_pct(v):.1f}%" for v in ranking["mention_rate"]],
+        text=[f"{v:.1f}%" for v in rates],
         textposition="outside",
-        textfont=dict(color=COLORS["text"], size=11),
-        hovertemplate="<b>%{x}</b><br>Mention Rate: %{y:.1f}%<br>Top-3: %{customdata:.1f}%<extra></extra>",
-        customdata=ranking["top3_rate"].apply(_pct),
+        textfont=dict(color=COLORS["text"], size=12),
+        hovertext=[
+            f"<b>{b}</b><br>Mention Rate: {r:.1f}%<br>Top-3 Rate: {t:.1f}%"
+            for b, r, t in zip(brands, rates, top3s)
+        ],
+        hoverinfo="text",
     ))
 
-    max_val = _pct(ranking["mention_rate"].max())
     fig.update_layout(
         title="Top 15 Brands by Mention Rate",
         yaxis_title="Mention Rate (%)",
-        yaxis=dict(range=[0, max_val * 1.25], ticksuffix="%"),
+        yaxis=dict(range=[0, max(rates) * 1.25], ticksuffix="%"),
         xaxis_tickangle=-40,
-        margin=dict(l=60, r=40, t=100, b=140),
+        margin=dict(l=70, r=40, t=80, b=140),
         height=500,
     )
     return _apply_theme(fig)
