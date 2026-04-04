@@ -355,60 +355,66 @@ def chart_cluster_brand_heatmap(df: pd.DataFrame) -> go.Figure:
 
 
 def chart_brand_volatility(df: pd.DataFrame) -> go.Figure:
-    """Dumbbell chart: brand mention rate range across models."""
+    """Dot plot: each model shown as a colored dot per brand."""
+    models = sorted(df["model"].unique())
     model_rates = df.pivot_table(index="brand", columns="model", values="brand_found", aggfunc="mean")
-    volatility = pd.DataFrame({
-        "brand": model_rates.index,
-        "min_rate": model_rates.min(axis=1),
-        "max_rate": model_rates.max(axis=1),
-        "range": model_rates.max(axis=1) - model_rates.min(axis=1),
-    })
-    # Only brands with at least some mentions and real variance
-    volatility = volatility[volatility["max_rate"] > 0]
-    volatility = volatility.sort_values("range", ascending=True).tail(15)
 
-    if volatility.empty:
+    # Filter + sort by spread
+    spread = model_rates.max(axis=1) - model_rates.min(axis=1)
+    has_mentions = model_rates.max(axis=1) > 0
+    brand_list = spread[has_mentions].sort_values(ascending=True).tail(20).index.tolist()
+
+    if not brand_list:
         return go.Figure().update_layout(title="No volatility data")
 
     fig = go.Figure()
 
-    # Range lines
-    for _, row in volatility.iterrows():
+    # Range lines (min to max, gray)
+    for brand in brand_list:
+        vals = model_rates.loc[brand]
         fig.add_trace(go.Scatter(
-            x=[_pct(row["min_rate"]), _pct(row["max_rate"])],
-            y=[row["brand"], row["brand"]],
+            x=[_pct(vals.min()), _pct(vals.max())],
+            y=[brand, brand],
             mode="lines",
-            line=dict(color=COLORS["text_muted"], width=3),
+            line=dict(color=COLORS["text_muted"], width=2),
             showlegend=False,
             hoverinfo="skip",
         ))
 
-    # Min dots
-    fig.add_trace(go.Scatter(
-        x=volatility["min_rate"].apply(_pct),
-        y=volatility["brand"],
-        mode="markers",
-        marker=dict(color=COLORS["blue"], size=12, line=dict(width=1, color=COLORS["white"])),
-        name="Lowest Model",
-        hovertemplate="<b>%{y}</b><br>Min: %{x:.1f}%<extra></extra>",
-    ))
+    # One dot per model
+    for model in models:
+        color = MODEL_COLORS.get(model, COLORS["orange"])
+        rates = model_rates.reindex(brand_list)[model]
 
-    # Max dots
-    fig.add_trace(go.Scatter(
-        x=volatility["max_rate"].apply(_pct),
-        y=volatility["brand"],
-        mode="markers",
-        marker=dict(color=COLORS["orange"], size=12, line=dict(width=1, color=COLORS["white"])),
-        name="Highest Model",
-        hovertemplate="<b>%{y}</b><br>Max: %{x:.1f}%<extra></extra>",
-    ))
+        hover_texts = []
+        for brand in brand_list:
+            r = rates.get(brand, 0)
+            avg = model_rates.loc[brand].mean()
+            mn = model_rates.loc[brand].min()
+            mx = model_rates.loc[brand].max()
+            hover_texts.append(
+                f"<b>{brand}</b> — {model.upper()}<br>"
+                f"Rate: {r:.1%}<br>"
+                f"Avg: {avg:.1%} | Min: {mn:.1%} | Max: {mx:.1%}"
+            )
 
-    max_val = _pct(volatility["max_rate"].max())
+        fig.add_trace(go.Scatter(
+            x=rates.apply(_pct).values,
+            y=brand_list,
+            mode="markers",
+            marker=dict(color=color, size=13, line=dict(width=1.5, color=COLORS["white"])),
+            name=model.upper(),
+            hovertext=hover_texts,
+            hoverinfo="text",
+        ))
+
+    max_val = _pct(model_rates.reindex(brand_list).max().max())
     fig.update_layout(
-        title="Brand Volatility: Mention Rate Range Across Models",
+        title="Brand Volatility: Mention Rate per Model",
         xaxis_title="Mention Rate (%)",
-        xaxis=dict(range=[0, max_val * 1.2], ticksuffix="%"),
-        height=max(400, len(volatility) * 35),
+        xaxis=dict(range=[0, max_val * 1.15], ticksuffix="%"),
+        margin=dict(l=200, r=80, t=100, b=80),
+        height=max(500, len(brand_list) * 38),
     )
     return _apply_theme(fig)
 
