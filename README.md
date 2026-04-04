@@ -184,7 +184,7 @@ The brands tracked in this study are sourced from the Visibly AI Brand Radar (Lo
 Read the full study write-up with key findings and GEO implications:
 
 - **EN:** [How LLMs Rank Brands: A Statistical Study of AI Visibility Across Claude, GPT-4o, and Gemini](https://www.antonioblago.com/blog/how-llms-rank-brands-a-statistical-study-of-ai-visibility-across-claude-gpt-4o-and-gemini)
-- **DE:** [Wie LLMs Marken ranken: Eine statistische Studie zur KI-Sichtbarkeit](https://antonioblago.de/sonstiges/wie-llms-marken-ranken-eine-statistische-studie-zur-ki-sichtbarkeit-mit-claude-gpt-4o-und-gemini/)
+- **DE:** [Wie LLMs Marken ranken: Eine statistische Studie zur KI-Sichtbarkeit](https://antonioblago.de/seo/wie-llms-marken-ranken-eine-statistische-studie-zur-ki-sichtbarkeit-mit-claude-gpt-4o-und-gemini/)
 
 ## Author
 
