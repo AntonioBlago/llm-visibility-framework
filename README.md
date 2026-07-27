@@ -8,9 +8,139 @@
 
 ## Overview
 
-The **LLM Brand Visibility and Ranking Framework** provides a rigorous, reproducible methodology for measuring how Large Language Models (LLMs) rank and recommend brands in response to consumer queries. We evaluate **48 supplement brands** across **3 LLM providers** (Claude, GPT-4o, Gemini) using 200 generic prompts with multiple repetitions per prompt.
+The **LLM Brand Visibility and Ranking Framework** measures how Large Language Models (Claude, GPT-4o, Gemini) rank and recommend brands in response to consumer queries — and gives you a repeatable workflow to track **your own brand**: analyze the business, build a versioned 50–100 prompt set, measure across models, audit, optimize.
+
+The methodology is validated by [a statistical study](#the-study-empirical-foundation) of 48 supplement brands × 200 prompts × 3 models with up to 30 runs per prompt. The study answers the calibration questions behind your own measurement — how many runs you need, how stable rankings are, which metrics discriminate — and its results are the defaults baked into the framework.
 
 This framework is part of the **[Visibly AI](https://www.visibly-ai.com)** ecosystem — an SEO agent system that helps brands measure, track, and improve their visibility in AI-powered search engines and LLM recommendations (GEO — Generative Engine Optimization).
+
+## Prompt Framework: From Business Analysis to AI Visibility Audit
+
+Want to apply this methodology to **your own brand**? The repository includes a complete, reusable prompt framework — [docs/prompt-framework.md](docs/prompt-framework.md) — covering the full workflow:
+
+1. **Business Analysis** — context capture, website research, 5–10 competitor analysis
+2. **Category & Journey Mapping** — 3–7 monitoring categories, customer journey stages, generic (~60%) vs. branded (~40%) prompt split
+3. **Prompt Development** — build a versioned set of 50–100 prompts (W-question rules, persona framing, naked vs. instrumented prompts)
+4. **Measurement** — run the set through this repo's pipeline (collector → parser → analyzer)
+5. **Audit** — visibility audit (mention rate, rank, share of voice) + perception audit (attributes, sentiment, USP match)
+6. **Optimize & Re-measure** — GEO actions, tracking cadence, prompt-set versioning
+
+Ready-to-use assets in [prompts/templates/](prompts/templates/): German system prompts for Custom GPTs (simple + advanced workflow), instrumented tracking-prompt templates (DE/EN), a pipeline-ready YAML cluster template, and a motive-color example set.
+
+**Claude Code users:** the repo ships a skill that executes the framework step by step — run `/prompt-framework analyze <brand> <website>`, then `categories`, `develop`, `measure`, `audit` (or `full` for the guided end-to-end flow). See [.claude/skills/prompt-framework/SKILL.md](.claude/skills/prompt-framework/SKILL.md). Copy-paste commands for both the skill and the manual route are in [Quick Start — Path A](#path-a--track-your-own-brand-prompt-framework) below.
+
+The framework builds on the [Neuro-SEO System®](https://antonioblago.de/neuro-seo-system/) (business-first analysis, sales-psychology layer) and was applied in production in the [PURELEI E-commerce GEO case study](https://antonioblago.de/seo/e-commerce-geo-case-study-von-purelei/) — 117 prompts across ChatGPT, Perplexity, Claude, Gemini and Google AI Overviews with UTM-based revenue attribution.
+
+## Quick Start
+
+### Setup (both paths)
+
+```bash
+# Clone
+git clone https://github.com/AntonioBlago/llm-visibility-framework.git
+cd llm-visibility-framework
+
+# Install
+pip install -r requirements.txt
+
+# Configure API keys
+cp config.yaml.example config.yaml
+# Edit config.yaml: set api_key_env names and export the keys
+# (ANTHROPIC_API_KEY, OPENAI_API_KEY, GOOGLE_API_KEY)
+```
+
+### Path A — Track your own brand (Prompt Framework)
+
+Follow the 6-phase [Prompt Framework](docs/prompt-framework.md): analyze the business, map categories, build a 50–100 prompt set, measure, audit.
+
+**With Claude Code** (the skill ships with this repo — open the repo and run):
+
+```
+/prompt-framework analyze <brand> <website>   # Phase 1: business + competitor analysis
+/prompt-framework categories                  # Phase 2: pick 3-7 monitoring categories
+/prompt-framework develop 60                  # Phase 3: generate the prompt set (50-100)
+/prompt-framework measure 30                  # Phase 4: configure + collect + analyze
+/prompt-framework audit                       # Phase 5: visibility + perception audit
+```
+
+Or `/prompt-framework full <brand> <website>` for the guided end-to-end flow. Work products are stored in `data/framework/<brand>/` (gitignored).
+
+**Without Claude Code:**
+
+1. Work through Phases 1–2 of [docs/prompt-framework.md](docs/prompt-framework.md) manually, or paste [prompts/templates/system-prompt-simple.de.md](prompts/templates/system-prompt-simple.de.md) into a Custom GPT / Claude Project to generate the prompt table interactively.
+2. Copy [prompts/templates/prompt-set.template.yaml](prompts/templates/prompt-set.template.yaml) to `prompts/<category>.yaml` per category and fill in the **generic (Type A)** prompts.
+3. Add your brand and its competitors (with `aliases`) to `config.yaml → brands`, and register your clusters under `prompt_clusters`.
+4. Measure: `python -m src.collector --runs 30 && python -m src.analyzer`
+5. Audit the results following [Phase 5 of the framework](docs/prompt-framework.md#phase-5--audit); track branded (Type B) prompts separately with [prompts/templates/tracking-prompts.md](prompts/templates/tracking-prompts.md).
+
+### Path B — Reproduce the study
+
+Runs the original setup — 48 supplement brands × 200 prompts × 3 models (see [The Study](#the-study-empirical-foundation) below):
+
+```bash
+# 1. Data collection (30 runs per prompt; start with --runs 10 to test)
+python -m src.collector --runs 30
+
+# 2. Statistical analysis (mention rates, ranks, significance tests)
+python -m src.analyzer
+
+# 3. Power analysis: how many runs/prompts do you actually need?
+python -m src.power_analysis --runs 10 20 30 --prompts 10 50 100 200
+
+# 4. Run-to-run consistency (Jaccard, RBO, Fleiss' Kappa)
+python -m src.similarity
+```
+
+Results land in `results/`, raw responses in `data/`.
+
+## Repository Structure
+
+```
+llm-visibility-study/
+├── README.md                    # This file
+├── .claude/
+│   └── skills/
+│       └── prompt-framework/    # Claude Code skill: run the framework steps
+│           └── SKILL.md
+├── LICENSE                      # MIT License
+├── requirements.txt             # Python dependencies
+├── config.yaml                  # Study configuration
+├── src/
+│   ├── __init__.py
+│   ├── config.py                # Configuration loader
+│   ├── collector.py             # LLM API data collection
+│   ├── parser.py                # Response parsing (brand extraction)
+│   ├── analyzer.py              # Statistical analysis engine
+│   ├── power_analysis.py        # Power analysis: runs x prompts matrix
+│   ├── similarity.py            # Run-to-run similarity (Jaccard, RBO, Kappa)
+│   ├── visualizations.py        # Charts and plots
+│   └── utils.py                 # Helper functions
+├── prompts/
+│   ├── informational.yaml       # Informational prompt cluster
+│   ├── commercial.yaml          # Commercial prompt cluster
+│   ├── navigational.yaml        # Navigational prompt cluster
+│   ├── comparison.yaml          # Comparison prompt cluster
+│   └── templates/               # Prompt framework templates
+│       ├── README.md            # Template index
+│       ├── system-prompt-simple.de.md    # Custom GPT system prompt (simple)
+│       ├── system-prompt-advanced.de.md  # Custom GPT system prompt (full workflow)
+│       ├── tracking-prompts.md  # Instrumented tracking prompts (DE/EN)
+│       ├── prompt-set.template.yaml      # Pipeline-ready cluster template
+│       └── example-motive-color-prompts.de.md  # Motive-color example set
+├── data/                        # Raw + processed data (gitignored)
+├── results/                     # Analysis outputs
+├── notebooks/
+│   └── analysis.ipynb           # Interactive analysis notebook
+├── docs/
+│   ├── methodology.md           # Full methodology paper
+│   └── prompt-framework.md      # Brand prompt framework (analysis → audit)
+└── tests/
+    └── test_parser.py           # Unit tests
+```
+
+## The Study (Empirical Foundation)
+
+The framework's defaults — 30 runs per prompt, the 50–100 prompt sizing, the metrics and the statistical tests — are not arbitrary: they come from a statistical study of the German supplement market. Use it as the calibration baseline for your own measurement. The full write-up lives in [docs/methodology.md](docs/methodology.md) and the [blog articles](#blog-article).
 
 **Key Research Questions:**
 1. How consistently do LLMs mention specific brands across repeated queries?
@@ -18,8 +148,6 @@ This framework is part of the **[Visibly AI](https://www.visibly-ai.com)** ecosy
 3. How many runs are needed for statistically reliable results?
 4. Which prompt categories (informational, commercial, navigational) show the strongest brand signals?
 5. How can brands optimize their AI visibility across different LLM providers?
-
-## Methodology
 
 ### Study Design
 
@@ -90,130 +218,6 @@ Direct brand-vs-brand or category comparison queries.
 ### Power Analysis: 10 vs 20 vs 30 Runs
 
 We simulate the statistical power for detecting real differences at different sample sizes. See `src/power_analysis.py` for the full simulation.
-
-## Prompt Framework: From Business Analysis to AI Visibility Audit
-
-Want to apply this methodology to **your own brand**? The repository includes a complete, reusable prompt framework — [docs/prompt-framework.md](docs/prompt-framework.md) — covering the full workflow:
-
-1. **Business Analysis** — context capture, website research, 5–10 competitor analysis
-2. **Category & Journey Mapping** — 3–7 monitoring categories, customer journey stages, generic (~60%) vs. branded (~40%) prompt split
-3. **Prompt Development** — build a versioned set of 50–100 prompts (W-question rules, persona framing, naked vs. instrumented prompts)
-4. **Measurement** — run the set through this repo's pipeline (collector → parser → analyzer)
-5. **Audit** — visibility audit (mention rate, rank, share of voice) + perception audit (attributes, sentiment, USP match)
-6. **Optimize & Re-measure** — GEO actions, tracking cadence, prompt-set versioning
-
-Ready-to-use assets in [prompts/templates/](prompts/templates/): German system prompts for Custom GPTs (simple + advanced workflow), instrumented tracking-prompt templates (DE/EN), a pipeline-ready YAML cluster template, and a motive-color example set.
-
-**Claude Code users:** the repo ships a skill that executes the framework step by step — run `/prompt-framework analyze <brand> <website>`, then `categories`, `develop`, `measure`, `audit` (or `full` for the guided end-to-end flow). See [.claude/skills/prompt-framework/SKILL.md](.claude/skills/prompt-framework/SKILL.md). Copy-paste commands for both the skill and the manual route are in [Quick Start — Path B](#path-b--track-your-own-brand-prompt-framework) below.
-
-The framework builds on the [Neuro-SEO System®](https://antonioblago.de/neuro-seo-system/) (business-first analysis, sales-psychology layer) and was applied in production in the [PURELEI E-commerce GEO case study](https://antonioblago.de/seo/e-commerce-geo-case-study-von-purelei/) — 117 prompts across ChatGPT, Perplexity, Claude, Gemini and Google AI Overviews with UTM-based revenue attribution.
-
-## Repository Structure
-
-```
-llm-visibility-study/
-├── README.md                    # This file
-├── .claude/
-│   └── skills/
-│       └── prompt-framework/    # Claude Code skill: run the framework steps
-│           └── SKILL.md
-├── LICENSE                      # MIT License
-├── requirements.txt             # Python dependencies
-├── config.yaml                  # Study configuration
-├── src/
-│   ├── __init__.py
-│   ├── config.py                # Configuration loader
-│   ├── collector.py             # LLM API data collection
-│   ├── parser.py                # Response parsing (brand extraction)
-│   ├── analyzer.py              # Statistical analysis engine
-│   ├── power_analysis.py        # Power analysis: runs x prompts matrix
-│   ├── similarity.py            # Run-to-run similarity (Jaccard, RBO, Kappa)
-│   ├── visualizations.py        # Charts and plots
-│   └── utils.py                 # Helper functions
-├── prompts/
-│   ├── informational.yaml       # Informational prompt cluster
-│   ├── commercial.yaml          # Commercial prompt cluster
-│   ├── navigational.yaml        # Navigational prompt cluster
-│   ├── comparison.yaml          # Comparison prompt cluster
-│   └── templates/               # Prompt framework templates
-│       ├── README.md            # Template index
-│       ├── system-prompt-simple.de.md    # Custom GPT system prompt (simple)
-│       ├── system-prompt-advanced.de.md  # Custom GPT system prompt (full workflow)
-│       ├── tracking-prompts.md  # Instrumented tracking prompts (DE/EN)
-│       ├── prompt-set.template.yaml      # Pipeline-ready cluster template
-│       └── example-motive-color-prompts.de.md  # Motive-color example set
-├── data/                        # Raw + processed data (gitignored)
-├── results/                     # Analysis outputs
-├── notebooks/
-│   └── analysis.ipynb           # Interactive analysis notebook
-├── docs/
-│   ├── methodology.md           # Full methodology paper
-│   └── prompt-framework.md      # Brand prompt framework (analysis → audit)
-└── tests/
-    └── test_parser.py           # Unit tests
-```
-
-## Quick Start
-
-### Setup (both paths)
-
-```bash
-# Clone
-git clone https://github.com/AntonioBlago/llm-visibility-framework.git
-cd llm-visibility-framework
-
-# Install
-pip install -r requirements.txt
-
-# Configure API keys
-cp config.yaml.example config.yaml
-# Edit config.yaml: set api_key_env names and export the keys
-# (ANTHROPIC_API_KEY, OPENAI_API_KEY, GOOGLE_API_KEY)
-```
-
-### Path A — Reproduce the study
-
-Runs the original setup: 48 supplement brands x 200 prompts x 3 models.
-
-```bash
-# 1. Data collection (30 runs per prompt; start with --runs 10 to test)
-python -m src.collector --runs 30
-
-# 2. Statistical analysis (mention rates, ranks, significance tests)
-python -m src.analyzer
-
-# 3. Power analysis: how many runs/prompts do you actually need?
-python -m src.power_analysis --runs 10 20 30 --prompts 10 50 100 200
-
-# 4. Run-to-run consistency (Jaccard, RBO, Fleiss' Kappa)
-python -m src.similarity
-```
-
-Results land in `results/`, raw responses in `data/`.
-
-### Path B — Track your own brand (Prompt Framework)
-
-Follow the 6-phase [Prompt Framework](docs/prompt-framework.md): analyze the business, map categories, build a 50–100 prompt set, measure, audit.
-
-**With Claude Code** (the skill ships with this repo — open the repo and run):
-
-```
-/prompt-framework analyze <brand> <website>   # Phase 1: business + competitor analysis
-/prompt-framework categories                  # Phase 2: pick 3-7 monitoring categories
-/prompt-framework develop 60                  # Phase 3: generate the prompt set (50-100)
-/prompt-framework measure 30                  # Phase 4: configure + collect + analyze
-/prompt-framework audit                       # Phase 5: visibility + perception audit
-```
-
-Or `/prompt-framework full <brand> <website>` for the guided end-to-end flow. Work products are stored in `data/framework/<brand>/` (gitignored).
-
-**Without Claude Code:**
-
-1. Work through Phases 1–2 of [docs/prompt-framework.md](docs/prompt-framework.md) manually, or paste [prompts/templates/system-prompt-simple.de.md](prompts/templates/system-prompt-simple.de.md) into a Custom GPT / Claude Project to generate the prompt table interactively.
-2. Copy [prompts/templates/prompt-set.template.yaml](prompts/templates/prompt-set.template.yaml) to `prompts/<category>.yaml` per category and fill in the **generic (Type A)** prompts.
-3. Add your brand and its competitors (with `aliases`) to `config.yaml → brands`, and register your clusters under `prompt_clusters`.
-4. Measure: `python -m src.collector --runs 30 && python -m src.analyzer`
-5. Audit the results following [Phase 5 of the framework](docs/prompt-framework.md#phase-5--audit); track branded (Type B) prompts separately with [prompts/templates/tracking-prompts.md](prompts/templates/tracking-prompts.md).
 
 ## Citation
 
