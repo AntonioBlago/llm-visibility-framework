@@ -104,6 +104,8 @@ Want to apply this methodology to **your own brand**? The repository includes a 
 
 Ready-to-use assets in [prompts/templates/](prompts/templates/): German system prompts for Custom GPTs (simple + advanced workflow), instrumented tracking-prompt templates (DE/EN), a pipeline-ready YAML cluster template, and a motive-color example set.
 
+**Claude Code users:** the repo ships a skill that executes the framework step by step — run `/prompt-framework analyze <brand> <website>`, then `categories`, `develop`, `measure`, `audit` (or `full` for the guided end-to-end flow). See [.claude/skills/prompt-framework/SKILL.md](.claude/skills/prompt-framework/SKILL.md).
+
 The framework builds on the [Neuro-SEO System®](https://antonioblago.de/neuro-seo-system/) (business-first analysis, sales-psychology layer) and was applied in production in the [PURELEI E-commerce GEO case study](https://antonioblago.de/seo/e-commerce-geo-case-study-von-purelei/) — 117 prompts across ChatGPT, Perplexity, Claude, Gemini and Google AI Overviews with UTM-based revenue attribution.
 
 ## Repository Structure
@@ -111,6 +113,10 @@ The framework builds on the [Neuro-SEO System®](https://antonioblago.de/neuro-s
 ```
 llm-visibility-study/
 ├── README.md                    # This file
+├── .claude/
+│   └── skills/
+│       └── prompt-framework/    # Claude Code skill: run the framework steps
+│           └── SKILL.md
 ├── LICENSE                      # MIT License
 ├── requirements.txt             # Python dependencies
 ├── config.yaml                  # Study configuration

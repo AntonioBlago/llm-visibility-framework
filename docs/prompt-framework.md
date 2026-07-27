@@ -293,6 +293,7 @@ Re-measurement rules:
 | [`tracking-prompts.md`](../prompts/templates/tracking-prompts.md) | Instrumented tracking-prompt templates for Type A / Type B (German + English) |
 | [`prompt-set.template.yaml`](../prompts/templates/prompt-set.template.yaml) | Pipeline-ready cluster template |
 | [`example-motive-color-prompts.de.md`](../prompts/templates/example-motive-color-prompts.de.md) | Example: emotionally framed prompt variants (motive colors, PURELEI) |
+| [`.claude/skills/prompt-framework/SKILL.md`](../.claude/skills/prompt-framework/SKILL.md) | Claude Code skill: `/prompt-framework analyze\|categories\|develop\|measure\|audit\|full` — executes each phase, stores work products in `data/framework/<brand>/` |
 
 ## Optional Extension: Emotional Framing (Motive Colors)
 
