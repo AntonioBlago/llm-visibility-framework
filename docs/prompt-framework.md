@@ -20,6 +20,33 @@ Ready-to-use system prompts and templates for every phase live in [`prompts/temp
 
 ---
 
+## Quick Start
+
+**With Claude Code** — the repo ships a skill ([`.claude/skills/prompt-framework/`](../.claude/skills/prompt-framework/SKILL.md)) that executes each phase; open the repo in Claude Code and run:
+
+```
+/prompt-framework analyze <brand> <website>   # Phase 1
+/prompt-framework categories                  # Phase 2
+/prompt-framework develop 60                  # Phase 3 (50-100 prompts)
+/prompt-framework measure 30                  # Phase 4 (asks before spending API budget)
+/prompt-framework audit                       # Phase 5
+```
+
+`/prompt-framework full <brand> <website>` runs all phases in sequence with confirmation stops. Work products land in `data/framework/<brand-slug>/` (gitignored).
+
+**Without Claude Code** — the manual path through the same phases:
+
+| Step | What to do | Tooling |
+|------|-----------|---------|
+| 1 | Fill the Phase 1 context + competitor tables | Manually, or paste [system-prompt-simple.de.md](../prompts/templates/system-prompt-simple.de.md) / [system-prompt-advanced.de.md](../prompts/templates/system-prompt-advanced.de.md) into a Custom GPT / Claude Project |
+| 2 | Pick 3–7 categories, plan the ~60/40 Type A/B split (Phase 2) | Manually |
+| 3 | Write prompts into `prompts/<category>.yaml` (Type A only) | Copy [prompt-set.template.yaml](../prompts/templates/prompt-set.template.yaml) |
+| 4 | Register brand + competitors and clusters in `config.yaml`, then `python -m src.collector --runs 30 && python -m src.analyzer` | This repo's pipeline |
+| 5 | Build the visibility + perception audit from `results/` (Phase 5) | Manually; Type B prompts via [tracking-prompts.md](../prompts/templates/tracking-prompts.md) in a tracking tool |
+| 6 | Fix gaps with GEO levers, re-measure with the frozen prompt set (Phase 6) | Monthly/quarterly cycle |
+
+---
+
 ## Phase 1 — Business Analysis
 
 **Goal:** Capture everything needed to generate prompts that reflect real buyer behavior — before writing a single prompt.
