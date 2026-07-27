@@ -91,6 +91,21 @@ Direct brand-vs-brand or category comparison queries.
 
 We simulate the statistical power for detecting real differences at different sample sizes. See `src/power_analysis.py` for the full simulation.
 
+## Prompt Framework: From Business Analysis to AI Visibility Audit
+
+Want to apply this methodology to **your own brand**? The repository includes a complete, reusable prompt framework — [docs/prompt-framework.md](docs/prompt-framework.md) — covering the full workflow:
+
+1. **Business Analysis** — context capture, website research, 5–10 competitor analysis
+2. **Category & Journey Mapping** — 3–7 monitoring categories, customer journey stages, generic (~60%) vs. branded (~40%) prompt split
+3. **Prompt Development** — build a versioned set of 50–100 prompts (W-question rules, persona framing, naked vs. instrumented prompts)
+4. **Measurement** — run the set through this repo's pipeline (collector → parser → analyzer)
+5. **Audit** — visibility audit (mention rate, rank, share of voice) + perception audit (attributes, sentiment, USP match)
+6. **Optimize & Re-measure** — GEO actions, tracking cadence, prompt-set versioning
+
+Ready-to-use assets in [prompts/templates/](prompts/templates/): German system prompts for Custom GPTs (simple + advanced workflow), instrumented tracking-prompt templates (DE/EN), a pipeline-ready YAML cluster template, and a motive-color example set.
+
+The framework builds on the [Neuro-SEO System®](https://antonioblago.de/neuro-seo-system/) (business-first analysis, sales-psychology layer) and was applied in production in the [PURELEI E-commerce GEO case study](https://antonioblago.de/seo/e-commerce-geo-case-study-von-purelei/) — 117 prompts across ChatGPT, Perplexity, Claude, Gemini and Google AI Overviews with UTM-based revenue attribution.
+
 ## Repository Structure
 
 ```
@@ -113,13 +128,21 @@ llm-visibility-study/
 │   ├── informational.yaml       # Informational prompt cluster
 │   ├── commercial.yaml          # Commercial prompt cluster
 │   ├── navigational.yaml        # Navigational prompt cluster
-│   └── comparison.yaml          # Comparison prompt cluster
+│   ├── comparison.yaml          # Comparison prompt cluster
+│   └── templates/               # Prompt framework templates
+│       ├── README.md            # Template index
+│       ├── system-prompt-simple.de.md    # Custom GPT system prompt (simple)
+│       ├── system-prompt-advanced.de.md  # Custom GPT system prompt (full workflow)
+│       ├── tracking-prompts.md  # Instrumented tracking prompts (DE/EN)
+│       ├── prompt-set.template.yaml      # Pipeline-ready cluster template
+│       └── example-motive-color-prompts.de.md  # Motive-color example set
 ├── data/                        # Raw + processed data (gitignored)
 ├── results/                     # Analysis outputs
 ├── notebooks/
 │   └── analysis.ipynb           # Interactive analysis notebook
 ├── docs/
-│   └── methodology.md           # Full methodology paper
+│   ├── methodology.md           # Full methodology paper
+│   └── prompt-framework.md      # Brand prompt framework (analysis → audit)
 └── tests/
     └── test_parser.py           # Unit tests
 ```
@@ -185,6 +208,8 @@ Read the full study write-up with key findings and GEO implications:
 
 - **EN:** [How LLMs Rank Brands: A Statistical Study of AI Visibility Across Claude, GPT-4o, and Gemini](https://www.antonioblago.com/blog/how-llms-rank-brands-a-statistical-study-of-ai-visibility-across-claude-gpt-4o-and-gemini)
 - **DE:** [Wie LLMs Marken ranken: Eine statistische Studie zur KI-Sichtbarkeit](https://antonioblago.de/seo/wie-llms-marken-ranken-eine-statistische-studie-zur-ki-sichtbarkeit-mit-claude-gpt-4o-und-gemini/)
+- **Case Study (DE):** [E-Commerce GEO Case Study: PURELEI und generative Sichtbarkeit](https://antonioblago.de/seo/e-commerce-geo-case-study-von-purelei/)
+- **Methodik-Hintergrund (DE):** [Neuro-SEO System®](https://antonioblago.de/neuro-seo-system/)
 
 ## Author
 

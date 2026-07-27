@@ -1,0 +1,48 @@
+# Prompt cluster template — Brand Prompt Framework
+# =================================================
+# Usage:
+#   1. Copy this file to prompts/<cluster>.yaml (e.g. prompts/sustainability.yaml)
+#   2. Set `cluster` to the same name as the file (without .yaml)
+#   3. Register the cluster in config.yaml under `prompt_clusters`
+#   4. Fill in 10-15 prompts per cluster (framework Phase 3)
+#
+# Required fields per prompt: id, text (everything the pipeline needs).
+# Optional metadata fields (type, journey, motive_color) document the
+# framework mapping — they are ignored by src/collector.py but keep the
+# prompt set auditable and versionable.
+#
+# Rules (framework Phase 3.2):
+#   - W-question or natural buyer query, user perspective (first person works well)
+#   - One aspect per prompt, no yes/no or leading questions
+#   - Target-market language (German prompts -> German-market visibility)
+#   - Type A prompts must NOT contain any brand name
+#
+# IMPORTANT: Only Type A (generic) prompts belong in clusters that feed the
+# mention-rate pipeline. Keep Type B (branded) prompts in separate clusters
+# and analyze them as perception data, never as organic visibility.
+
+cluster: CLUSTER_NAME
+description: "Short description incl. persona, e.g. 'Sustainability queries from a fashion-conscious 30-year-old, first person'"
+
+prompts:
+  - id: xxx_a_01              # <cluster-prefix>_<type>_<number>
+    text: "Welche Schmuckmarken setzen auf recyceltes Gold?"
+    type: A                   # A = generic (no brand) | B = branded
+    journey: awareness        # awareness | consideration | decision | retention | advocacy
+
+  - id: xxx_a_02
+    text: "Wer sind die führenden Anbieter für nachhaltigen Schmuck in Deutschland?"
+    type: A
+    journey: consideration
+
+  - id: xxx_a_03
+    text: "Ich möchte nachhaltigen Schmuck kaufen. Wo finde ich vertrauenswürdige Anbieter?"
+    type: A
+    journey: decision
+
+  # Optional: motive-color framed variant (Neuro-SEO extension)
+  - id: xxx_a_04
+    text: "Welche Schmuckmarken kann ich bedenkenlos verschenken, ohne bei Qualität Kompromisse einzugehen?"
+    type: A
+    journey: decision
+    motive_color: blau        # rot | gelb | gruen | blau (Motivkompass, optional)
