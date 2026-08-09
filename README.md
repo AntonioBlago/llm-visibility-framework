@@ -10,6 +10,8 @@
 
 The **LLM Brand Visibility and Ranking Framework** measures how Large Language Models (Claude, GPT-4o, Gemini) rank and recommend brands in response to consumer queries — and gives you a repeatable workflow to track **your own brand**: analyze the business, build a versioned 50–100 prompt set, measure across models, audit, optimize.
 
+Prompt sets are treated as measurement instruments: a visibility score is conditional on the prompt family, prompt-set version, buyer persona, journey stage, buying context, constraint set, market definition, model set and run date used to observe it. Changed prompts start a new time series; they should not be interpreted as optimization effects unless the prompt set stayed fixed and the measured intervention changed.
+
 The methodology is validated by [a statistical study](#the-study-empirical-foundation) of 48 supplement brands × 200 prompts × 3 models with up to 30 runs per prompt. The study answers the calibration questions behind your own measurement — how many runs you need, how stable rankings are, which metrics discriminate — and its results are the defaults baked into the framework.
 
 This framework is part of the **[Visibly AI](https://www.visibly-ai.com)** ecosystem — an SEO agent system that helps brands measure, track, and improve their visibility in AI-powered search engines and LLM recommendations (GEO — Generative Engine Optimization).
@@ -18,7 +20,7 @@ This framework is part of the **[Visibly AI](https://www.visibly-ai.com)** ecosy
 
 Want to apply this methodology to **your own brand**? The repository includes a complete, reusable prompt framework — [docs/prompt-framework.md](docs/prompt-framework.md) — covering the full workflow:
 
-1. **Business Analysis** — context capture, website research, 5–10 competitor analysis
+1. **Business Analysis** — context capture, website research, customer evidence, 5–10 competitor analysis
 2. **Category & Journey Mapping** — 3–7 monitoring categories, customer journey stages, generic (~60%) vs. branded (~40%) prompt split
 3. **Prompt Development** — build a versioned set of 50–100 prompts (W-question rules, persona framing, naked vs. instrumented prompts)
 4. **Measurement** — run the set through this repo's pipeline (collector → parser → analyzer)

@@ -88,6 +88,28 @@ Brands are only detected in the LLM's output. This ensures we measure **organic 
 - Natural phrasing (as a real user would ask)
 - Diverse question structures
 
+### 2.5 Prompt Sets as Measurement Instruments
+
+The prompt set is part of the measurement instrument. A visibility score is therefore conditional on the prompt family, buyer persona, journey stage, buying context and constraint set used to observe the market, not a free-standing property of a brand.
+
+Report every result as visibility under a defined prompt set, version, prompt family, buyer persona, journey stage, buying context, constraint set, market definition, model set and run date. A changed prompt set is a changed instrument and starts a new time series.
+
+This matters most when comparing generic and contextual prompt families:
+
+| Prompt family | Measures | Valid interpretation |
+|---------------|----------|----------------------|
+| Generic prompts | Spontaneous brand visibility under broad category framing | Organic category visibility for the defined market |
+| Contextual prompts | Visibility under a specified buyer situation, such as industry, existing systems or compliance constraints | Scenario-specific visibility under a narrower market definition |
+| Branded prompts | Attributes and associations when the brand is named | Perception, not organic visibility |
+
+Differences between prompt families should not be interpreted as evidence that content, structured data, `llms.txt`, PR or other GEO actions caused a lift unless the prompt set was held constant and the intervention itself changed.
+
+Buyer persona, funnel stage, buying context and constraint set must also stay stable in paired comparisons. A broad awareness prompt and a decision-stage prompt with budget, industry, existing tools or compliance constraints can validly produce different visibility patterns because they encode different buyer situations.
+
+A constraint set is any explicit requirement that admits or excludes product classes, such as self-hosting, data residency, compliance requirements, budget caps, integration dependencies, company size or existing stack. If a contextual prompt admits a previously filtered-out solution class, the result is a market-definition finding, not a prompt trick and not an optimization lift.
+
+Customer evidence is an optional but recommended input for designing better prompt instruments before measurement. Questionnaires, sales notes, CRM loss reasons, support tickets, reviews and on-site search logs can help identify real buyer wording, objections, constraints and decision criteria. Use only aggregated or anonymized evidence in prompt design, record the evidence sources with the prompt set if they were used, and never mix prompt rewrites caused by new customer data into an existing time series.
+
 ---
 
 ## 3. Data Collection Protocol

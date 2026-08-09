@@ -7,7 +7,8 @@
 #   4. Fill in 10-15 prompts per cluster (framework Phase 3)
 #
 # Required fields per prompt: id, text (everything the pipeline needs).
-# Optional metadata fields (type, journey, motive_color) document the
+# Optional metadata fields (type, prompt_family, journey, buyer_persona,
+# buying_context, customer_evidence, motive_color) document the
 # framework mapping — they are ignored by src/collector.py but keep the
 # prompt set auditable and versionable.
 #
@@ -20,6 +21,11 @@
 # IMPORTANT: Only Type A (generic) prompts belong in clusters that feed the
 # mention-rate pipeline. Keep Type B (branded) prompts in separate clusters
 # and analyze them as perception data, never as organic visibility.
+#
+# Buying context and constraint sets are part of the measurement instrument.
+# Keep them stable for paired comparisons and report them with the results.
+# Optional: customer evidence can improve prompt realism. Aggregate or anonymize
+# it before it informs prompts.
 
 cluster: CLUSTER_NAME
 description: "Short description incl. persona, e.g. 'Sustainability queries from a fashion-conscious 30-year-old, first person'"
@@ -28,21 +34,51 @@ prompts:
   - id: xxx_a_01              # <cluster-prefix>_<type>_<number>
     text: "Welche Schmuckmarken setzen auf recyceltes Gold?"
     type: A                   # A = generic (no brand) | B = branded
+    prompt_family: generic    # generic | contextual | branded | mixed
     journey: awareness        # awareness | consideration | decision | retention | advocacy
+    buyer_persona: "fashion-conscious 30-year-old customer"
+    buying_context:
+      market: "DACH"
+      company_or_household_context: null
+      industry_or_use_case: "jewelry purchase"
+      existing_systems: []
+      constraints:
+        - "sustainability matters"
+      admitted_solution_classes:
+        - "jewelry brands with recycled materials"
+      excluded_solution_classes: []
+    customer_evidence:        # optional recommendation, not required by pipeline
+      sources:
+        - "customer_questionnaire"
+        - "on_site_faq"
+      recurring_questions:
+        - "Which brands use recycled materials?"
+      objections:
+        - "unclear material origin"
+      decision_criteria:
+        - "sustainability"
+        - "trust"
+      privacy_note: "Aggregated and anonymized; no customer names or confidential details in prompt text."
 
   - id: xxx_a_02
     text: "Wer sind die führenden Anbieter für nachhaltigen Schmuck in Deutschland?"
     type: A
+    prompt_family: generic
     journey: consideration
+    buyer_persona: "fashion-conscious 30-year-old customer"
 
   - id: xxx_a_03
     text: "Ich möchte nachhaltigen Schmuck kaufen. Wo finde ich vertrauenswürdige Anbieter?"
     type: A
+    prompt_family: generic
     journey: decision
+    buyer_persona: "fashion-conscious 30-year-old customer"
 
   # Optional: motive-color framed variant (Neuro-SEO extension)
   - id: xxx_a_04
     text: "Welche Schmuckmarken kann ich bedenkenlos verschenken, ohne bei Qualität Kompromisse einzugehen?"
     type: A
+    prompt_family: generic
     journey: decision
+    buyer_persona: "gift buyer who values quality and trust"
     motive_color: blau        # rot | gelb | gruen | blau (Motivkompass, optional)

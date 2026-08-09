@@ -72,6 +72,7 @@ Optional fields (improve prompt quality):
 | **Website URL** | Enables automated website research (1.2) |
 | **Known competitors** | Seeds the competitor analysis (1.3) |
 | **USP** | Needed for the perception audit (Phase 5.2) |
+| **Customer evidence** | Grounds prompts in real buyer language, objections and decision criteria |
 | **Tracking interval** | Determines re-measurement cadence (Phase 6) |
 
 ### 1.2 Website research
@@ -86,7 +87,41 @@ Crawl or read the brand website and extract:
 
 Procedure: homepage → "About us" → product category pages → footer (certifications, partners).
 
-### 1.3 Competitor analysis
+### 1.3 Optional: Customer evidence and questionnaires
+
+When available, use customer data to improve prompt realism before the prompt set is frozen. This is recommended, not required. The goal is not to insert private facts into prompts, but to extract repeatable buyer language, objections, constraints and decision criteria.
+
+Useful inputs:
+
+| Source | What to extract | Prompt use |
+|--------|-----------------|------------|
+| Customer questionnaires | Jobs-to-be-done, budget ranges, evaluation criteria, objections | Buyer personas, buying context, journey-stage tags |
+| Sales calls / discovery notes | Exact buyer wording, alternatives considered, deal blockers | Natural phrasing and constraint sets |
+| CRM data | Segment, company size, industry, deal stage, lost/won reasons | Persona distribution and category prioritization |
+| Support tickets / reviews | Recurring pain points, confusion, post-purchase questions | Awareness, retention and advocacy prompts |
+| On-site search / FAQ logs | Questions buyers already ask in their own words | Prompt wording and category coverage |
+| Survey data | Ranking of needs, perceived competitors, switching triggers | Prompt weighting and comparison prompts |
+
+Normalize customer evidence into non-sensitive fields before using it in prompts:
+
+```yaml
+customer_evidence:
+  sources: ["customer_questionnaire", "sales_notes", "crm_lost_reasons"]
+  recurring_questions:
+    - "Which provider works with our existing system?"
+  objections:
+    - "implementation effort"
+    - "data control"
+  decision_criteria:
+    - "budget"
+    - "integration fit"
+    - "trust"
+  privacy_note: "Aggregated and anonymized; no customer names or confidential details in prompts."
+```
+
+Keep customer evidence separate from the frozen prompt text. If new customer data leads you to rewrite prompts, version the prompt set and treat the next run as a new measurement condition.
+
+### 1.4 Competitor analysis
 
 Identify **5–10 competitors** — they become the comparison set for share-of-voice and are added to `config.yaml` as tracked brands.
 
@@ -104,7 +139,7 @@ Capture per competitor:
 
 Also record: shared themes across competitors, differentiation potential for your brand, and recurring competitor keywords — these feed directly into Phase 2 categories.
 
-> Automation: the [advanced system prompt](../prompts/templates/system-prompt-advanced.de.md) runs 1.1–1.3 as a guided workflow (website research + agent-mode competitor analysis) inside a Custom GPT / Claude Project.
+> Automation: the [advanced system prompt](../prompts/templates/system-prompt-advanced.de.md) runs 1.1–1.4 as a guided workflow (website research + agent-mode competitor analysis) inside a Custom GPT / Claude Project.
 
 ---
 
@@ -134,7 +169,26 @@ Tag every prompt with a journey stage:
 
 The study's four clusters map onto this: *informational* ≈ Awareness, *commercial* ≈ Decision, *navigational* ≈ brand-adjacent Decision, *comparison* ≈ Consideration.
 
-### 2.3 Prompt types: generic vs. branded
+### 2.3 Buying context and constraint sets
+
+Separate the buyer persona from the buying context. The persona defines who is asking; the buying context defines the situation in which the product is being chosen.
+
+Build buyer personas and buying contexts from the business analysis. Where available, customer evidence such as questionnaire answers, sales notes and CRM loss reasons can improve them by revealing real constraints, not just generic demographic labels.
+
+Use buying-context fields when a prompt contains conditions that can admit or exclude whole solution classes:
+
+| Field | Meaning | Examples |
+|-------|---------|----------|
+| **Company / household context** | Size, maturity, budget and operating model | 10-person firm, enterprise team, first-time buyer, under 30 EUR per user |
+| **Industry / use case** | The domain that shapes requirements | law firm, healthcare provider, Shopify merchant, endurance athlete |
+| **Existing systems** | Tools or infrastructure already in place | own mail server, Shopify stack, ERP, CRM, file server |
+| **Constraint set** | Hard requirements that narrow the eligible market | self-hosting, data residency, compliance, budget cap, integration dependency |
+| **Admitted solution classes** | Product classes made relevant by the constraint | on-premise CRM, open-source CRM, HIPAA-ready tools |
+| **Excluded solution classes** | Product classes made less relevant or invalid | pure SaaS without local control, enterprise-only tools, marketplace-only products |
+
+Contextual prompts should be interpreted by the constraint set they introduce. If a constraint admits a previously filtered-out solution class, the result is a market-definition finding, not a prompt trick and not an optimization lift.
+
+### 2.4 Prompt types: generic vs. branded
 
 | Type | Brand in prompt? | Measures | Share |
 |------|------------------|----------|-------|
@@ -187,7 +241,26 @@ Anchor prompts in a concrete buyer persona, as in the study's clusters (e.g. *"2
 
 Instrumented templates for both prompt types: [`prompts/templates/tracking-prompts.md`](../prompts/templates/tracking-prompts.md).
 
-### 3.5 Export formats
+### 3.5 Prompt sets as measurement instruments
+
+A visibility score is conditional on the prompt family used to observe it. Treat the prompt set as part of the measurement instrument, not as interchangeable wording around the same measurement.
+
+Report results as: visibility under prompt set X, version Y, prompt family F, buyer persona P, journey stage J, buying context C, constraint set S, market definition Z, model set M, at time T.
+
+Prompt family changes can change the observed market even when the web, model set, extraction logic and run date stay unchanged. This is especially important when moving from broad generic prompts to contextual buyer prompts:
+
+| Prompt family | Measures | Interpretation rule |
+|---------------|----------|---------------------|
+| **Generic market prompts** | Spontaneous visibility under broad category framing | Use for organic category visibility and share-of-voice baselines |
+| **Contextual market prompts** | Visibility under a specified buyer situation, e.g. industry, tech stack, constraints, compliance needs | Use for scenario-specific market definition; do not compare as a direct lift against generic prompts |
+| **Branded prompts** | Attributes and associations around a named brand | Use for perception audit only; keep separate from organic mention-rate statistics |
+| **Mixed prompt sets** | A deliberately combined instrument | Report the mix explicitly; do not collapse results without disclosing the family composition |
+
+Buyer persona, funnel stage, buying context and constraint set are also instrument variables. A prompt from a first-time awareness buyer can produce a different visibility pattern than a prompt from a decision-stage buyer with a fixed budget, existing tools or compliance constraints. Keep these tags stable for paired comparisons, and segment results by them before drawing optimization conclusions.
+
+Do not interpret differences between prompt-set versions as content, schema, `llms.txt`, PR or GEO optimization effects unless the prompt set was held constant and the measured intervention changed. If only the prompt family changed, the finding is about the instrument or market definition.
+
+### 3.6 Export formats
 
 **Pipeline format** (this repo) — one YAML per category, loaded via `config.yaml → prompt_clusters`:
 
@@ -198,7 +271,15 @@ prompts:
   - id: sus_a_01
     text: "Welche Schmuckmarken setzen auf recyceltes Gold?"
     type: A
+    prompt_family: generic
     journey: awareness
+    buyer_persona: "fashion-conscious 30-year-old customer"
+    buying_context:
+      market: "DACH"
+      constraints:
+        - "sustainability matters"
+      admitted_solution_classes:
+        - "jewelry brands with recycled materials"
 ```
 
 Template: [`prompts/templates/prompt-set.template.yaml`](../prompts/templates/prompt-set.template.yaml)
@@ -287,6 +368,27 @@ Example scorecard row:
 
 For model-vs-model or cycle-vs-cycle claims, use the tests documented in [methodology.md](methodology.md): Fisher's exact / McNemar for binary metrics, Mann-Whitney U / Wilcoxon for ordinal, Benjamini-Hochberg FDR correction, bootstrap CIs.
 
+### 5.4 Required report metadata
+
+Every visibility report should state the measurement conditions alongside the scores:
+
+| Field | Why it matters |
+|-------|----------------|
+| Prompt set name | Identifies the instrument used for the measurement |
+| Prompt set version | Separates comparable cycles from new time series |
+| Prompt family | Generic, contextual, branded or mixed |
+| Buyer persona | Defines whose buying situation the prompt represents |
+| Journey stage | Separates awareness, consideration, decision, retention and advocacy intent |
+| Buying context | Captures industry, size, use case, existing systems and operating situation |
+| Constraint set | Documents hard requirements that admit or exclude solution classes |
+| Customer evidence sources (optional) | Shows which questionnaires, CRM fields, interviews or logs informed the prompt set, if used |
+| Market definition | Clarifies which buyer situation or category boundary the prompts encode |
+| Models | Scores are model-set dependent |
+| Run date | LLM behavior and indexed source availability change over time |
+| Runs per prompt | Determines statistical reliability |
+| Extraction rules | Alias lists, roster rules and parsing logic affect counts |
+| Tracked roster / aliases | Defines which products or brands could be detected |
+
 ---
 
 ## Phase 6 — Optimize & Re-measure
@@ -308,6 +410,7 @@ Re-measurement rules:
 2. **Version prompt sets** (`v1.0`, `v1.1`) and record which cycle used which version.
 3. **Cadence:** monthly for active optimization, quarterly for monitoring.
 4. **Compare paired:** same prompts, same runs, same temperature → McNemar / Wilcoxon for before-after significance.
+5. **Separate instrument changes from optimization effects.** If the prompt family changes, report the result as a new measurement condition, not as evidence that an on-site, off-site or technical GEO intervention worked.
 
 ---
 
