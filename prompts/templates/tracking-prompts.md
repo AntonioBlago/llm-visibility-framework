@@ -154,3 +154,11 @@ ID;Keyword;Themencluster;Fragetyp;W-Frage;Funnel_Stufe;Messziel;Tracking_Prompt
 ```
 
 Compatible with Sistrix, Peec, Otterly, and Visibly AI prompt imports.
+
+Optional columns (framework v1.1) that keep the export auditable without breaking imports — add them at the end:
+
+```csv
+;Persona;Kontextsatz;Auswertung;Wettbewerber_im_Thema;Zielseite;Katalog_Bezug
+```
+
+`Auswertung` = `generic | feature | seasonal | control | brand | benchmark | reserve | service` (see [Phase 3.7](../../docs/prompt-framework.md#37-measurement-groups-and-evaluation-tags)). `Kontextsatz` is the persona's fixed sentence placed before the question; empty for control groups.

@@ -7,10 +7,11 @@
 #   4. Fill in 10-15 prompts per cluster (framework Phase 3)
 #
 # Required fields per prompt: id, text (everything the pipeline needs).
-# Optional metadata fields (type, prompt_family, journey, buyer_persona,
-# buying_context, customer_evidence, motive_color) document the
-# framework mapping — they are ignored by src/collector.py but keep the
-# prompt set auditable and versionable.
+# Optional metadata fields (type, prompt_family, journey, funnel_stage,
+# buyer_persona, context_sentence, evaluation, competitors_in_topic,
+# target_page, catalog_ref, buying_context, customer_evidence, motive_color)
+# document the framework mapping — they are ignored by src/collector.py but
+# keep the prompt set auditable and versionable.
 #
 # Rules (framework Phase 3.2):
 #   - W-question or natural buyer query, user perspective (first person works well)
@@ -24,6 +25,17 @@
 #
 # Buying context and constraint sets are part of the measurement instrument.
 # Keep them stable for paired comparisons and report them with the results.
+#
+# v1.1 (framework 3.3, 3.7, 3.8):
+#   - context_sentence: the persona as ONE fixed sentence placed before the
+#     question; identical across runs. Control groups: null.
+#   - evaluation: generic | feature | seasonal | control | brand | benchmark |
+#     reserve | service. Feature prompts (brand attributes in the text) and
+#     seasonal prompts are reported separately, never merged into the generic rate.
+#   - competitors_in_topic: roster brands whose product_fields intersect the
+#     topic's fields (framework 1.5). All roster brands count for detection.
+#   - target_page: verified URL that should be cited; null = content gap, keep flagged.
+#   - IDs are append-only. Never renumber after the first measured run.
 # Optional: customer evidence can improve prompt realism. Aggregate or anonymize
 # it before it informs prompts.
 
@@ -36,7 +48,13 @@ prompts:
     type: A                   # A = generic (no brand) | B = branded
     prompt_family: generic    # generic | contextual | branded | mixed
     journey: awareness        # awareness | consideration | decision | retention | advocacy
+    funnel_stage: bedarf      # Neuro-SEO stages: bedarf | vergleich | anwendung | kauf | nachkauf (framework 2.2)
     buyer_persona: "fashion-conscious 30-year-old customer"
+    context_sentence: "Ich bin 30, achte auf Herkunft und Materialien und suche Schmuck, den ich täglich tragen kann."
+    evaluation: generic       # generic | feature | seasonal | control | brand | benchmark | reserve | service
+    competitors_in_topic: ["Brand A", "Brand B"]   # from the roster via product fields
+    target_page: "https://example.com/collections/recycled-gold"   # verified, never reconstructed
+    catalog_ref: null         # client's own catalog number, if any
     buying_context:
       market: "DACH"
       company_or_household_context: null

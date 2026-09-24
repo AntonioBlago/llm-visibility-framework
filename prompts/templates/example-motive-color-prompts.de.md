@@ -1,8 +1,8 @@
 # Beispiel: Motivfarben-Prompts (PURELEI)
 
-30 emotional gerahmte Prompt-Varianten für Schmuck (Beispielmarke: PURELEI), gruppiert nach den Motivfarben des Motivkompasses nach Dirk Eilert — der psychologischen Grundlage des [Neuro-SEO Systems®](https://antonioblago.de/neuro-seo-system/).
+30 emotional gerahmte Prompt-Varianten für Schmuck (Beispielmarke: PURELEI), gruppiert nach den Motivfarben des Motivkompasses nach Dirk Eilert — der psychologischen Grundlage des [Neuro-SEO Systems®](https://www.antonioblago.com/de/neuro-seo-system/).
 
-**Einsatzzweck:** Testen, ob emotionales Framing verändert, *welche* Marken ein LLM empfiehlt. Diese Prompts sind bewusst **keine** neutralen W-Fragen (Framework Phase 3.2) — sie sind eine Workshop-/Experiment-Erweiterung, kein Ersatz für das neutrale Kern-Prompt-Set. Praxisanwendung: [E-Commerce GEO Case Study PURELEI](https://antonioblago.de/seo/e-commerce-geo-case-study-von-purelei/).
+**Einsatzzweck:** Testen, ob emotionales Framing verändert, *welche* Marken ein LLM empfiehlt. Diese Prompts sind bewusst **keine** neutralen W-Fragen (Framework Phase 3.2) — sie sind eine Workshop-/Experiment-Erweiterung, kein Ersatz für das neutrale Kern-Prompt-Set. Praxisanwendung: [E-Commerce GEO Case Study PURELEI](https://www.antonioblago.com/blog/e-commerce-geo-case-study-with-purelei).
 
 | Farbe | Kernmotiv | Trigger in diesen Prompts |
 |-------|-----------|---------------------------|

@@ -1,7 +1,7 @@
 # Brand Prompt Framework — From Business Analysis to AI Visibility Audit
 
 **Author:** Antonio Blago
-**Version:** 1.0
+**Version:** 1.1 — September 2026: evidence-weighted personas, measurement groups with evaluation tags, run design with variance runs, competitor roster by product field, demand-weighted allocation (learnings from a 2026 D2C e-commerce engagement; no client data included)
 **Status:** Companion framework to the [LLM Brand Visibility Study](methodology.md)
 
 This framework turns **any brand** into a measurable prompt set for LLM visibility tracking. While [methodology.md](methodology.md) documents the statistical study design, this document describes the **repeatable end-to-end workflow** you run for a new brand or market:
@@ -139,6 +139,31 @@ Capture per competitor:
 
 Also record: shared themes across competitors, differentiation potential for your brand, and recurring competitor keywords — these feed directly into Phase 2 categories.
 
+### 1.5 Competitor roster for mention counting
+
+The 5–10 competitors from 1.4 are the *comparison set*. For counting mentions in LLM answers you need a wider **roster**, and the roster needs rules:
+
+1. **Merge two sources and keep both visible.** The client's own list (often grouped: tools, clean/vegan, prestige, direct competitor) and the analysis list (keyword overlap, SERP occupancy). Mark the source per brand (`client`, `analysis`, `both`) — the overlap is usually smaller than either side expects.
+2. **Retailers, marketplaces, magazines and portals are never competitors or benchmarks.** They count as *occupancy* (who holds the answer slots) and appear in the cited-source list, not in share of voice.
+3. **Verify every domain by request** before it enters the roster. A domain that does not resolve stays flagged as "to be added"; it is never guessed from the brand name.
+4. **Tag each brand with product fields** (e.g. `tools`, `make-up`, `skincare`) and each topic with the fields it covers. The intersection yields the competitor set per prompt. All roster brands count for mention detection; the field mapping only attributes mentions to topics and keeps the per-prompt report readable.
+5. **Sentiment benchmarks:** 3–4 roster brands that receive the same branded question as your brand, on the same scale (Phase 5.2). At least one must come from the client's core product field, or the benchmark misses the segment the client lives in.
+
+```yaml
+competitors:
+  - name: "Brand A"
+    domain: "brand-a.com"          # verified by request, never reconstructed
+    category: "tools"              # client's own grouping
+    product_fields: ["tools", "make-up"]
+    source: "both"                 # client | analysis | both
+    benchmark: "B1"                # optional: sentiment benchmark id
+  - name: "Brand B"
+    domain: null                   # unresolved -> flagged, not guessed
+    category: "clean & vegan"
+    product_fields: ["make-up"]
+    source: "client"
+```
+
 > Automation: the [advanced system prompt](../prompts/templates/system-prompt-advanced.de.md) runs 1.1–1.4 as a guided workflow (website research + agent-mode competitor analysis) inside a Custom GPT / Claude Project.
 
 ---
@@ -169,6 +194,18 @@ Tag every prompt with a journey stage:
 
 The study's four clusters map onto this: *informational* ≈ Awareness, *commercial* ≈ Decision, *navigational* ≈ brand-adjacent Decision, *comparison* ≈ Consideration.
 
+Tool exports and German client decks often use the five **Neuro-SEO funnel stages** instead (`Funnel_Stufe` in the CSV schema). They are question types, derived from what buyers actually ask, and map onto the journey stages like this:
+
+| Neuro-SEO stage | Question type | Journey stage |
+|-----------------|---------------|---------------|
+| **Bedarf** (need) | "Which … suits …?", "What helps with …?" | Awareness |
+| **Vergleich** (comparison) | "What is the difference between …?", "Which brand …?" | Consideration |
+| **Anwendung** (application) | "How do I apply / use …?" | Retention-adjacent: usage before or after purchase |
+| **Kauf** (purchase) | "Where do I buy …?", "Can I test … first?" | Decision |
+| **Nachkauf** (repurchase, care) | "How do I clean / refill …?" | Retention |
+
+Tag every prompt with one stage and require at least one prompt per relevant stage and topic. Purchase and repurchase prompts only where search data proves the demand — otherwise the set measures a funnel the buyers do not walk.
+
 ### 2.3 Buying context and constraint sets
 
 Separate the buyer persona from the buying context. The persona defines who is asking; the buying context defines the situation in which the product is being chosen.
@@ -188,7 +225,22 @@ Use buying-context fields when a prompt contains conditions that can admit or ex
 
 Contextual prompts should be interpreted by the constraint set they introduce. If a constraint admits a previously filtered-out solution class, the result is a market-definition finding, not a prompt trick and not an optimization lift.
 
-### 2.4 Prompt types: generic vs. branded
+### 2.4 Prompt allocation across topics
+
+Decide *how many prompts each topic gets* before writing them, and decide it with numbers:
+
+1. **Floor:** at least three prompts per topic, otherwise a topic's rate is a coin flip.
+2. **Demand share next to prompt share.** Put the topic's share of generic search demand (impressions of the topic's queries / all generic impressions) next to its share of the prompt set. A topic with 16 % of demand and 8 % of prompts is under-represented; a positioning topic with 1 % of demand and 10 % of prompts is over-represented on purpose (see feature prompts, 3.7).
+3. **Two valid designs, one explicit choice.** *Flat* (every topic near the floor, big topics slightly more) keeps the total rate from following the biggest topic. *Demand-proportional* (prompts ≈ demand share, floor kept) makes the total mirror the market. Neither is wrong; the report must say which one was chosen.
+4. **Report totals both ways.** Whatever the allocation, publish the total mention rate demand-weighted *and* equal-weighted per topic, plus the per-topic rates. Then the allocation cannot silently move the headline number.
+
+| Topic | Demand share | Prompts | Prompt share | With catalog reference |
+|-------|-------------:|--------:|-------------:|-----------------------:|
+| Topic A | 18 % | 5 | 10 % | 3 |
+| Topic B | 16 % | 7 | 14 % | 0 |
+| Topic C | 1 % | 5 | 10 % | 4 |
+
+### 2.5 Prompt types: generic vs. branded
 
 | Type | Brand in prompt? | Measures | Share |
 |------|------------------|----------|-------|
@@ -215,7 +267,7 @@ Rule of thumb: `categories × prompts per category`, balanced across journey sta
 
 Within each category: ~60% Type A / ~40% Type B, and at least one prompt per relevant journey stage.
 
-> **Real-world reference:** The [PURELEI E-commerce GEO case study](https://antonioblago.de/seo/e-commerce-geo-case-study-von-purelei/) ran this approach in production with **117 prompts (94 generic / 23 branded)** across ChatGPT, Perplexity, Claude, Gemini and Google AI Overviews — resulting in 22.2% average AI visibility (vs. Pandora 12.3%, Swarovski 7.4%) and measurable AI-referred revenue via UTM tracking.
+> **Real-world reference:** The [PURELEI E-commerce GEO case study](https://www.antonioblago.com/blog/e-commerce-geo-case-study-with-purelei) ran this approach in production with **117 prompts (94 generic / 23 branded)** across ChatGPT, Perplexity, Claude, Gemini and Google AI Overviews — resulting in 22.2% average AI visibility (vs. Pandora 12.3%, Swarovski 7.4%) and measurable AI-referred revenue via UTM tracking.
 
 ### 3.2 Writing rules
 
@@ -228,9 +280,14 @@ Every prompt must be:
 5. **In the target market's language** — German prompts measure German-market visibility
 6. **Answerable without follow-up questions** — the model must be able to respond in one turn
 
-### 3.3 Persona framing
+### 3.3 Persona framing and context sentences
 
-Anchor prompts in a concrete buyer persona, as in the study's clusters (e.g. *"25 years old, gym-affine, nutrition-conscious, first person"* — see [`prompts/commercial.yaml`](../prompts/commercial.yaml)). A consistent persona reduces variance between prompts and makes clusters comparable.
+Anchor prompts in a concrete buyer persona, as in the study's clusters (e.g. *"25 years old, gym-affine, nutrition-conscious, first person"* — see [`prompts/commercial.yaml`](../prompts/commercial.yaml)). A consistent persona reduces variance between prompts and makes clusters comparable. Four rules keep personas honest:
+
+1. **Persona = context sentence, not a rewrite.** The persona is one fixed sentence placed *before* the question ("I am 52, have dry, sensitive skin with first lines and want to look natural, without anything settling into lines."). The question itself is identical across personas; the sentence is identical across runs. Changing a context sentence is a new instrument version.
+2. **Weight personas by evidence, not by strategy.** If reviews, CRM or survey data show that most buyers sit in one segment, that segment's persona carries **at least two thirds of the core prompts**. Strategic target personas (who the brand *wants* to win) get the remaining share as a test group, and only where the situation is intrinsic to the question: starter sets, first-time use, occasions, a specific skin or life situation. A set that follows the brand's wish list instead of its customer base measures the wrong market — and the client will count.
+3. **Control groups run without any context sentence** (classification, brand sentiment, benchmarks, reserve). They measure the model's default answer; a persona would blur that.
+4. **Publish the persona shares** with every report (e.g. main persona 34 of 49 core prompts) and treat the main persona's rate as the number the business case hangs on: it is the segment that carries today's revenue.
 
 ### 3.4 Naked vs. instrumented prompts
 
@@ -290,6 +347,33 @@ Template: [`prompts/templates/prompt-set.template.yaml`](../prompts/templates/pr
 ID;Keyword;Themencluster;Fragetyp;W-Frage;Funnel_Stufe;Messziel;Tracking_Prompt
 ```
 
+Optional columns that keep the export auditable (v1.1): `Persona;Kontextsatz;Auswertung;Wettbewerber_im_Thema;Zielseite;Katalog_Bezug`.
+
+### 3.7 Measurement groups and evaluation tags
+
+A prompt set is not one list but several groups with different rules. Mixing them produces one number that means nothing. Tag every prompt with an `evaluation` value and report the groups separately:
+
+| Group | `evaluation` | Brand in prompt | Context | Counts toward mention rate | Why it is separate |
+|-------|--------------|-----------------|---------|----------------------------|--------------------|
+| Core, generic | `generic` | no | persona | yes | the organic visibility number |
+| Core, feature | `feature` | no, but names brand attributes (vegan, made in …, handmade, refill, certification) | persona | **separately** | attribute prompts describe the brand almost by definition and inflate the mention rate; they measure *recognition via attributes*, a different question |
+| Core, seasonal | `seasonal` | no | persona | **separately** | gift guides, advent calendars, sales: the season would distort the monthly comparison; report inside a season window |
+| Classification control | `control` | no | **none** | no | category-boundary questions ("difference between natural cosmetics and clean beauty", "which natural-cosmetics brands …"): measures whether the model classifies the brand correctly, vaguely or wrongly |
+| Brand sentiment (Type B) | `brand` | yes | none | no | perception audit (5.2); single measurement, repeated on demand |
+| Benchmark brands | `benchmark` | yes (competitor) | none | no | same branded question, same scale, 3–4 roster brands |
+| Reserve | `reserve` | no | none | no | candidate prompts (e.g. from the client's own catalog) run once; gaps promote them into the monthly set until the freeze |
+| Service questions | `service` | no | persona | after validation | questions customers ask support; run only after customer service confirmed they are real |
+
+Rule of thumb for tagging feature prompts: a fixed word list per brand (its claimed attributes) applied to the prompt text, plus a manual list for prompts that name the positioning without a keyword. Publish the list; the client will want to argue about single prompts, and that is a good conversation.
+
+### 3.8 Target page and catalog reference per prompt
+
+Every core prompt gets a **target page**: the URL that should be cited when the model answers. Verify the URL against the live sitemap or the search console — never reconstruct a slug from the product name. A prompt without an existing page is a content gap and stays flagged in the set; it must not silently disappear.
+
+If the client already has a prompt catalog, map every catalog entry to `core`, `reserve`, `control` or `excluded` with a reason, and carry the catalog number in the prompt row. Exclusions that are worth stating: press and award prompts without an off-page resource, direct brand-vs-brand comparisons, pure service prompts. "Alternative to brand X" prompts are not comparisons; they measure whether you are named as an alternative and belong in the reserve.
+
+IDs are append-only. Additions get new numbers at the end; existing numbers are never re-sorted, because the client's comments reference them.
+
 ---
 
 ## Phase 4 — Measurement
@@ -298,7 +382,7 @@ ID;Keyword;Themencluster;Fragetyp;W-Frage;Funnel_Stufe;Messziel;Tracking_Prompt
 
 ### 4.1 Configure
 
-1. Add the brand **and its competitors** (from Phase 1.3) to `config.yaml → brands`, each with `aliases` for robust detection:
+1. Add the brand **and its competitors** (from Phase 1.4) to `config.yaml → brands`, each with `aliases` for robust detection:
 
 ```yaml
 brands:
@@ -330,6 +414,23 @@ python -m src.power_analysis --runs 10 20 30 --prompts 10 50 100 200
 | `top3_rate` | Binary | Brand in positions 1–3 |
 | `visibility_score` | 0–10 | Weighted: Pos1=10, Pos2=8, Pos3=6, Pos4=5, Pos5=4, mentioned=2, absent=0 |
 
+### 4.4 Run design for tool-based monitoring
+
+The 30-run pipeline above is the research setting. Client monitoring through a tracking tool runs each prompt once per system and month, so variance has to be measured differently. The design that held up in practice:
+
+| Phase | What runs | Purpose |
+|-------|-----------|---------|
+| **Baseline (month 1, run 1)** | every group once per fixed system: core, control, brand, benchmark, reserve | full picture, single measurements for brand, benchmark and reserve |
+| **Variance runs (month 1, runs 2 and 3)** | the monthly set only: core + classification control | spread per value; the baseline counts as run 1, so three readings exist before the first "baseline value" is declared |
+| **Monthly (from month 2)** | the monthly set | the time series; additions from the reserve until the freeze run |
+| **Freeze** | from a named run (e.g. the third monthly run) the set does not change | a changed set is a new time series (Phase 6) |
+
+Fixed vs. optional systems: name the fixed systems (e.g. ChatGPT with web search, Gemini) and mark optional ones (e.g. Perplexity); Google AI Overviews are pulled separately from the SERP for the head terms and never mixed into the mention rate.
+
+Per run, document: date, system and model version, web search on/off, country, language, persona and context sentence, full answer, brand mentioned and position, classification, context (positive/neutral/critical), top-3 competitors from the roster, cited sources. Without the model version and the web-search flag, month-over-month differences cannot be attributed.
+
+Call budget: `(N_all + 2 × N_monthly) × fixed_systems` in month 1, `N_monthly × fixed_systems` per month afterwards; each optional system adds `N_monthly`. Template: [`prompts/templates/measurement-plan.template.md`](../prompts/templates/measurement-plan.template.md).
+
 ---
 
 ## Phase 5 — Audit
@@ -342,9 +443,11 @@ python -m src.power_analysis --runs 10 20 30 --prompts 10 50 100 200
 |----------|--------|
 | Is the brand mentioned at all? | Mention rate per model, per cluster |
 | How prominently? | Median rank, top-3 rate, visibility score |
-| Against whom? | Share of voice vs. the 5–10 competitors from Phase 1.3 |
+| Against whom? | Share of voice vs. the 5–10 competitors from Phase 1.4 |
 | Where are the gaps? | Categories / journey stages with zero or weak mentions |
-| Is it stable? | Run-to-run similarity (Jaccard, RBO, Fleiss' Kappa) |
+| Is it stable? | Run-to-run similarity (Jaccard, RBO, Fleiss' Kappa); in tool-based monitoring the spread across the three first-month runs |
+| Is the number inflated? | Generic vs. feature vs. seasonal rates side by side (3.7); the headline uses `generic` |
+| Which weighting? | Total rate demand-weighted and equal-weighted per topic (2.4); per-persona rates, main persona first |
 
 ### 5.2 Perception audit (from Type B prompts)
 
@@ -388,6 +491,11 @@ Every visibility report should state the measurement conditions alongside the sc
 | Runs per prompt | Determines statistical reliability |
 | Extraction rules | Alias lists, roster rules and parsing logic affect counts |
 | Tracked roster / aliases | Defines which products or brands could be detected |
+| Evaluation-tag composition | Counts of generic / feature / seasonal / control prompts in the set (3.7) |
+| Persona shares | How many core prompts each persona carries (3.3) |
+| Weighting | Demand-weighted or equal-weighted totals (2.4) |
+| Spread | Min–max across the variance runs before the first baseline value (4.4) |
+| Freeze run | From which run the set is unchanged |
 
 ---
 
@@ -411,6 +519,8 @@ Re-measurement rules:
 3. **Cadence:** monthly for active optimization, quarterly for monitoring.
 4. **Compare paired:** same prompts, same runs, same temperature → McNemar / Wilcoxon for before-after significance.
 5. **Separate instrument changes from optimization effects.** If the prompt family changes, report the result as a new measurement condition, not as evidence that an on-site, off-site or technical GEO intervention worked.
+6. **Append, never renumber.** Additions get new IDs at the end (from the reserve, until the freeze run); existing IDs stay, because client comments reference them.
+7. **Name the freeze run** in the plan and in every report. Before it, the set may grow; after it, only a new version may.
 
 ---
 
@@ -421,13 +531,14 @@ Re-measurement rules:
 | [`system-prompt-simple.de.md`](../prompts/templates/system-prompt-simple.de.md) | Lightweight Custom-GPT system prompt: website research → category selection → prompt table (German) |
 | [`system-prompt-advanced.de.md`](../prompts/templates/system-prompt-advanced.de.md) | Full workflow system prompt: context capture, competitor agent mode, tracking prompts, CSV export (German) |
 | [`tracking-prompts.md`](../prompts/templates/tracking-prompts.md) | Instrumented tracking-prompt templates for Type A / Type B (German + English) |
-| [`prompt-set.template.yaml`](../prompts/templates/prompt-set.template.yaml) | Pipeline-ready cluster template |
+| [`prompt-set.template.yaml`](../prompts/templates/prompt-set.template.yaml) | Pipeline-ready cluster template (v1.1: context sentence, evaluation tag, competitors in topic, target page) |
+| [`measurement-plan.template.md`](../prompts/templates/measurement-plan.template.md) | Measurement plan: groups, baseline and variance runs, monthly set, per-run documentation, call budget |
 | [`example-motive-color-prompts.de.md`](../prompts/templates/example-motive-color-prompts.de.md) | Example: emotionally framed prompt variants (motive colors, PURELEI) |
 | [`.claude/skills/prompt-framework/SKILL.md`](../.claude/skills/prompt-framework/SKILL.md) | Claude Code skill: `/prompt-framework analyze\|categories\|develop\|measure\|audit\|full` — executes each phase, stores work products in `data/framework/<brand>/` |
 
 ## Optional Extension: Emotional Framing (Motive Colors)
 
-For workshop settings, prompts can be framed along the four motive colors of Dirk Eilert's Motivkompass — the sales-psychology layer of the [Neuro-SEO System®](https://antonioblago.de/neuro-seo-system/), which combines psychological targeting with search visibility. In this framework it is used to test whether emotional framing shifts which brands a model recommends:
+For workshop settings, prompts can be framed along the four motive colors of Dirk Eilert's Motivkompass — the sales-psychology layer of the [Neuro-SEO System®](https://www.antonioblago.com/de/neuro-seo-system/), which combines psychological targeting with search visibility. In this framework it is used to test whether emotional framing shifts which brands a model recommends:
 
 | Color | Core motive | Trigger keywords |
 |-------|-------------|------------------|
@@ -442,6 +553,6 @@ See the [PURELEI example set](../prompts/templates/example-motive-color-prompts.
 
 ## Sources & Further Reading
 
-- **[Neuro-SEO System®](https://antonioblago.de/neuro-seo-system/)** — Antonio Blago's methodology combining sales psychology with search visibility (four phases: understand the business → analysis → strategy → implementation). Phase 1 of this framework follows the same business-first principle; the motive-color extension is its psychological layer.
-- **[E-commerce GEO Case Study: PURELEI](https://antonioblago.de/seo/e-commerce-geo-case-study-von-purelei/)** — production application of this framework: 117 prompts (94 generic / 23 branded) tracked across ChatGPT, Perplexity, Claude, Gemini and Google AI Overviews, with UTM-based revenue attribution for AI traffic.
+- **[Neuro-SEO System®](https://www.antonioblago.com/de/neuro-seo-system/)** — Antonio Blago's methodology combining sales psychology with search visibility (four phases: understand the business → analysis → strategy → implementation). Phase 1 of this framework follows the same business-first principle; the motive-color extension is its psychological layer.
+- **[E-commerce GEO Case Study: PURELEI](https://www.antonioblago.com/blog/e-commerce-geo-case-study-with-purelei)** ([German version](https://www.antonioblago.com/de/blog/e-commerce-geo-case-study-von-purelei)) — production application of this framework: 117 prompts (94 generic / 23 branded) tracked across ChatGPT, Perplexity, Claude, Gemini and Google AI Overviews, with UTM-based revenue attribution for AI traffic.
 - **[Study methodology](methodology.md)** — statistical design of this repository (metrics, tests, power analysis).

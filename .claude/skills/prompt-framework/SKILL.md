@@ -29,31 +29,33 @@ General rules:
 Phase 1 — Business Analysis. Requires brand name and website URL (ask if missing).
 
 1. Fetch the website (WebFetch: homepage, then About/company page and 1-2 category pages if discoverable) and fill the context table: Brand, Industry, Products, Audience, Perspective, User problem, Market/region, USP.
-2. Competitor analysis: web-search using the query patterns from framework 1.3 (`"[industry] brands [market]"`, `"[brand] alternatives"`, `"best [product category] brands"`). Identify 5-10 competitors; for each capture: website, type (direct/indirect), positioning, hero products, USP, audience.
-3. Summarize shared themes across competitors and differentiation potential.
-4. Write everything to `data/framework/<brand-slug>/business-analysis.md` and show the user the two tables (context + competitors). Ask the user to confirm or correct before they proceed to `categories`.
+2. Competitor analysis: web-search using the query patterns from framework 1.4 (`"[industry] brands [market]"`, `"[brand] alternatives"`, `"best [product category] brands"`). Identify 5-10 competitors; for each capture: website, type (direct/indirect), positioning, hero products, USP, audience.
+3. Competitor roster (framework 1.5): merge the user's own list with the analysis list and mark the source per brand; verify every domain by request (unresolved → flagged, never guessed); tag each brand with product fields; exclude retailers, marketplaces and magazines from the roster (they count as occupancy). Propose 3-4 sentiment benchmarks, at least one from the brand's core product field.
+4. Summarize shared themes across competitors and differentiation potential.
+5. Write everything to `data/framework/<brand-slug>/business-analysis.md` and show the user the three tables (context, competitors, roster). Ask the user to confirm or correct before they proceed to `categories`.
 
 ## Step: categories
 
 Phase 2 — Category & Journey Mapping. Requires `business-analysis.md` (if missing, tell the user to run `analyze` first).
 
 1. Propose 3-7 monitoring categories derived from the business analysis (candidates: sustainability, product quality, price/value, design & style, service, innovation, use cases, gifts & occasions).
-2. For each category, note which journey stages matter (Awareness/Consideration/Decision/Retention/Advocacy) and a target prompt count.
-3. Plan the split: ~60% Type A (generic, no brand name) / ~40% Type B (branded).
+2. For each category, note which journey stages matter (Awareness/Consideration/Decision/Retention/Advocacy, or the five Neuro-SEO stages Bedarf/Vergleich/Anwendung/Kauf/Nachkauf) and a target prompt count: at least three per category; if search demand per category is available, show demand share next to prompt share and let the user choose flat vs. demand-proportional allocation (framework 2.4).
+3. Plan the split: ~60% Type A (generic, no brand name) / ~40% Type B (branded). Plan the persona shares: the persona backed by customer evidence (reviews, CRM) carries at least two thirds of the core prompts; strategic personas only where the situation is intrinsic to the question (framework 3.3).
 4. Let the user select/adjust categories, then write `data/framework/<brand-slug>/categories.md` with the agreed plan.
 
 ## Step: develop
 
 Phase 3 — Prompt Development. Requires `categories.md`. Optional argument: total prompt count (default 60, range 50-100).
 
-1. Generate prompts per category following framework 3.2: W-questions or natural buyer queries, user perspective (first person), one aspect per prompt, no yes/no or leading questions, target-market language, consistent persona (framework 3.3).
-2. Type A prompts must not contain any brand name. Type B prompts name the brand and target attributes/USP.
+1. Generate prompts per category following framework 3.2: W-questions or natural buyer queries, user perspective (first person), one aspect per prompt, no yes/no or leading questions, target-market language. Personas as fixed context sentences placed before the question (framework 3.3); control groups without context.
+2. Type A prompts must not contain any brand name. Type B prompts name the brand and target attributes/USP. Tag every prompt with `evaluation` (generic | feature | seasonal | control | brand | benchmark | reserve | service, framework 3.7): feature = the prompt names the brand's own attributes (keep a word list per brand), seasonal = gift, calendar or sale prompts. Give every core prompt a verified `target_page` (sitemap or search console; never reconstruct slugs) and its `competitors_in_topic` from the roster's product fields.
 3. Write pipeline files using [prompts/templates/prompt-set.template.yaml](../../../prompts/templates/prompt-set.template.yaml):
    - One `prompts/<category>.yaml` per category containing **Type A prompts only** (these feed the mention-rate pipeline).
    - Type B prompts go into separate `prompts/<category>_brand.yaml` files that are NOT registered as pipeline clusters — they are for perception tracking (framework 5.2) via tools or manual runs.
    - IDs: `<prefix>_a_01`, `<prefix>_b_01`; include `type` and `journey` metadata fields.
-4. Also export `data/framework/<brand-slug>/prompt-set.csv` with columns `ID;Keyword;Themencluster;Fragetyp;W-Frage;Funnel_Stufe;Messziel;Tracking_Prompt` (tracking prompts from [prompts/templates/tracking-prompts.md](../../../prompts/templates/tracking-prompts.md)).
-5. Show the user a summary table (category x type x journey counts) and the file list. Tag the set `v1.0` in the CSV header comment.
+4. Also export `data/framework/<brand-slug>/prompt-set.csv` with columns `ID;Keyword;Themencluster;Fragetyp;W-Frage;Funnel_Stufe;Messziel;Tracking_Prompt;Persona;Kontextsatz;Auswertung;Wettbewerber_im_Thema;Zielseite;Katalog_Bezug` (tracking prompts from [prompts/templates/tracking-prompts.md](../../../prompts/templates/tracking-prompts.md)).
+5. Show the user a summary table (category x type x journey counts, persona shares, evaluation-tag counts, demand share vs. prompt share) and the file list. Tag the set `v1.0` in the CSV header comment. IDs are append-only from now on.
+6. Write `data/framework/<brand-slug>/measurement-plan.md` from [prompts/templates/measurement-plan.template.md](../../../prompts/templates/measurement-plan.template.md): groups with counts, fixed and optional systems, baseline plus two variance runs in month 1, monthly set, freeze run, call budget.
 
 ## Step: measure
 
@@ -68,13 +70,14 @@ Phase 4 — Measurement. Requires the Type A cluster YAML files. Optional argume
    python -m src.similarity
    ```
 4. Report where results landed and any collection errors verbatim.
+5. For tool-based monitoring instead of the pipeline (framework 4.4): run every group once as the baseline, then the monthly set two more times in month 1; record per run date, model version, web search on/off, country, language, persona, full answer, position, classification, top-3 competitors, cited sources. Declare no baseline value before the third run; report the spread.
 
 ## Step: audit
 
 Phase 5 — Audit. Requires completed analyzer output in `results/`.
 
 1. Read the analyzer/similarity outputs.
-2. Build the **visibility audit** (framework 5.1): mention rate per model and cluster, median rank, top-3 rate, visibility score, share of voice vs. the tracked competitors, gaps (categories/journey stages with zero or weak mentions), run-to-run stability.
+2. Build the **visibility audit** (framework 5.1): mention rate per model and cluster, median rank, top-3 rate, visibility score, share of voice vs. the tracked competitors, gaps (categories/journey stages with zero or weak mentions), run-to-run stability. Report generic, feature and seasonal rates as three numbers; totals demand-weighted and equal-weighted per topic; per-persona rates with the evidence-backed persona first; single measurements (brand, benchmark, reserve) labeled as such, not as baselines.
 3. If Type B responses exist (from tool-based or manual runs), build the **perception audit** (framework 5.2): attribute list, sentiment ratio, USP match % against the USPs in `business-analysis.md`, missing attributes.
 4. Write `data/framework/<brand-slug>/audit-report.md` with a scorecard and a prioritized findings table mapped to GEO levers (framework Phase 6 table).
 5. Close with re-measurement guidance: frozen prompt set version, cadence (monthly/quarterly), paired tests for before-after comparisons (McNemar/Wilcoxon — see `docs/methodology.md`).

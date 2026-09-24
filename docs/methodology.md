@@ -108,6 +108,8 @@ Buyer persona, funnel stage, buying context and constraint set must also stay st
 
 A constraint set is any explicit requirement that admits or excludes product classes, such as self-hosting, data residency, compliance requirements, budget caps, integration dependencies, company size or existing stack. If a contextual prompt admits a previously filtered-out solution class, the result is a market-definition finding, not a prompt trick and not an optimization lift.
 
+Two prompt families inside a generic set deserve their own tag: prompts that name the brand's own attributes (vegan, handmade, made in a country, refill systems, certifications) describe the brand almost by definition and inflate the mention rate; seasonal prompts (gifts, calendars, sales) distort month-over-month comparisons. Report both separately from the generic rate (framework 3.7).
+
 Customer evidence is an optional but recommended input for designing better prompt instruments before measurement. Questionnaires, sales notes, CRM loss reasons, support tickets, reviews and on-site search logs can help identify real buyer wording, objections, constraints and decision criteria. Use only aggregated or anonymized evidence in prompt design, record the evidence sources with the prompt set if they were used, and never mix prompt rewrites caused by new customer data into an existing time series.
 
 ---

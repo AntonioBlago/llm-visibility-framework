@@ -21,17 +21,19 @@ This framework is part of the **[Visibly AI](https://www.visibly-ai.com)** ecosy
 Want to apply this methodology to **your own brand**? The repository includes a complete, reusable prompt framework — [docs/prompt-framework.md](docs/prompt-framework.md) — covering the full workflow:
 
 1. **Business Analysis** — context capture, website research, customer evidence, 5–10 competitor analysis
-2. **Category & Journey Mapping** — 3–7 monitoring categories, customer journey stages, generic (~60%) vs. branded (~40%) prompt split
-3. **Prompt Development** — build a versioned set of 50–100 prompts (W-question rules, persona framing, naked vs. instrumented prompts)
-4. **Measurement** — run the set through this repo's pipeline (collector → parser → analyzer)
+2. **Category & Journey Mapping** — 3–7 monitoring categories, journey stages incl. the five Neuro-SEO funnel stages, prompt allocation by demand share, generic (~60%) vs. branded (~40%) prompt split
+3. **Prompt Development** — build a versioned set of 50–100 prompts (W-question rules, evidence-weighted personas as context sentences, measurement groups with evaluation tags, target page per prompt)
+4. **Measurement** — run the set through this repo's pipeline (collector → parser → analyzer), or in a tracking tool with the baseline / variance-run / monthly design and per-run documentation
 5. **Audit** — visibility audit (mention rate, rank, share of voice) + perception audit (attributes, sentiment, USP match)
 6. **Optimize & Re-measure** — GEO actions, tracking cadence, prompt-set versioning
 
-Ready-to-use assets in [prompts/templates/](prompts/templates/): German system prompts for Custom GPTs (simple + advanced workflow), instrumented tracking-prompt templates (DE/EN), a pipeline-ready YAML cluster template, and a motive-color example set.
+Ready-to-use assets in [prompts/templates/](prompts/templates/): German system prompts for Custom GPTs (simple + advanced workflow), instrumented tracking-prompt templates (DE/EN), a pipeline-ready YAML cluster template, a measurement-plan template (groups, runs, call budget), and a motive-color example set.
+
+**Framework v1.1 (September 2026)** adds what a production prompt set for a D2C brand taught us (no client data in the repo): personas weighted by the measured customer base and applied as fixed context sentences; measurement groups with evaluation tags (generic / feature / seasonal / control / brand / benchmark / reserve), because attribute prompts inflate the mention rate; a run design with a baseline and two variance runs before the first baseline value; a competitor roster merged from client and analysis lists with product fields per brand and a hard rule against retailers as benchmarks; and prompt allocation by demand share with totals reported both demand-weighted and equal-weighted. Details in [docs/prompt-framework.md](docs/prompt-framework.md) (1.5, 2.2, 2.4, 3.3, 3.7, 3.8, 4.4).
 
 **Claude Code users:** the repo ships a skill that executes the framework step by step — run `/prompt-framework analyze <brand> <website>`, then `categories`, `develop`, `measure`, `audit` (or `full` for the guided end-to-end flow). See [.claude/skills/prompt-framework/SKILL.md](.claude/skills/prompt-framework/SKILL.md). Copy-paste commands for both the skill and the manual route are in [Quick Start — Path A](#path-a--track-your-own-brand-prompt-framework) below.
 
-The framework builds on the [Neuro-SEO System®](https://antonioblago.de/neuro-seo-system/) (business-first analysis, sales-psychology layer) and was applied in production in the [PURELEI E-commerce GEO case study](https://antonioblago.de/seo/e-commerce-geo-case-study-von-purelei/) — 117 prompts across ChatGPT, Perplexity, Claude, Gemini and Google AI Overviews with UTM-based revenue attribution.
+The framework builds on the [Neuro-SEO System®](https://www.antonioblago.com/de/neuro-seo-system/) (business-first analysis, sales-psychology layer) and was applied in production in the [PURELEI E-commerce GEO case study](https://www.antonioblago.com/blog/e-commerce-geo-case-study-with-purelei) — 117 prompts across ChatGPT, Perplexity, Claude, Gemini and Google AI Overviews with UTM-based revenue attribution.
 
 ## Quick Start
 
@@ -98,7 +100,7 @@ Results land in `results/`, raw responses in `data/`.
 ## Repository Structure
 
 ```
-llm-visibility-study/
+llm-visibility-framework/
 ├── README.md                    # This file
 ├── .claude/
 │   └── skills/
@@ -128,6 +130,7 @@ llm-visibility-study/
 │       ├── system-prompt-advanced.de.md  # Custom GPT system prompt (full workflow)
 │       ├── tracking-prompts.md  # Instrumented tracking prompts (DE/EN)
 │       ├── prompt-set.template.yaml      # Pipeline-ready cluster template
+│       ├── measurement-plan.template.md  # Groups, baseline/variance runs, call budget
 │       └── example-motive-color-prompts.de.md  # Motive-color example set
 ├── data/                        # Raw + processed data (gitignored)
 ├── results/                     # Analysis outputs
@@ -254,9 +257,10 @@ The brands tracked in this study are sourced from the Visibly AI Brand Radar (Lo
 Read the full study write-up with key findings and GEO implications:
 
 - **EN:** [How LLMs Rank Brands: A Statistical Study of AI Visibility Across Claude, GPT-4o, and Gemini](https://www.antonioblago.com/blog/how-llms-rank-brands-a-statistical-study-of-ai-visibility-across-claude-gpt-4o-and-gemini)
-- **DE:** [Wie LLMs Marken ranken: Eine statistische Studie zur KI-Sichtbarkeit](https://antonioblago.de/seo/wie-llms-marken-ranken-eine-statistische-studie-zur-ki-sichtbarkeit-mit-claude-gpt-4o-und-gemini/)
-- **Case Study (DE):** [E-Commerce GEO Case Study: PURELEI und generative Sichtbarkeit](https://antonioblago.de/seo/e-commerce-geo-case-study-von-purelei/)
-- **Methodik-Hintergrund (DE):** [Neuro-SEO System®](https://antonioblago.de/neuro-seo-system/)
+- **DE:** [Wie LLMs Marken ranken: Eine statistische Studie zur KI-Sichtbarkeit](https://www.antonioblago.com/de/blog/wie-llms-marken-ranken-eine-statistische-studie-zur-ki-sichtbarkeit-mit-claude-gpt-4o-und-gemini)
+- **Case Study (EN):** [E-commerce GEO case study with PURELEI](https://www.antonioblago.com/blog/e-commerce-geo-case-study-with-purelei)
+- **Case Study (DE):** [E-Commerce GEO Case Study: PURELEI und generative Sichtbarkeit](https://www.antonioblago.com/de/blog/e-commerce-geo-case-study-von-purelei)
+- **Methodik-Hintergrund (DE):** [Neuro-SEO System®](https://www.antonioblago.com/de/neuro-seo-system/)
 
 ## Author
 
